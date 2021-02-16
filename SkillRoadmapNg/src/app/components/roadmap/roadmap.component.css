@@ -1,0 +1,23 @@
+.skillBlock{
+    height: 200px;
+    width: 500px;
+}
+.skillContent{
+    width: 200px;
+}
+.skillTime{
+    text-align: center;
+    min-width:300px;
+}
+.skillCat{
+    width: 100px;
+}
+.svgPos{
+    /*position: relative;
+    top: -5px;
+    left: -5px;*/
+    border: 1px solid green;
+}
+table {
+    border-collapse: collapse;
+}

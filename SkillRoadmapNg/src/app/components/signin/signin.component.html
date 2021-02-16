@@ -1,0 +1,22 @@
+<form class="w-50 mx-auto mt-5">
+    <div class="form-group">
+        <div>
+          <input type="email" class="form-control" placeholder="Enter email" id="email" name="useremail" [(ngModel)]="user.email" (focus)="hideAlert()">
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="!isLogged">
+          Authentication error!
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+          <input type="password" class="form-control" placeholder="Enter password" id="pwd" name="userpass" [(ngModel)]="user.password" (focus)="hideAlert()">
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="!isLogged">
+          Authentication error!
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="signin()">Submit</button>
+</form>
+<div class="bg-div" *ngIf="isLoading">
+  <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</div>
