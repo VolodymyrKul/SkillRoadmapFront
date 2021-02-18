@@ -28,45 +28,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr id="TableDateBox">
-          <th scope="row">1</th>
-          <td name="TableDateItem" colspan="12" style="padding: 0;">
-            <svg class="svgPos" name="SkillSVG" width="3600" height="1000">
-              <text name="SkillText" x="0" y="15" fill="red">I love SVG!</text>
-              <rect name="SkillRect" x="0" y="25" width="400" height="10" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"/>
-              <text name="SkillText" x="0" y="55" fill="red">I love SVG!</text>
-              <rect name="SkillRect" x="0" y="65" width="400" height="10" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"/>
-            </svg>
-          </td>
-        </tr>
-        <tr>
-            <th colspan="13"></th>
-        </tr>
-        <tr id="TableDateBox">
-          <th scope="row">2</th>
-          <td name="TableDateItem" colspan="12" style="padding: 0;">
-            <svg class="svgPos" name="SkillSVG" width="3600" height="200">
-              <text name="SkillText" x="0" y="15" fill="red">I love SVG!</text>
-              <rect name="SkillRect" x="0" y="25" width="400" height="10" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"/>
-              <text name="SkillText" x="0" y="55" fill="red">I love SVG!</text>
-              <rect name="SkillRect" x="0" y="65" width="400" height="10" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"/>
-            </svg>
-          </td>
-        </tr>
-        <tr style="height: 10px;">
-          <th colspan="13"></th>
-        </tr>
-        <tr id="TableDateBox">
-          <th scope="row">3</th>
-          <td name="TableDateItem" colspan="12" style="padding: 0;">
-            <svg class="svgPos" name="SkillSVG" width="3600" height="200">
-              <text name="SkillText" x="0" y="15" fill="red">I love SVG!</text>
-              <rect name="SkillRect" x="0" y="25" width="400" height="10" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"/>
-              <text name="SkillText" x="0" y="55" fill="red">I love SVG!</text>
-              <rect name="SkillRect" x="0" y="65" width="400" height="10" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"/>
-            </svg>
-          </td>
-        </tr>
+        <ng-container *ngFor="let categ of categories let in=index">
+          <tr id="TableDateBox">
+            <th scope="row">1</th>
+            <td name="TableDateItem" colspan="12" style="padding: 0;">
+              <svg class="svgPos" name="SkillSVG" width="3600" height="200">
+                <text name="SkillText" x="0" y="15" fill="red">I love SVG!</text>
+                <rect name="SkillRect" x="0" y="25" width="400" height="10" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"/>
+                <text name="SkillText" x="0" y="55" fill="red">I love SVG!</text>
+                <rect name="SkillRect" x="0" y="65" width="400" height="10" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)"/>
+              </svg>
+            </td>
+          </tr>
+          <tr>
+              <th colspan="13"></th>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>
