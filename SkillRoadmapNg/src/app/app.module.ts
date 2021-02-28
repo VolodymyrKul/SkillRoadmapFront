@@ -11,6 +11,9 @@ import { AccountComponent } from './components/account/account.component';
 import { RoadmapComponent } from './components/roadmap/roadmap.component';
 import { GradematrixComponent } from './components/gradematrix/gradematrix.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommentModalComponent } from './components/comment-modal/comment-modal.component';
 
 @NgModule({
   declarations: [
@@ -20,13 +23,16 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     AccountComponent,
     RoadmapComponent,
     GradematrixComponent,
-    NavbarComponent
+    NavbarComponent,
+    CommentModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    NgbModule,
+    NgbModalModule
   ],
   providers: [],
   bootstrap: [AppComponent]

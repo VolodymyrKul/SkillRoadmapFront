@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoginInfo } from 'src/app/models/login-info';
+import { EmployerService } from 'src/app/services/employer.service';
 /*import { UserServiceService } from '../../services/user-service.service';*/
 import { SignInUser } from '../../models/sign-in-user'
 
@@ -14,27 +16,32 @@ export class SigninComponent implements OnInit {
   isLoading: boolean = false;
   user: SignInUser = new SignInUser('ilivocs@gmail.com', '_Aa123456');
   tmp: string = 'tmp1';
+  info: LoginInfo = new LoginInfo(false, '')
+  
 
-  constructor(private router: Router/*, private userService: UserServiceService*/) { }
+  constructor(private router: Router, private employerService: EmployerService) { }
 
   ngOnInit(): void {
   }
 
   signin() : void {
-    /*this.isLoading = true;
-    this.userService.login(this.user)
-    .subscribe((data: boolean | any) => {
-      this.isLogged=data;
+    this.isLoading = true;
+    this.employerService.login(this.user)
+    .subscribe((data: LoginInfo | any) => {
+      this.info = data;
+      this.isLogged=this.info.isLogged;
       console.log(this.isLogged);
+      console.log(this.info.role);
       this.isLoading = false;
       if(this.isLogged){
         localStorage.setItem("currentuser", (this.user.email==undefined) ? "undefined" : this.user.email);
+        localStorage.setItem("currentrole", (this.info.role==undefined) ? "undefined" : this.info.role);
         this.router.navigate(['account']);  
       }
       else{
         this.isLogged = false;
       }
-    });*/
+    });
   }
 
   hideAlert(){

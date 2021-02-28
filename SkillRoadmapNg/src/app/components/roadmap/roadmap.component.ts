@@ -1,8 +1,10 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, TemplateRef } from '@angular/core';
 import { UserSkillService } from '../../services/user-skill.service';
 import { CommentService } from '../../services/comment.service';
 import { UserSkill } from '../../models/user-skill';
 import { Comment } from '../../models/comment';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-roadmap',
@@ -10,20 +12,22 @@ import { Comment } from '../../models/comment';
   styleUrls: ['./roadmap.component.css']
 })
 export class RoadmapComponent implements OnInit, AfterViewChecked {
+  @ViewChild('parentModal')
+  private modalRef: TemplateRef<any>;
 
-  constructor(private userSkillService: UserSkillService, private commentService: CommentService) { }
+  constructor(private userSkillService: UserSkillService, private commentService: CommentService, private modalService: NgbModal) { }
 
   userSkills: UserSkill[] = [];
   categories: number[] = [];
   comments: Comment[] = [];
+  addedComment: string = 'Leave comment';
+  closeResult = '';
   ngOnInit(): void {
     this.userSkillService.getByYear('ilivocs@gmail.com',2021)
     .subscribe((data: UserSkill[] | any) => {
       console.log(data);
       this.userSkills = data;
       this.findDistCateg();
-      //this.setDividers();
-      //this.drawSvg();
     });
     this.commentService.getByUser('ilivocs@gmail.com')
     .subscribe((data: Comment[] | any) => {
@@ -93,7 +97,8 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
         rect.setAttribute("height","10");
         rect.setAttribute("style","fill:url(#solids)");
         //rect.setAttribute("style","fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)");
-        rect.addEventListener("click", this.addComment);
+        rect.addEventListener("click", () => {this.openCustomDialog()});
+        //rect.onclick = this.openCustomDialog;
         var res = this.comments.find(com => com.userSkillName == skill.skillname.toString());
         if(res != undefined){
           rect.innerHTML = "<title>" + 'User ' + res.employerEmail + ' leave this comment: ' + res.commentText + "</title>"
@@ -135,5 +140,24 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
   addComment(event){
     console.log(event.target);
     //event.target.innerHTML = "<title>This is decription</title>";
+  }
+
+  openCustomDialog() {
+    console.log(this.modalRef);
+    this.modalService.open(this.modalRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }
