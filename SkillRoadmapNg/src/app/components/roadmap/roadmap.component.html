@@ -82,7 +82,7 @@
 
   <ng-template #parentModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Skill</h4>
+      <h4 class="modal-title" id="modal-basic-title">Add New Skill Unit</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -90,46 +90,83 @@
     <div class="modal-body">
       <form>
         <div class="form-group">
-          <label for="categorySelect">Category</label>
+          <label for="categorySelect">Skill Category</label>
           <div class="input-group">
             <div class="w-100">
-              <select class="form-control custom-select" id="categorySelect">
-                <option selected>Choose...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+              <select class="form-control custom-select" id="categorySelect" name="company"
+              (change)="selectCateg($event.target.value)">
+                <option *ngFor="let categ of categories let in=index" [value]="categ">{{categ}}</option>
               </select>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="parentSelect">Category</label>
+          <label for="parentSelect">User Skill</label>
           <div class="input-group">
             <div class="w-100">
-              <select class="form-control custom-select" id="parentSelect">
-                <option selected>Choose...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+              <select class="form-control custom-select" id="parentSelect" name="usSkill" [(ngModel)]="addedSkillUnit.userSkillName">
+                <option *ngFor="let skill of modalUserSkills let in=index">{{skill.skillname}}</option>
               </select>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="skillName">Email address</label>
-          <input type="text" class="form-control" id="skillName" placeholder="Enter here skill name">
+          <label for="skillName">Unit Name</label>
+          <input type="text" class="form-control" id="skillName" placeholder="Enter here skill name" name="usUnit" [(ngModel)]="addedSkillUnit.unitname">
         </div>
         <div class="form-row">
-          <div class="col">
-            <input type="date" class="form-control" placeholder="Enter start date">
+          <div class="form-group col">
+            <label for="startDate">Start Date</label>
+            <input type="date" class="form-control" id="startDate" placeholder="Enter start date" name="unitStart" [(ngModel)]="addedSkillUnit.startDate">
           </div>
-          <div class="col">
-            <input type="date" class="form-control" placeholder="Enter end date">
+          <div class="form-group col">
+            <label for="endDate">End Date</label>
+            <input type="date" class="form-control" id="endDate" placeholder="Enter end date" name="unitEnd" [(ngModel)]="addedSkillUnit.endDate">
           </div>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="addNewSkillUnit()">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #childModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add New User Skill</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="categorySelect">Skill Category</label>
+          <div class="input-group">
+            <div class="w-100">
+              <select class="form-control custom-select" id="categorySelect" name="usCat" [(ngModel)]="addedUserSkill.categoryName">
+                <option *ngFor="let categ of categories let in=index" [value]="categ">{{categ}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="skillName">Unit Name</label>
+          <input type="text" class="form-control" id="skillName" placeholder="Enter here skill name" name="usUnit" [(ngModel)]="addedUserSkill.skillname">
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="startDate">Start Date</label>
+            <input type="date" class="form-control" id="startDate" placeholder="Enter start date" name="unitStart" [(ngModel)]="addedUserSkill.startDate">
+          </div>
+          <div class="form-group col">
+            <label for="endDate">End Date</label>
+            <input type="date" class="form-control" id="endDate" placeholder="Enter end date" name="unitEnd" [(ngModel)]="addedUserSkill.endDate">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="addedNewUserSkill()">Save</button>
     </div>
   </ng-template>

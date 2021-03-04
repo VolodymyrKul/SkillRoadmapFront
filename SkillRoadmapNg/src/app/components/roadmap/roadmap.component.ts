@@ -5,6 +5,7 @@ import { UserSkill } from '../../models/user-skill';
 import { Comment } from '../../models/comment';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ViewChild } from '@angular/core';
+import { SkillUnit } from '../../models/skill-unit';
 
 @Component({
   selector: 'app-roadmap',
@@ -12,16 +13,19 @@ import { ViewChild } from '@angular/core';
   styleUrls: ['./roadmap.component.css']
 })
 export class RoadmapComponent implements OnInit, AfterViewChecked {
-  @ViewChild('parentModal')
+  @ViewChild('childModal')
   private modalRef: TemplateRef<any>;
 
   constructor(private userSkillService: UserSkillService, private commentService: CommentService, private modalService: NgbModal) { }
 
   userSkills: UserSkill[] = [];
-  categories: number[] = [];
+  modalUserSkills: UserSkill[] = [];
+  categories: string[] = [];
   comments: Comment[] = [];
   addedComment: string = 'Leave comment';
   closeResult = '';
+  addedSkillUnit: SkillUnit = new SkillUnit('', new Date(), new Date(), 0, '');
+  addedUserSkill: UserSkill = new UserSkill('', new Date(), new Date(), '', 0, localStorage.getItem('currentuser'), true);
   ngOnInit(): void {
     this.userSkillService.getByYear('ilivocs@gmail.com',2021)
     .subscribe((data: UserSkill[] | any) => {
@@ -60,6 +64,9 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
   findDistCateg(){
     this.userSkills.forEach(skill => this.categories.push(skill?.categoryName));
     this.categories = this.categories.filter((x, i, a) => a.indexOf(x) === i);
+    this.modalUserSkills = this.userSkills.filter(us => us?.categoryName === this.categories[0] && us.isUserSkill === true);
+    this.addedSkillUnit.userSkillName = this.modalUserSkills[0].skillname;
+    this.addedUserSkill.categoryName = this.categories[0];
     //this.categories.forEach(cat => console.log(cat));
   }
 
@@ -75,7 +82,7 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
 
       svgItem.setAttribute("height","20");
       const catskills: UserSkill[] = this.userSkills.filter(us => us?.categoryName === this.categories[index]);
-      console.log(catskills.length);
+      //console.log(catskills.length);
 
       catskills.forEach(skill => {
         svgItem.setAttribute("height", (parseInt(svgItem.getAttribute("height"),10)+40).toString());
@@ -159,5 +166,18 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  selectCateg(selectCateg: any){
+    console.log(selectCateg);
+    this.modalUserSkills = this.userSkills.filter(us => us?.categoryName === selectCateg && us.isUserSkill === true);
+  }
+
+  addNewSkillUnit(){
+    console.log(this.addedSkillUnit);
+  }
+
+  addedNewUserSkill(){
+    console.log(this.addedUserSkill);
   }
 }

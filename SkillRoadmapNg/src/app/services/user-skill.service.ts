@@ -14,4 +14,8 @@ export class UserSkillService {
   getByYear(user: string, year: number){
     return this.http.get(this.url + '/byyear/' + user + '/' + year);
   }
+
+  addUserSkill(userSkill: UserSkill){
+    return this.http.post(this.url + '/pull', userSkill);
+  }
 }

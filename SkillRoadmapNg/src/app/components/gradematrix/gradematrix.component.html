@@ -1,1 +1,24 @@
-<p>gradematrix works!</p>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Skillname</th>
+        <th scope="col">CategoryName</th>
+        <th scope="col">SkillLevel</th>
+        <th scope="col">StartDate</th>
+        <th scope="col">EndDate</th>
+      </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let userSkill of userSkills let in=index">
+            <tr>
+                <td>{{in + 1}}</td>
+                <td>{{userSkill?.skillname}}</td>
+                <td>{{userSkill?.categoryName}}</td>
+                <td>{{userSkill?.skillLevel}}</td>
+                <td>{{userSkill?.startDate.toISOString().slice(0, 10)}}</td>
+                <td>{{userSkill?.endDate.toISOString().slice(0, 10)}}</td>
+            </tr>
+        </ng-container>
+    </tbody>
+  </table>
