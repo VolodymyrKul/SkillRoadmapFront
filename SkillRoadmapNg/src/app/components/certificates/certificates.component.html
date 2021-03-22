@@ -1,0 +1,99 @@
+<div class="w-75 mx-auto mt-1">
+  <button *ngIf="!isMentor" class="btn btn-primary w-100" (click)="addUserSkill()">Order certificate</button>
+  <table class="table table-striped mt-1">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">UserSkill</th>
+        <th scope="col">SkillLevel</th>
+        <th scope="col">DateOfIssue</th>
+        <th scope="col">ExpiryDate</th>
+        <th *ngIf="!isMentor" scope="col">PublisherNSN</th>
+        <th *ngIf="isMentor" scope="col">RecipientNSN</th>
+      </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let certif of mycertificates let in=index">
+            <tr>
+                <td>{{in + 1}}</td>
+                <td>{{certif?.userSkill}}</td>
+                <td>{{certif?.skillLevel}}</td>
+                <td *ngIf="!isMentor">{{certif?.dateOfIssue.toISOString().slice(0, 10)}}</td>
+                <td *ngIf="!isMentor">{{certif?.expiryDate.toISOString().slice(0, 10)}}</td>
+                <td *ngIf="isMentor">---</td>
+                <td *ngIf="isMentor">---</td>
+                <td *ngIf="!isMentor">{{certif?.publisherNSN}}
+                  <span style="float: right; cursor: pointer;">
+                    <i *ngIf="!isMentor" class="fas fa-print"></i></span>
+                </td>
+                <td *ngIf="isMentor">{{certif?.recipientNSN}}
+                  <span style="float: right; cursor: pointer;">
+                    <i *ngIf="isMentor" class="fas fa-check mr-3" (click)="acceptCertificateFun(certif)"></i>
+                    <i *ngIf="isMentor" class="fas fa-times"></i>
+                  </span>
+                </td>
+            </tr>
+        </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #orderModal let-modal class="w-50">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Order certificate</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="skillSelect">User Skill</label>
+        <div class="input-group">
+          <div class="w-100">
+            <select class="form-control custom-select" id="skillSelect" name="uSkill" [(ngModel)]="ordercertificate.userSkillName">
+              <option *ngFor="let us of userSkills let in=index" [value]="us.skillname">{{us.skillname}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="orderCertificateFun()">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #acceptModal let-modal class="w-50">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Accept certificate</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="cerTitle">Certificate text</label>
+        <input type="text" class="form-control" id="cerTitle" placeholder="Enter here certificate text" name="cerTit" [(ngModel)]="acceptCertificate.certificateTitle">
+      </div>
+      <div class="form-group">
+        <label for="cerUsLevel">Skill Level</label>
+        <input type="number" min="0" max="5" step="1" class="form-control" id="cerUsLevel" placeholder="Enter here certificate text" name="cerUsLvl" [(ngModel)]="acceptCertificate.skillLevel">
+      </div>
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="startDate">Date of issue</label>
+          <input type="date" class="form-control" id="startDate" placeholder="Enter start date" name="usStart" [(ngModel)]="acceptCertificate.dateOfIssue">
+        </div>
+        <div class="form-group col">
+          <label for="endDate">Expiry Date</label>
+          <input type="date" class="form-control" id="endDate" placeholder="Enter end date" name="usEnd" [(ngModel)]="acceptCertificate.expiryDate">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="saveAcceptData()">Save</button>
+  </div>
+</ng-template>

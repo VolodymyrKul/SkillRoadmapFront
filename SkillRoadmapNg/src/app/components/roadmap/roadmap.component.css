@@ -21,3 +21,11 @@
 table {
     border-collapse: collapse;
 }
+.notFoundImg{
+    display: block;
+    height: 400px;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5em;
+}

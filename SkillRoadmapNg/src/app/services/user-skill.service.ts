@@ -18,4 +18,12 @@ export class UserSkillService {
   addUserSkill(userSkill: UserSkill){
     return this.http.post(this.url + '/pull', userSkill);
   }
+
+  getYears(user: string){
+    return this.http.get(this.url + '/getyears/' + user);
+  }
+
+  getOnly(user: string){
+    return this.http.get(this.url + '/getonly/' + user);
+  }
 }

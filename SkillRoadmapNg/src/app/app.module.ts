@@ -14,6 +14,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommentModalComponent } from './components/comment-modal/comment-modal.component';
+import { TrainingsComponent } from './components/trainings/trainings.component';
+import { CertificatesComponent } from './components/certificates/certificates.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,10 @@ import { CommentModalComponent } from './components/comment-modal/comment-modal.
     RoadmapComponent,
     GradematrixComponent,
     NavbarComponent,
-    CommentModalComponent
+    CommentModalComponent,
+    TrainingsComponent,
+    CertificatesComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +39,8 @@ import { CommentModalComponent } from './components/comment-modal/comment-modal.
     HttpClientModule,
     FormsModule,
     NgbModule,
-    NgbModalModule
+    NgbModalModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

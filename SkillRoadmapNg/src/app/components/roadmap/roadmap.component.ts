@@ -6,6 +6,9 @@ import { Comment } from '../../models/comment';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ViewChild } from '@angular/core';
 import { SkillUnit } from '../../models/skill-unit';
+import { SkillMetric } from '../../models/skill-metric';
+import { SkillMetricService } from '../../services/skill-metric.service';
+import { SkillUnitService } from 'src/app/services/skill-unit.service';
 
 @Component({
   selector: 'app-roadmap',
@@ -14,26 +17,70 @@ import { SkillUnit } from '../../models/skill-unit';
 })
 export class RoadmapComponent implements OnInit, AfterViewChecked {
   @ViewChild('childModal')
-  private modalRef: TemplateRef<any>;
+  private childRef: TemplateRef<any>;
 
-  constructor(private userSkillService: UserSkillService, private commentService: CommentService, private modalService: NgbModal) { }
+  @ViewChild('parentModal')
+  private parentRef: TemplateRef<any>;
+
+  constructor(private userSkillService: UserSkillService, 
+    private commentService: CommentService, 
+    private modalService: NgbModal,
+    private skillMetricService: SkillMetricService,
+    private skillUnitService: SkillUnitService) { }
 
   userSkills: UserSkill[] = [];
   modalUserSkills: UserSkill[] = [];
   categories: string[] = [];
   comments: Comment[] = [];
+  allYears: number[] = [];
+  currentYear: number = 0;
   addedComment: string = 'Leave comment';
   closeResult = '';
-  addedSkillUnit: SkillUnit = new SkillUnit('', new Date(), new Date(), 0, '');
-  addedUserSkill: UserSkill = new UserSkill('', new Date(), new Date(), '', 0, localStorage.getItem('currentuser'), true);
+  isDelimDeleted: boolean = false;
+  isEmptySkillArr: boolean = true;
+  addedSkillUnits: SkillUnit[] = [
+    new SkillUnit('Some interesting unit1', new Date(Date.now()), new Date(Date.now()), 0, ''),
+    new SkillUnit('Some interesting unit2', new Date(Date.now()), new Date(Date.now()), 0, ''),
+    new SkillUnit('Some interesting unit3', new Date(Date.now()), new Date(Date.now()), 0, '')
+  ];
+  addedSkillMetrics: SkillMetric[] = [
+    new SkillMetric('Metric title1', 0, 0.1, ''),
+    new SkillMetric('Metric title2', 0, 0.1, ''),
+    new SkillMetric('Metric title3', 0, 0.1, '')
+  ];
+  //addedSkillUnit: SkillUnit = new SkillUnit('Some interesting unit', new Date(Date.now()), new Date(Date.now()), 0, '');
+  addedUserSkill: UserSkill = new UserSkill('Some interesting skill', new Date(Date.now()), new Date(Date.now()), '', 0, localStorage.getItem('currentuser'), true);
+
+  step1: boolean = true;
+  step2: boolean = false;
+  step3: boolean = false;
+  metric2: boolean = false;
+  metric3: boolean = false;
+  unit2: boolean = false;
+  unit3: boolean = false;
+  currentStep: number = 1;
   ngOnInit(): void {
-    this.userSkillService.getByYear('ilivocs@gmail.com',2021)
-    .subscribe((data: UserSkill[] | any) => {
+
+    this.userSkillService.getYears(localStorage.getItem('currentuser'))
+    .subscribe((data: number[] | any) => {
       console.log(data);
-      this.userSkills = data;
-      this.findDistCateg();
+      this.allYears = data;
+      console.log(this.allYears.length);
+      if(this.allYears.length == 0){
+        this.isEmptySkillArr = true;
+      }
+      else{
+        this.isEmptySkillArr = false;
+        this.currentYear = this.allYears[0];
+        this.userSkillService.getByYear(localStorage.getItem('currentuser'), this.currentYear)
+        .subscribe((data: UserSkill[] | any) => {
+          console.log(data);
+          this.userSkills = data;
+          this.findDistCateg();
+        });
+      }
     });
-    this.commentService.getByUser('ilivocs@gmail.com')
+    this.commentService.getByUser(localStorage.getItem('currentuser'))
     .subscribe((data: Comment[] | any) => {
       console.log(data);
       this.comments = data;
@@ -44,6 +91,13 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
     //console.log("After check");
     this.setDividers();
     this.drawSvg();
+    var delims = document.getElementsByName("delim");
+    //console.log("Delims:" + delims.length);
+    //console.log("Items:" + document.getElementsByName("tableBody").length);
+    if(delims.length>0 && this.isDelimDeleted==false){
+      document.getElementsByName("tableBody")[0].removeChild(delims[delims.length-1]);
+      this.isDelimDeleted = true;
+    }
   }
 
   setDividers(){
@@ -62,11 +116,16 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
   }
 
   findDistCateg(){
+    this.categories = [];
     this.userSkills.forEach(skill => this.categories.push(skill?.categoryName));
     this.categories = this.categories.filter((x, i, a) => a.indexOf(x) === i);
     this.modalUserSkills = this.userSkills.filter(us => us?.categoryName === this.categories[0] && us.isUserSkill === true);
-    this.addedSkillUnit.userSkillName = this.modalUserSkills[0].skillname;
+    this.addedSkillUnits.forEach(su=>{
+      su.userSkillName = this.modalUserSkills[0].skillname;
+    })
+    //this.addedSkillUnit.userSkillName = this.modalUserSkills[0].skillname;
     this.addedUserSkill.categoryName = this.categories[0];
+    console.log(this.categories);
     //this.categories.forEach(cat => console.log(cat));
   }
 
@@ -149,9 +208,18 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
     //event.target.innerHTML = "<title>This is decription</title>";
   }
 
+  addUserSkillWithUnit(){
+    console.log(this.parentRef);
+    this.modalService.open(this.parentRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
   openCustomDialog() {
-    console.log(this.modalRef);
-    this.modalService.open(this.modalRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    console.log(this.childRef);
+    this.modalService.open(this.childRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -169,15 +237,113 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
   }
 
   selectCateg(selectCateg: any){
-    console.log(selectCateg);
-    this.modalUserSkills = this.userSkills.filter(us => us?.categoryName === selectCateg && us.isUserSkill === true);
+    //console.log(selectCateg);
+    this.addedUserSkill.categoryName = selectCateg;
+    console.log(this.addedUserSkill.categoryName);
+    //this.modalUserSkills = this.userSkills.filter(us => us?.categoryName === selectCateg && us.isUserSkill === true);
   }
 
-  addNewSkillUnit(){
-    console.log(this.addedSkillUnit);
+  addNewUserSkill(){
+    if(this.currentStep == 1){
+      this.currentStep++;
+      this.step1=false;
+      this.step2=true;
+      this.addedSkillUnits.forEach(su => {
+        su.userSkillName = this.addedUserSkill.skillname;
+        su.startDate = this.addedUserSkill.startDate;
+        su.endDate = this.addedUserSkill.endDate;
+      });
+      this.addedSkillMetrics.forEach(sm => {
+        sm.skillname = this.addedUserSkill.skillname;
+      });
+      //this.addedSkillUnit.userSkillName = this.addedUserSkill.skillname;
+      //this.addedSkillUnit.startDate=this.addedUserSkill.startDate;
+      //this.addedSkillUnit.endDate=this.addedUserSkill.endDate;
+      console.log(this.addedUserSkill.skillname);
+      console.log(this.addedUserSkill.startDate);
+      console.log(this.addedUserSkill.endDate);  
+    }
+    else if(this.currentStep == 2){
+      this.currentStep++;
+      this.step2=false;
+      this.step3=true;
+      //console.log(this.addedSkillUnit);
+    }
+    //console.log(this.addedUserSkill);
   }
 
-  addedNewUserSkill(){
+  selectYear(selectYear: any){
+    this.userSkillService.getByYear(localStorage.getItem('currentuser'), selectYear)
+    .subscribe((data: UserSkill[] | any) => {
+      console.log(data);
+      this.userSkills = data;
+      this.findDistCateg();
+      this.drawSvg();
+      this.currentYear = selectYear;
+    });
+  }
+
+  addMetric(){
+    if(this.metric2 == false){
+      this.metric2=true;
+      console.log("Metric2");
+    }
+    else{
+      this.metric3=true;
+      console.log("Metric3");
+    }
+  }
+
+  addSkillUnit(){
+    if(this.unit2 == false){
+      this.unit2=true;
+      console.log("Unit2");
+    }
+    else{
+      this.unit3=true;
+      console.log("Unit3");
+    }
+  }
+
+  saveAllObjects(){
+    console.log('------------');
+    console.log('Save data');
     console.log(this.addedUserSkill);
+    console.log(this.addedSkillMetrics);
+    console.log(this.addedSkillUnits);
+    /*this.userSkillService.addUserSkill(this.addedUserSkill)
+    .subscribe((data: any) => {
+      this.saveSkillMetrics();
+      this.saveSkillUnits();
+    });*/
+  }
+  saveSkillMetrics(){
+    this.skillMetricService.addSkillMetric(this.addedSkillMetrics[0])
+      .subscribe((data: any) => {
+        if(this.metric2 == true){
+          this.skillMetricService.addSkillMetric(this.addedSkillMetrics[1])
+          .subscribe((data: any) => {
+            if(this.metric3 == true){
+              this.skillMetricService.addSkillMetric(this.addedSkillMetrics[2])
+              .subscribe((data: any) => {});
+            }
+          });
+        }
+      });
+  }
+
+  saveSkillUnits(){
+    this.skillUnitService.addSkillUnit(this.addedSkillUnits[0])
+      .subscribe((data: any) => {
+        if(this.unit2 == true){
+          this.skillUnitService.addSkillUnit(this.addedSkillUnits[1])
+          .subscribe((data: any) => {
+            if(this.unit3 == true){
+              this.skillUnitService.addSkillUnit(this.addedSkillUnits[2])
+              .subscribe((data: any) => {});
+            }
+          });
+        }
+      });
   }
 }

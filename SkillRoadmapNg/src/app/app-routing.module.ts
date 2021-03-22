@@ -5,13 +5,15 @@ import { SignupComponent } from '../app/components/signup/signup.component';
 import { RoadmapComponent } from '../app/components/roadmap/roadmap.component';
 import { AccountComponent } from './components/account/account.component';
 import { GradematrixComponent } from './components/gradematrix/gradematrix.component';
+import { CertificatesComponent } from './components/certificates/certificates.component';
 
 const routes: Routes = [
   {path: '', component: SigninComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'roadmap', component: RoadmapComponent},
   {path: 'account', component: AccountComponent},
-  {path: 'matrix', component: GradematrixComponent}
+  {path: 'matrix', component: GradematrixComponent},
+  {path: 'mycertif', component: CertificatesComponent}
 ];
 
 @NgModule({

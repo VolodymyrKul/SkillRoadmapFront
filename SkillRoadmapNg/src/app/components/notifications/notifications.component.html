@@ -1,0 +1,24 @@
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Notification text</th>
+        <th scope="col">Employee</th>
+        <th scope="col">Employer</th>
+        <th scope="col">Skill name</th>
+        <th scope="col">Sending date</th>
+      </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let notif of mynotifications let in=index">
+            <tr>
+                <td>{{in + 1}}</td>
+                <td>{{notif?.notificationText}}</td>
+                <td>{{notif?.employeeNSN}}</td>
+                <td>{{notif?.employerNSN}}</td>
+                <td>{{notif?.skillname}}</td>
+                <td>{{notif?.sendingDate.toISOString().slice(0, 10)}}</td>
+            </tr>
+        </ng-container>
+    </tbody>
+  </table>
