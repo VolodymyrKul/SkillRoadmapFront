@@ -6,6 +6,9 @@ import { RoadmapComponent } from '../app/components/roadmap/roadmap.component';
 import { AccountComponent } from './components/account/account.component';
 import { GradematrixComponent } from './components/gradematrix/gradematrix.component';
 import { CertificatesComponent } from './components/certificates/certificates.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
+import { ManagementComponent } from './components/management/management.component';
+import { TrainingsComponent } from './components/trainings/trainings.component';
 
 const routes: Routes = [
   {path: '', component: SigninComponent},
@@ -13,7 +16,10 @@ const routes: Routes = [
   {path: 'roadmap', component: RoadmapComponent},
   {path: 'account', component: AccountComponent},
   {path: 'matrix', component: GradematrixComponent},
-  {path: 'mycertif', component: CertificatesComponent}
+  {path: 'mycertif', component: CertificatesComponent},
+  {path: 'notif', component: NotificationsComponent},
+  {path: 'management', component: ManagementComponent},
+  {path: 'trainings', component: TrainingsComponent}
 ];
 
 @NgModule({

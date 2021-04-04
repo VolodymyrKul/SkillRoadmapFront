@@ -3,10 +3,10 @@
     <div class="btn-group-vertical w-25 mt-5" style="float: left;">
         <button type="button" class="btn btn-primary" routerLink="/matrix">Skill Matrix</button>
         <button type="button" class="btn btn-primary" routerLink="/roadmap">Skill Roadmap</button>
-        <button type="button" class="btn btn-primary">Training</button>
+        <button type="button" class="btn btn-primary" routerLink="/trainings">Training</button>
         <button type="button" class="btn btn-primary" routerLink="/mycertif">Certificates</button>
-        <button type="button" class="btn btn-primary">Employees management</button>
-        <button type="button" class="btn btn-primary">Notifications</button>
+        <button type="button" class="btn btn-primary" routerLink="/management">Employees management</button>
+        <button type="button" class="btn btn-primary" routerLink="/notif">Notifications</button>
         <button type="button" class="btn btn-primary dropup" (click)="changeachievMode()">
             Statistics<span style="float: right; cursor: pointer;"><i [ngClass] = "{'fas' : true, 'fa-caret-down' : !achievMode, 'fa-caret-up' : achievMode}"></i></span>
         </button>

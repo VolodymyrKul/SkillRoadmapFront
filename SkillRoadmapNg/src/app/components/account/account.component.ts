@@ -32,6 +32,7 @@ export class AccountComponent implements OnInit {
       .subscribe((data: EmployerInfo) => {
         this.roleMode = true;
         this.employerInfo = data;
+        localStorage.setItem("currentcompany", this.employerInfo.companyName);
       });
     }
     else{
@@ -39,6 +40,7 @@ export class AccountComponent implements OnInit {
       .subscribe((data: EmployeeInfo) => {
         this.roleMode = false;
         this.employeeInfo = data;
+        localStorage.setItem("currentcompany", this.employeeInfo.companyName);
       });
     }
   }

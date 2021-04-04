@@ -3,6 +3,7 @@ export class EmployerInfo {
         public firstname? : string,
         public lastname? : string,
         public email? : string,
-        public role? : string
+        public role? : string,
+        public companyName? : string
     ){}
 }

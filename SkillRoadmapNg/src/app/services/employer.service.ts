@@ -18,4 +18,8 @@ export class EmployerService {
   login(signin: SignInUser){
     return this.http.post(this.url + '/login', signin);
   }
+
+  getAllInfo(company: string){
+    return this.http.get(this.url + "/getallinfo/" + company);
+  }
 }

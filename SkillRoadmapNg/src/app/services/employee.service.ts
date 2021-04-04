@@ -13,4 +13,8 @@ export class EmployeeService {
   getEmpInfo(email: string){
     return this.http.get(this.url + "/getinfo/" + email);
   }
+
+  getAllInfo(company: string){
+    return this.http.get(this.url + "/getallinfo/" + company);
+  }
 }

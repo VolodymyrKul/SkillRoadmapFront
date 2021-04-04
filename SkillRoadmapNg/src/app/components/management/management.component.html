@@ -1,0 +1,62 @@
+<div class="w-75 mx-auto mt-1">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary w-100" (click)="setEmployersMode()" [disabled]="tablemode" >Employers</button>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary w-100" (click)="setEmployeesMode()" [disabled]="!tablemode" >Employees</button>
+        </div>
+    </div>
+    <div class="row mt-4" *ngIf="tablemode">
+        <table class="table table-striped w-100">
+            <thead>
+                <th scope="col">#</th>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let emp of employers let in=index">
+                    <tr>
+                        <td>{{in + 1}}</td>
+                        <td>{{emp.firstname}}</td>
+                        <td>{{emp.lastname}}</td>
+                        <td>{{emp.email}}</td>
+                        <td>{{emp.role}}<span style="float: right; cursor: pointer;"><i class="fas fa-trash-alt" title="Delete employer"></i></span></td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+    <div class="row mt-4" *ngIf="!tablemode">
+        <table class="table table-striped w-100">
+            <thead>
+                <th scope="col">#</th>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">Email</th>
+                <th scope="col">Dev Level</th>
+                <th scope="col">Experience</th>
+                <th scope="col">Mentor email</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let emp of employees let in=index">
+                    <tr>
+                        <td>{{in + 1}}</td>
+                        <td>{{emp.firstname}}</td>
+                        <td>{{emp.lastname}}</td>
+                        <td>{{emp.email}}</td>
+                        <td>{{emp.devLevel}}</td>
+                        <td>{{emp.experience}}</td>
+                        <td>{{emp.mentorEmail}}<span style="float: right; cursor: pointer;">
+                            <i class="fas fa-user-clock" title="Set role as HR"></i>
+                            <i class="fas fa-users ml-1 mr-1" title="Set role as mentor"></i>
+                            <i class="fas fa-trash-alt" title="Delete employee"></i>
+                        </span></td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

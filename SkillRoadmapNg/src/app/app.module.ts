@@ -18,6 +18,7 @@ import { TrainingsComponent } from './components/trainings/trainings.component';
 import { CertificatesComponent } from './components/certificates/certificates.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotificationsComponent } from './components/notifications/notifications.component';
+import { ManagementComponent } from './components/management/management.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NotificationsComponent } from './components/notifications/notifications
     CommentModalComponent,
     TrainingsComponent,
     CertificatesComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    ManagementComponent
   ],
   imports: [
     BrowserModule,

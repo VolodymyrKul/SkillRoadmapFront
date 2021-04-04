@@ -1,1 +1,41 @@
-<p>trainings works!</p>
+<div class="w-75 mx-auto mt-1">
+    <div class="row">
+        <button class="btn btn-primary w-100">Create new training</button>
+    </div>
+    <div class="row">
+        <select class="form-control custom-select mt-2" id="trCategorySelect" name="trCat" (change)="selectCateg($event.target.value)">
+            <option *ngFor="let categ of categs let in=index" [value]="categ">{{categ}}</option>
+        </select>
+    </div>
+    <div class="row">
+        <table class="table table-striped mt-2">
+            <thead>
+                <th scope="col">#</th>
+                <th scope="col">Training title</th>
+                <th scope="col">startDate</th>
+                <th scope="col">endDate</th>
+                <th scope="col">trainingLevel</th>
+                <th scope="col">payment</th>
+                <th scope="col">coachEmail</th>
+                <th scope="col">categoryName</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let training of showTrainings let in=index">
+                    <tr>
+                        <td>{{in + 1}}</td>
+                        <td>{{training.trainingTitle}}</td>
+                        <td>{{training.startDate.toISOString().slice(0, 10)}}</td>
+                        <td>{{training.endDate.toISOString().slice(0, 10)}}</td>
+                        <td>{{training.trainingLevel}}</td>
+                        <td>{{training.payment}}</td>
+                        <td>{{training.coachEmail}}</td>
+                        <td>{{training.categoryName}}<span style="float: right; cursor: pointer;"><i class="fas fa-user-plus mr-1" title="Conect to training"></i><i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trainingMode[in], 'fa-caret-up' : trainingMode[in]}" (click)="changemodearr(training)" title="Show/close description"></i></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" *ngIf="trainingMode[in]">{{training.description}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

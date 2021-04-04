@@ -33,14 +33,7 @@ export class CertificatesComponent implements OnInit {
   ngOnInit(): void {
     if(localStorage.getItem('currentrole')=='Mentor'){
       this.isMentor = true;
-      this.certificateService.getByMentor(localStorage.getItem('currentuser'))
-      .subscribe((data: Certificate[] | any) => {
-        this.mycertificates = data;
-        this.mycertificates.forEach(certificate => {
-          certificate.dateOfIssue = new Date(certificate.dateOfIssue);
-          certificate.expiryDate = new Date(certificate.expiryDate);
-        });
-      });
+      this.getCertificatesForMentor();
     }
     else{
       this.certificateService.getByEmail(localStorage.getItem('currentuser'))
@@ -59,6 +52,17 @@ export class CertificatesComponent implements OnInit {
         });
       });
     }
+  }
+
+  getCertificatesForMentor(){
+    this.certificateService.getByMentor(localStorage.getItem('currentuser'))
+      .subscribe((data: Certificate[] | any) => {
+        this.mycertificates = data;
+        this.mycertificates.forEach(certificate => {
+          certificate.dateOfIssue = new Date(certificate.dateOfIssue);
+          certificate.expiryDate = new Date(certificate.expiryDate);
+        });
+      });
   }
 
   addUserSkill(){
@@ -116,10 +120,11 @@ export class CertificatesComponent implements OnInit {
 
   saveAcceptData(){
     console.log(this.acceptCertificate);
-    /*this.certificateService.acceptCertif(this.acceptCertificate)
-    .subscribe((data: any) => {
-
-    });*/
+    this.certificateService.acceptCertif(this.acceptCertificate)
+    .subscribe((data: boolean | any) => {
+      console.log(data);
+      this.getCertificatesForMentor();
+    });
     this.modalService.dismissAll();
   }
 }

@@ -6,6 +6,7 @@ export class EmployeeInfo {
         public role? : string,
         public devLevel? : string,
         public experience? : number,
-        public mentorEmail? : string
+        public mentorEmail? : string,
+        public companyName? : string
     ){}
 }
