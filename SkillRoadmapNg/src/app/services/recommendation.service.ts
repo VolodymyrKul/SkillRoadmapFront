@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { CommentDTO } from '../models/comment-dto';
+import { RecommendationDTO } from '../models/recommendation-dto';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommentService {
-  private url = `${environment.apiUrl}/api/comments`;
+export class RecommendationService {
+  private url = `${environment.apiUrl}/api/recommendations`;
 
   constructor(private http: HttpClient) { }
 
@@ -19,19 +19,15 @@ export class CommentService {
     return this.http.get(this.url + '/' + id);
   }
 
-  pull(commentDTO: CommentDTO){
-    return this.http.post(this.url + '/pull', commentDTO);
+  pull(recommendationDTO: RecommendationDTO){
+    return this.http.post(this.url + '/pull', recommendationDTO);
   }
 
-  update(commentDTO: CommentDTO){
-    return this.http.put(this.url, commentDTO);
+  update(recommendationDTO: RecommendationDTO){
+    return this.http.put(this.url, recommendationDTO);
   }
 
   delete(id: number){
     return this.http.delete(this.url + "/" + id);
-  }
-
-  getByUser(user: string){
-    return this.http.get(this.url + '/byskill/' + user);
   }
 }

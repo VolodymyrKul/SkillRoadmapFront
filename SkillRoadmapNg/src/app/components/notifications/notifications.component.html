@@ -1,4 +1,6 @@
-<table class="table table-striped">
+<div class="w-75 mx-auto mt-1">
+  <button class="btn btn-primary w-100">Create notification</button>
+  <table class="table table-striped w-100">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -22,3 +24,34 @@
         </ng-container>
     </tbody>
   </table>
+</div>
+
+<ng-template #orderModal let-modal class="w-50">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create notification</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="trainingTitle">Notification text</label>
+        <input type="text" class="form-control" id="trainingTitle" placeholder="Enter here training title" name="trTitle" [(ngModel)]="addedTraining.trainingTitle">
+      </div>
+      <div class="form-group">
+        <label for="skillSelect">User Skill</label>
+        <div class="input-group">
+          <div class="w-100">
+            <select class="form-control custom-select" id="skillSelect" name="uSkill" [(ngModel)]="ordercertificate.userSkillName">
+              <option *ngFor="let us of userSkills let in=index" [value]="us.skillname">{{us.skillname}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="orderCertificateFun()">Save</button>
+  </div>
+</ng-template>

@@ -1,6 +1,6 @@
 <div class="w-75 mx-auto mt-1">
     <div class="row">
-        <button class="btn btn-primary w-100">Create new training</button>
+        <button class="btn btn-primary w-100" (click)="openCreateTrModal()">Create new training</button>
     </div>
     <div class="row">
         <select class="form-control custom-select mt-2" id="trCategorySelect" name="trCat" (change)="selectCateg($event.target.value)">
@@ -39,3 +39,57 @@
         </table>
     </div>
 </div>
+
+<ng-template #trainingModal let-modal class="w-50">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create training</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+            <label for="trainingTitle">Training title</label>
+            <input type="text" class="form-control" id="trainingTitle" placeholder="Enter here training title" name="trTitle" [(ngModel)]="addedTraining.trainingTitle">
+        </div>
+        <div class="form-group">
+            <label for="trainingDescription">Training description</label>
+            <input type="text" class="form-control" id="trainingDescription" placeholder="Enter here training description" name="trDesc" [(ngModel)]="addedTraining.description">
+        </div>
+        <div class="form-group">
+            <label for="skillSelect">Training category</label>
+            <div class="input-group">
+              <div class="w-100">
+                <select class="form-control custom-select mt-2" id="addTrCategorySelect" name="addTrCat" [(ngModel)]="addedTraining.categoryName">
+                    <option *ngFor="let categ of categs let in=index" [value]="categ">{{categ}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        <div class="form-row">
+            <div class="form-group col">
+              <label for="trStartDate">Start Date</label>
+              <input type="date" class="form-control" id="trStartDate" placeholder="Enter start date" name="trStart" [(ngModel)]="addedTraining.startDate">
+            </div>
+            <div class="form-group col">
+              <label for="trEndDate">End Date</label>
+              <input type="date" class="form-control" id="trEndDate" placeholder="Enter end date" name="trEnd" [(ngModel)]="addedTraining.endDate">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+              <label for="trLevel">Training Level</label>
+              <input type="number" min="1" max="5" step="1" class="form-control" id="trLevel" placeholder="Enter training level" name="trLevel" [(ngModel)]="addedTraining.trainingLevel">
+            </div>
+            <div class="form-group col">
+              <label for="trPayment">Payment</label>
+              <input type="number" min="0" max="1000000" step="1000" class="form-control" id="trPayment" placeholder="Enter payment" name="trPayment" [(ngModel)]="addedTraining.payment">
+            </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="saveTraining()">Save</button>
+    </div>
+  </ng-template>
