@@ -6,6 +6,9 @@
         <div class="col">
             <button class="btn btn-primary w-100" (click)="setEmployeesMode()" [disabled]="!tablemode" >Employees</button>
         </div>
+        <div class="col">
+            <button class="btn btn-primary w-100" >Companies</button>
+        </div>
     </div>
     <div class="row mt-4" *ngIf="tablemode">
         <table class="table table-striped w-100">
@@ -17,13 +20,13 @@
                 <th scope="col">Role</th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let emp of employers let in=index">
+                <ng-container *ngFor="let emp of employersDTO let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{emp.firstname}}</td>
                         <td>{{emp.lastname}}</td>
                         <td>{{emp.email}}</td>
-                        <td>{{emp.role}}<span style="float: right; cursor: pointer;"><i class="fas fa-trash-alt" title="Delete employer"></i></span></td>
+                        <td>{{emp.role}}<span style="float: right; cursor: pointer;"><i class="fas fa-trash-alt" (click)="deleteEmployer(emp)" title="Delete employer"></i></span></td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -41,7 +44,7 @@
                 <th scope="col">Mentor email</th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let emp of employees let in=index">
+                <ng-container *ngFor="let emp of employeesDTO let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{emp.firstname}}</td>
@@ -50,9 +53,9 @@
                         <td>{{emp.devLevel}}</td>
                         <td>{{emp.experience}}</td>
                         <td>{{emp.mentorEmail}}<span style="float: right; cursor: pointer;">
-                            <i class="fas fa-user-clock" title="Set role as HR"></i>
-                            <i class="fas fa-users ml-1 mr-1" title="Set role as mentor"></i>
-                            <i class="fas fa-trash-alt" title="Delete employee"></i>
+                            <i class="fas fa-user-clock" (click)="setEmployeeHr(emp)" title="Set role as HR"></i>
+                            <i class="fas fa-users ml-1 mr-1" (click)="setEmployeeMentor(emp)" title="Set role as mentor"></i>
+                            <i class="fas fa-trash-alt" (click)="deleteEmployee(emp)" title="Delete employee"></i>
                         </span></td>
                     </tr>
                 </ng-container>

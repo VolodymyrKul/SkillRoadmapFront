@@ -1,0 +1,28 @@
+<div class="w-75 mx-auto">
+    <select class="form-control custom-select mt-2" id="findTrMembersSelect" (change)="selectTraining()" name="addTrMem" [(ngModel)]="selTraining.trainingTitle">
+        <option *ngFor="let training of trainingsDTO let in=index" [value]="training.trainingTitle">{{training.trainingTitle}}</option>
+    </select>
+  </div>
+
+<div class="w-75 mx-auto mt-2">
+    <table class="table table-striped mt-2">
+        <thead>
+            <th scope="col">#</th>
+            <th scope="col">Training title</th>
+            <th scope="col">memberNSN</th>
+            <th scope="col">memberEmail</th>
+            <th scope="col">isEnded</th>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let trMember of selectMembersDTO let in=index">
+                <tr>
+                    <td>{{in + 1}}</td>
+                    <td>{{trMember.trainingTitle}}</td>
+                    <td>{{trMember.memberNSN}}</td>
+                    <td>{{trMember.memberEmail}}</td>
+                    <td>{{trMember.isEnded}}</td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

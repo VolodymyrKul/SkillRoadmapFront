@@ -1,0 +1,60 @@
+<div style="width: 85%;" class="mx-auto mt-1">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary w-100" (click)="selectTrTable()" [disabled]="trTable" >Trainings</button>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary w-100" (click)="selectRecTable()" [disabled]="recTable" >Recommendations</button>
+        </div>
+    </div>
+    <div *ngIf="trTable" class="row mt-4">
+        <table class="table table-striped w-100">
+            <thead>
+                <th scope="col">#</th>
+                <th scope="col">TrainingTitle<span style="float: right; cursor: pointer;"><i (click)="byTrMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode1, 'fa-caret-up' : trmode1}"></i></span></th>
+                <th scope="col">TrainingLevel<span style="float: right; cursor: pointer;"><i (click)="byTrMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode2, 'fa-caret-up' : trmode2}"></i></span></th>
+                <th scope="col">StartDate<span style="float: right; cursor: pointer;"><i (click)="byTrMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode3, 'fa-caret-up' : trmode3}"></i></span></th>
+                <th scope="col">EndDate<span style="float: right; cursor: pointer;"><i (click)="byTrMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode4, 'fa-caret-up' : trmode4}"></i></span></th>
+                <th scope="col">Payment<span style="float: right; cursor: pointer;"><i (click)="byTrMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode5, 'fa-caret-up' : trmode5}"></i></span></th>
+                <th scope="col">Coach<span style="float: right; cursor: pointer;"><i (click)="byTrMode6()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode6, 'fa-caret-up' : trmode6}"></i></span></th>
+                <th scope="col">Category<span style="float: right; cursor: pointer;"><i (click)="byTrMode7()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode7, 'fa-caret-up' : trmode7}"></i></span></th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let tr of trainingDTOs let in=index">
+                    <tr>
+                        <td>{{in + 1}}</td>
+                        <td>{{tr.trainingTitle}}</td>
+                        <td>{{tr.trainingLevel}}</td>
+                        <td>{{tr.startDate.toISOString().slice(0, 10)}}</td>
+                        <td>{{tr.endDate.toISOString().slice(0, 10)}}</td>
+                        <td>{{tr.payment}}</td>
+                        <td>{{tr.coachNSN}}</td>
+                        <td>{{tr.categoryTitle}}<span style="float: right; cursor: pointer;"><i (click)="changemodearr(tr)" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trainingMode[in], 'fa-caret-up' : trainingMode[in]}"></i></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" *ngIf="trainingMode[in]">{{tr.description}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="recTable" class="row mt-4">
+        <table class="table table-striped w-100">
+            <thead>
+                <th scope="col">#</th>
+                <th scope="col">TrainingTitle<span style="float: right; cursor: pointer;"><i (click)="byRecMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !recmode1, 'fa-caret-up' : recmode1}"></i></span></th>
+                <th scope="col">Invitation<span style="float: right; cursor: pointer;"><i (click)="byRecMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !recmode2, 'fa-caret-up' : recmode2}"></i></span></th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let rec of recommendationDTOs let in=index">
+                    <tr>
+                        <td>{{in + 1}}</td>
+                        <td>{{rec.trainingTitle}}</td>
+                        <td>{{rec.invitation}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

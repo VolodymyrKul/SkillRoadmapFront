@@ -36,11 +36,35 @@ export class EmployerService {
     return this.http.get(this.url + "/getinfo/" + email);
   }
 
+  getEmpInfoFull(email: string){
+    return this.http.get(this.url + "/getinfofull/" + email);
+  }
+
   login(signin: SignInUser){
     return this.http.post(this.url + '/login', signin);
   }
 
   getAllInfo(company: string){
     return this.http.get(this.url + "/getallinfo/" + company);
+  }
+
+  getAllInfoId(companyid: number){
+    return this.http.get(this.url + "/getallinfoid/" + companyid);
+  }
+
+  setHr(email: string){
+    return this.http.get(this.url + "/sethr/" + email);
+  }
+
+  setHrId(userid: number){
+    return this.http.get(this.url + "/sethrid/" + userid);
+  }
+
+  setMentor(email: string){
+    return this.http.get(this.url + "/setmentor/" + email);
+  }
+
+  setMentorId(userid: number){
+    return this.http.get(this.url + "/setmentorid/" + userid);
   }
 }

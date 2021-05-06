@@ -30,4 +30,12 @@ export class StatisticsService {
   delete(id: number){
     return this.http.delete(this.url + "/" + id);
   }
+
+  uptStats(emp: string, year: number){
+    return this.http.get(this.url + "/uptstat/" + emp + "/" + year)
+  }
+
+  uptStatsid(empid: number, year: number){
+    return this.http.get(this.url + "/uptstatid/" + empid + "/" + year)
+  }
 }

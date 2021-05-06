@@ -30,4 +30,12 @@ export class TrainingMemberService {
   delete(id: number){
     return this.http.delete(this.url + "/" + id);
   }
+
+  getByTrainingId(id: number){
+    return this.http.get(this.url + '/training/' + id);
+  }
+
+  getByMemberId(id: number){
+    return this.http.get(this.url + '/member/' + id);
+  }
 }

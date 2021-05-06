@@ -164,7 +164,6 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
         rect.setAttribute("style","fill:url(#solids)");
         //rect.setAttribute("style","fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)");
         rect.addEventListener("click", () => {this.openCustomDialog()});
-        //rect.onclick = this.openCustomDialog;
         var res = this.comments.find(com => com.userSkillName == skill.skillname.toString());
         if(res != undefined){
           rect.innerHTML = "<title>" + 'User ' + res.employerEmail + ' leave this comment: ' + res.commentText + "</title>"

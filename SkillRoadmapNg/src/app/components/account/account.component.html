@@ -4,9 +4,20 @@
         <button type="button" class="btn btn-primary" routerLink="/matrix">Skill Matrix</button>
         <button type="button" class="btn btn-primary" routerLink="/roadmap">Skill Roadmap</button>
         <button type="button" class="btn btn-primary" routerLink="/trainings">Training</button>
+        <button type="button" class="btn btn-primary" routerLink="/trmembers">Training Members</button>
         <button type="button" class="btn btn-primary" routerLink="/mycertif">Certificates</button>
         <button type="button" class="btn btn-primary" routerLink="/management">Employees management</button>
         <button type="button" class="btn btn-primary" routerLink="/notif">Notifications</button>
+        <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wtraining">Training</button>
+        <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrtraining">Training</button>
+        <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wcertif">Certificates</button>
+        <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrcertif">Certificates</button>
+        <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wmatrix">Skill Matrix</button>
+        <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrmatrix">Skill Matrix</button>
+        <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wtemplate">Template</button>
+        <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrtemplate">Template</button>
+        <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wmanagement">Management</button>
+        <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrmanagement">Management</button>
         <button type="button" class="btn btn-primary dropup" (click)="changeachievMode()">
             Statistics<span style="float: right; cursor: pointer;"><i [ngClass] = "{'fas' : true, 'fa-caret-down' : !achievMode, 'fa-caret-up' : achievMode}"></i></span>
         </button>
@@ -20,15 +31,15 @@
         <div class="card mx-auto bg-secondary" style="width:300px; position: relative;">
           <img class="card-img-top mx-auto" style="width:250px; height: 300px;" src="https://www.clker.com/cliparts/g/l/R/7/h/u/teamstijl-person-icon-blue.svg" alt="Card image">
           <div class="card-body">
-              <h4 *ngIf="roleMode" class="card-title" style="text-align: center;">{{employerInfo.firstname + ' ' + employerInfo.lastname}}</h4>
-              <h4 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{employeeInfo.firstname + ' ' + employeeInfo.lastname}}</h4>
-              <h5 *ngIf="roleMode" class="card-title" style="text-align: center;">{{employerInfo.email}}</h5>
-              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{employeeInfo.email}}</h5>
-              <h5 *ngIf="roleMode" class="card-title" style="text-align: center;">{{employerInfo.role}}</h5>
-              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{employeeInfo.role}}</h5>
-              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{employeeInfo.devLevel}}</h5>
-              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{'Experience ' + employeeInfo.experience + ' year(s)'}}</h5>
-              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{'Mentor: ' + employeeInfo.mentorEmail}}</h5>
+              <h4 *ngIf="roleMode" class="card-title" style="text-align: center;">{{employerDTO.firstname + ' ' + employerDTO.lastname}}</h4>
+              <h4 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{employeeDTO.firstname + ' ' + employeeDTO.lastname}}</h4>
+              <h5 *ngIf="roleMode" class="card-title" style="text-align: center;">{{employerDTO.email}}</h5>
+              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{employeeDTO.email}}</h5>
+              <h5 *ngIf="roleMode" class="card-title" style="text-align: center;">{{employerDTO.role}}</h5>
+              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{employeeDTO.role}}</h5>
+              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{employeeDTO.devLevel}}</h5>
+              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{'Experience ' + employeeDTO.experience + ' year(s)'}}</h5>
+              <h5 *ngIf="!roleMode" class="card-title" style="text-align: center;">{{'Mentor: ' + employeeDTO.mentorNSN}}</h5>
           </div>
         </div>
     </div>

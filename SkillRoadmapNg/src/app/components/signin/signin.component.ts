@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { LoginInfo } from 'src/app/models/login-info';
 import { EmployerService } from 'src/app/services/employer.service';
 /*import { UserServiceService } from '../../services/user-service.service';*/
-import { SignInUser } from '../../models/sign-in-user'
+import { SignInUser } from '../../models/sign-in-user';
+import { SignInAlertService } from '../../services/sign-in-alert.service'
 
 @Component({
   selector: 'app-signin',
@@ -19,7 +20,7 @@ export class SigninComponent implements OnInit {
   info: LoginInfo = new LoginInfo(false, '')
   
 
-  constructor(private router: Router, private employerService: EmployerService) { }
+  constructor(private router: Router, private employerService: EmployerService, private signInAlertService: SignInAlertService) { }
 
   ngOnInit(): void {
   }
@@ -36,6 +37,7 @@ export class SigninComponent implements OnInit {
       if(this.isLogged){
         localStorage.setItem("currentuser", (this.user.email==undefined) ? "undefined" : this.user.email);
         localStorage.setItem("currentrole", (this.info.role==undefined) ? "undefined" : this.info.role);
+        this.confirmSignIn();
         this.router.navigate(['account']);  
       }
       else{
@@ -48,4 +50,7 @@ export class SigninComponent implements OnInit {
     this.isLogged = true;
   }
 
+  confirmSignIn(){
+    this.signInAlertService.confirmSignIn("User is signed");
+  }
 }

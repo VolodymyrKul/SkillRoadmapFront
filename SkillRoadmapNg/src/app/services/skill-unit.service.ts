@@ -35,4 +35,8 @@ export class SkillUnitService {
   addSkillUnit(skillUnit: SkillUnit){
     return this.http.post(this.url + '/pull', skillUnit);
   }
+
+  getByUserSkillId(id: number){
+    return this.http.get(this.url + '/userskill/' + id);
+  }
 }

@@ -35,8 +35,16 @@ export class TrainingService {
     return this.http.get(this.url + "/bycoach/" + coach);
   }
 
+  getByCoachId(coachid: number){
+    return this.http.get(this.url + "/bycoachid/" + coachid);
+  }
+
   getByCateg(categ: string){
     return this.http.get(this.url + "/bycateg/" + categ);
+  }
+
+  getByCategId(categid: number){
+    return this.http.get(this.url + "/bycategid/" + categid);
   }
 
   getWithCategs(){

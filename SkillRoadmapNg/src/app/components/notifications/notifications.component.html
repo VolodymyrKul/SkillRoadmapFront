@@ -1,5 +1,5 @@
 <div class="w-75 mx-auto mt-1">
-  <button class="btn btn-primary w-100">Create notification</button>
+  <button class="btn btn-primary w-100" (click)="openNotifModal()" >Create notification</button>
   <table class="table table-striped w-100">
     <thead>
       <tr>
@@ -26,9 +26,9 @@
   </table>
 </div>
 
-<ng-template #orderModal let-modal class="w-50">
+<ng-template #notificationModal let-modal class="w-50">
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Create notification</h4>
+    <h4 class="modal-title" id="modal-basic-title">Create training</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -36,22 +36,42 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
-        <label for="trainingTitle">Notification text</label>
-        <input type="text" class="form-control" id="trainingTitle" placeholder="Enter here training title" name="trTitle" [(ngModel)]="addedTraining.trainingTitle">
+          <label for="notifText">Notification Text</label>
+          <input type="text"  class="form-control" id="notifText" placeholder="Enter here notification text" name="trTitle" [(ngModel)]="notifDesc">
       </div>
       <div class="form-group">
-        <label for="skillSelect">User Skill</label>
-        <div class="input-group">
-          <div class="w-100">
-            <select class="form-control custom-select" id="skillSelect" name="uSkill" [(ngModel)]="ordercertificate.userSkillName">
-              <option *ngFor="let us of userSkills let in=index" [value]="us.skillname">{{us.skillname}}</option>
-            </select>
+          <label for="addEmployerSelect">Employer</label>
+          <div class="input-group">
+            <div class="w-100">
+              <select class="form-control custom-select mt-2" id="addEmployerSelect" name="addEmployer" [(ngModel)]="selEmployer">
+                  <option *ngFor="let employer of employersNSN let in=index" [value]="employer">{{employer}}</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
+        <div class="form-group">
+          <label for="addEmployeeSelect">Employee</label>
+          <div class="input-group">
+            <div class="w-100">
+              <select class="form-control custom-select mt-2" id="addEmployeeSelect" name="addEmployee" [(ngModel)]="selEmployee">
+                  <option *ngFor="let employee of employeesNSN let in=index" [value]="employee">{{employee}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="addSkillSelect">User Skill</label>
+          <div class="input-group">
+            <div class="w-100">
+              <select class="form-control custom-select mt-2" id="addSkillSelect" name="addSkill" [(ngModel)]="userSkill.skillname">
+                  <option *ngFor="let uskill of userSkills let in=index" [value]="uskill.skillname">{{uskill.skillname}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="orderCertificateFun()">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="createNotif()">Save</button>
   </div>
 </ng-template>

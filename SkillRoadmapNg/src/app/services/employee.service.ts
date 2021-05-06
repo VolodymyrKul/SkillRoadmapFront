@@ -35,7 +35,23 @@ export class EmployeeService {
     return this.http.get(this.url + "/getinfo/" + email);
   }
 
+  getEmpInfoFull(email: string){
+    return this.http.get(this.url + "/getinfofull/" + email);
+  }
+
   getAllInfo(company: string){
     return this.http.get(this.url + "/getallinfo/" + company);
+  }
+
+  getAllInfoId(companyid: number){
+    return this.http.get(this.url + "/getallinfoid/" + companyid);
+  }
+
+  getByTraining(training: string){
+    return this.http.get(this.url + "/getbytraining/" + training);
+  }
+
+  getByTrainingId(trainingid: number){
+    return this.http.get(this.url + "/getbytrainingid/" + trainingid);
   }
 }

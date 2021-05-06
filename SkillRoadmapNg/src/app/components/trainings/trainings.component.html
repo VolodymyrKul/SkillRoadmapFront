@@ -20,7 +20,7 @@
                 <th scope="col">categoryName</th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let training of showTrainings let in=index">
+                <ng-container *ngFor="let training of showTrainingsDTO let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{training.trainingTitle}}</td>
@@ -29,7 +29,10 @@
                         <td>{{training.trainingLevel}}</td>
                         <td>{{training.payment}}</td>
                         <td>{{training.coachEmail}}</td>
-                        <td>{{training.categoryName}}<span style="float: right; cursor: pointer;"><i class="fas fa-user-plus mr-1" title="Conect to training"></i><i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trainingMode[in], 'fa-caret-up' : trainingMode[in]}" (click)="changemodearr(training)" title="Show/close description"></i></span></td>
+                        <td>{{training.categoryTitle}}<span style="float: right; cursor: pointer;">
+                          <i class="fas fa-user-plus mr-1" title="Conect to training"></i>
+                          <i class="fas fa-volume-up mr-1" title="Create recommendation" (click)="createRecommend(training)" ></i>
+                          <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trainingMode[in], 'fa-caret-up' : trainingMode[in]}" (click)="changemodearr(training)" title="Show/close description"></i></span></td>
                     </tr>
                     <tr>
                         <td colspan="8" *ngIf="trainingMode[in]">{{training.description}}</td>
@@ -91,5 +94,25 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="saveTraining()">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #recommendgModal let-modal class="w-50">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create recommendation</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+            <label for="trainingInvitation">Invitation</label>
+            <input type="text" class="form-control" id="trainingInvitation" placeholder="Enter here invitation text" name="trTitle" [(ngModel)]="addedTraining.trainingTitle">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark">Save</button>
     </div>
   </ng-template>

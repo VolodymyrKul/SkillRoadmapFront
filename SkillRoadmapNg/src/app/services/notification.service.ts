@@ -36,7 +36,15 @@ export class NotificationService {
     return this.http.get(this.url + '/byemployee/' + email);
   }
 
+  getByEmpployeeId(userid: string){
+    return this.http.get(this.url + '/byemployeeid/' + userid);
+  }
+
   getByEmpployer(email: string){
     return this.http.get(this.url + '/byemployer/' + email);
+  }
+
+  getByEmpployerId(userid: number){
+    return this.http.get(this.url + '/byemployerid/' + userid);
   }
 }

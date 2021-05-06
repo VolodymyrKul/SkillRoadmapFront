@@ -30,4 +30,12 @@ export class RecommendationService {
   delete(id: number){
     return this.http.delete(this.url + "/" + id);
   }
+
+  getEmployeeById(id: number){
+    return this.http.get(this.url + '/employee/' + id);
+  }
+
+  getTrainingsById(id: number){
+    return this.http.get(this.url + '/training/' + id);
+  }
 }

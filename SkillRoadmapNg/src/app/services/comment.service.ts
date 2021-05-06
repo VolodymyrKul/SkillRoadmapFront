@@ -34,4 +34,8 @@ export class CommentService {
   getByUser(user: string){
     return this.http.get(this.url + '/byskill/' + user);
   }
+
+  getByUserId(userid: number){
+    return this.http.get(this.url + '/byskillid/' + userid);
+  }
 }

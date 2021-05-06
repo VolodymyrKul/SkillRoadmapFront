@@ -6,6 +6,8 @@ import { UserSkillService } from '../../services/user-skill.service';
 import { UserSkill } from 'src/app/models/user-skill';
 import { ViewChild, TemplateRef } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { CertificateDTO } from 'src/app/models/certificate-dto';
+import { UserSkillDTO } from 'src/app/models/user-skill-dto';
 
 @Component({
   selector: 'app-certificates',
@@ -21,9 +23,13 @@ export class CertificatesComponent implements OnInit {
   private acceptRef: TemplateRef<any>;
 
   mycertificates: Certificate[] = [];
+  mycertificatesDTO: CertificateDTO[] = [];
   acceptCertificate: Certificate = new Certificate('', 'Some certificate title', 0, new Date(Date.now()), new Date(Date.now()), '', '');
+  acceptCertificateDTO: CertificateDTO = new CertificateDTO(0,0,"Some certificate title",0,new Date(Date.now()),new Date(Date.now()),0,0,"","","","","");
   ordercertificate: OrderCertificate = new OrderCertificate('', localStorage.getItem('currentuser'));
+  ordercertificateDTO: CertificateDTO = new CertificateDTO(0,0,"",0,new Date(Date.now()),new Date(Date.now()),0,0,"","","","","");
   userSkills: UserSkill[] = [];
+  userSkillsDTO: UserSkillDTO[] = []; 
   closeResult = '';
   isOrdered: boolean = false;
   isMentor: boolean = false;
@@ -36,7 +42,7 @@ export class CertificatesComponent implements OnInit {
       this.getCertificatesForMentor();
     }
     else{
-      this.certificateService.getByEmail(localStorage.getItem('currentuser'))
+      /*this.certificateService.getByEmail(localStorage.getItem('currentuser'))
       .subscribe((data: Certificate[] | any) => {
         this.mycertificates = data;
         this.mycertificates.forEach(certificate => {
@@ -50,19 +56,43 @@ export class CertificatesComponent implements OnInit {
           this.ordercertificate.userSkillName = this.userSkills[0].skillname;
           console.log(this.userSkills);
         });
-      });
+      });*/
+
+      this.certificateService.getByUserId(parseInt(localStorage.getItem('currentuserid'), 10))
+        .subscribe((data: CertificateDTO[] | any) => {
+          this.mycertificatesDTO = data;
+          this.mycertificatesDTO.forEach(certificate => {
+            certificate.dateOfIssue = new Date(certificate.dateOfIssue);
+            certificate.expiryDate = new Date(certificate.expiryDate);
+          });
+
+          this.userSkillService.getOnlyId(parseInt(localStorage.getItem('currentuserid'), 10))
+          .subscribe((data: UserSkillDTO[] | any) => {
+            this.userSkillsDTO = data;
+            this.ordercertificateDTO.skillName = this.userSkillsDTO[0].skillname;
+            console.log(this.userSkillsDTO);
+          });
+        });
     }
   }
 
   getCertificatesForMentor(){
-    this.certificateService.getByMentor(localStorage.getItem('currentuser'))
+    /*this.certificateService.getByMentor(localStorage.getItem('currentuser'))
       .subscribe((data: Certificate[] | any) => {
         this.mycertificates = data;
         this.mycertificates.forEach(certificate => {
           certificate.dateOfIssue = new Date(certificate.dateOfIssue);
           certificate.expiryDate = new Date(certificate.expiryDate);
         });
+      });*/
+    this.certificateService.getByMentorId(parseInt(localStorage.getItem('currentuserid'), 10))
+    .subscribe((data: CertificateDTO[] | any) => {
+      this.mycertificatesDTO = data;
+      this.mycertificatesDTO.forEach(certificate => {
+        certificate.dateOfIssue = new Date(certificate.dateOfIssue);
+        certificate.expiryDate = new Date(certificate.expiryDate);
       });
+    });
   }
 
   addUserSkill(){
@@ -95,8 +125,8 @@ export class CertificatesComponent implements OnInit {
 
   orderCertificateFun(){
     console.log(this.ordercertificate.userSkillName);
-    console.log(this.ordercertificate.recipientEmail);
-    this.certificateService.orderCertif(this.ordercertificate)
+    console.log(this.ordercertificateDTO.recipientEmail);
+    /*this.certificateService.orderCertif(this.ordercertificate)
     .subscribe((data: boolean | any) => {
       this.isOrdered = data;
       if(this.isOrdered){
@@ -105,17 +135,32 @@ export class CertificatesComponent implements OnInit {
       else{
         console.log('New order was not created');
       }
-    })
+    });*/
+    this.certificateService.orderCertifNew(this.ordercertificateDTO)
+    .subscribe((data: boolean | any) => {
+      this.isOrdered = data;
+      if(this.isOrdered){
+        console.log('New order created');
+      }
+      else{
+        console.log('New order was not created');
+      }
+    });
     this.modalService.dismissAll();
   }
 
-  acceptCertificateFun(cer: Certificate){
+  acceptCertificateFun(cer: CertificateDTO){
     this.openAcceptModal();
     console.log(cer);
-    this.acceptCertificate.userSkill = cer.userSkill;
-    this.acceptCertificate.publisherNSN = cer.publisherNSN;
-    this.acceptCertificate.recipientNSN = cer.recipientNSN;
-    this.acceptCertificate.expiryDate
+    //this.acceptCertificate.userSkill = cer.skillName;
+    //this.acceptCertificate.publisherNSN = cer.publisherNSN;
+    //this.acceptCertificate.recipientNSN = cer.recipientNSN;
+    //this.acceptCertificate.expiryDate;
+
+    this.acceptCertificateDTO.skillName = cer.skillName;
+    this.acceptCertificateDTO.publisherNSN = cer.publisherNSN;
+    this.acceptCertificateDTO.recipientNSN = cer.recipientNSN;
+    this.acceptCertificateDTO.expiryDate;
   }
 
   saveAcceptData(){
@@ -125,6 +170,17 @@ export class CertificatesComponent implements OnInit {
       console.log(data);
       this.getCertificatesForMentor();
     });
+
+    this.certificateService.acceptCertifNew(this.acceptCertificateDTO)
+    .subscribe((data: boolean | any) => {
+      console.log(data);
+      this.getCertificatesForMentor();
+    });
     this.modalService.dismissAll();
+  }
+
+  printCertif(cer: CertificateDTO){
+    this.certificateService.printCertificate(cer)
+    .subscribe((data: boolean | any) => console.log(data));
   }
 }

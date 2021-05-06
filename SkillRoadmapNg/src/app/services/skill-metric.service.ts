@@ -35,4 +35,8 @@ export class SkillMetricService {
   addSkillMetric(skillMetric: SkillMetric){
     return this.http.post(this.url + '/pull', skillMetric);
   }
+
+  getByUserSkillId(id: number){
+    return this.http.get(this.url + '/userskill/' + id);
+  }
 }

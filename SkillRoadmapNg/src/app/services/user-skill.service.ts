@@ -36,6 +36,10 @@ export class UserSkillService {
     return this.http.get(this.url + '/byyear/' + user + '/' + year);
   }
 
+  getByYearId(userid: number, year: number){
+    return this.http.get(this.url + '/byyearid/' + userid + '/' + year);
+  }
+
   addUserSkill(userSkill: UserSkill){
     return this.http.post(this.url + '/pull', userSkill);
   }
@@ -44,7 +48,15 @@ export class UserSkillService {
     return this.http.get(this.url + '/getyears/' + user);
   }
 
+  getYearsId(userid: number){
+    return this.http.get(this.url + '/getyearsid/' + userid);
+  }
+
   getOnly(user: string){
     return this.http.get(this.url + '/getonly/' + user);
+  }
+
+  getOnlyId(userid: number){
+    return this.http.get(this.url + '/getonlyid/' + userid);
   }
 }

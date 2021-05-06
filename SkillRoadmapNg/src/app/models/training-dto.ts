@@ -1,13 +1,16 @@
 export class TrainingDTO {
     constructor(
-        public id: number,
-        public trainingTitle: string,
-        public description: string,
-        public startDate: Date,
-        public endDate: Date,
-        public trainingLevel: number,
-        public payment: number,
-        public idCoach: number,
-        public idCategory: number
+        public id?: number,
+        public trainingTitle?: string,
+        public description?: string,
+        public startDate?: Date,
+        public endDate?: Date,
+        public trainingLevel?: number,
+        public payment?: number,
+        public idCoach?: number,
+        public idCategory?: number,
+        public coachEmail?: string,
+        public coachNSN?: string,
+        public categoryTitle?: string
     ){}
 }
