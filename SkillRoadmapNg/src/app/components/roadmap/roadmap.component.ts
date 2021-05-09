@@ -59,32 +59,61 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
   unit2: boolean = false;
   unit3: boolean = false;
   currentStep: number = 1;
+  userRole: string = '';
   ngOnInit(): void {
-
-    this.userSkillService.getYears(localStorage.getItem('currentuser'))
-    .subscribe((data: number[] | any) => {
-      console.log(data);
-      this.allYears = data;
-      console.log(this.allYears.length);
-      if(this.allYears.length == 0){
-        this.isEmptySkillArr = true;
-      }
-      else{
-        this.isEmptySkillArr = false;
-        this.currentYear = this.allYears[0];
-        this.userSkillService.getByYear(localStorage.getItem('currentuser'), this.currentYear)
-        .subscribe((data: UserSkill[] | any) => {
+    this.userRole = localStorage.getItem('currentrole');
+    if(this.userRole == 'HR' || this.userRole == 'Mentor'){
+      this.userSkillService.getYears(localStorage.getItem('currentroadmap'))
+      .subscribe((data: number[] | any) => {
           console.log(data);
-          this.userSkills = data;
-          this.findDistCateg();
-        });
-      }
-    });
-    this.commentService.getByUser(localStorage.getItem('currentuser'))
-    .subscribe((data: Comment[] | any) => {
-      console.log(data);
-      this.comments = data;
-    });
+          this.allYears = data;
+          console.log(this.allYears.length);
+          if(this.allYears.length == 0){
+            this.isEmptySkillArr = true;
+          }
+          else{
+              this.isEmptySkillArr = false;
+              this.currentYear = this.allYears[0];
+              this.userSkillService.getByYear(localStorage.getItem('currentroadmap'), this.currentYear)
+              .subscribe((data: UserSkill[] | any) => {
+                console.log(data);
+                this.userSkills = data;
+                this.findDistCateg();
+              });
+          }
+      });
+      this.commentService.getByUser(localStorage.getItem('currentroadmap'))
+      .subscribe((data: Comment[] | any) => {
+        console.log(data);
+        this.comments = data;
+      });
+    }
+    else{
+      this.userSkillService.getYears(localStorage.getItem('currentuser'))
+      .subscribe((data: number[] | any) => {
+          console.log(data);
+          this.allYears = data;
+          console.log(this.allYears.length);
+          if(this.allYears.length == 0){
+            this.isEmptySkillArr = true;
+          }
+          else{
+              this.isEmptySkillArr = false;
+              this.currentYear = this.allYears[0];
+              this.userSkillService.getByYear(localStorage.getItem('currentuser'), this.currentYear)
+              .subscribe((data: UserSkill[] | any) => {
+                console.log(data);
+                this.userSkills = data;
+                this.findDistCateg();
+              });
+          }
+      });
+      this.commentService.getByUser(localStorage.getItem('currentuser'))
+      .subscribe((data: Comment[] | any) => {
+        console.log(data);
+        this.comments = data;
+      });
+    }
   }
 
   ngAfterViewChecked(){
@@ -255,9 +284,6 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
       this.addedSkillMetrics.forEach(sm => {
         sm.skillname = this.addedUserSkill.skillname;
       });
-      //this.addedSkillUnit.userSkillName = this.addedUserSkill.skillname;
-      //this.addedSkillUnit.startDate=this.addedUserSkill.startDate;
-      //this.addedSkillUnit.endDate=this.addedUserSkill.endDate;
       console.log(this.addedUserSkill.skillname);
       console.log(this.addedUserSkill.startDate);
       console.log(this.addedUserSkill.endDate);  
@@ -272,14 +298,27 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
   }
 
   selectYear(selectYear: any){
-    this.userSkillService.getByYear(localStorage.getItem('currentuser'), selectYear)
-    .subscribe((data: UserSkill[] | any) => {
-      console.log(data);
-      this.userSkills = data;
-      this.findDistCateg();
-      this.drawSvg();
-      this.currentYear = selectYear;
-    });
+
+    if(this.userRole == 'HR' || this.userRole == 'Mentor'){
+      this.userSkillService.getByYear(localStorage.getItem('currentroadmap'), selectYear)
+      .subscribe((data: UserSkill[] | any) => {
+        console.log(data);
+        this.userSkills = data;
+        this.findDistCateg();
+        this.drawSvg();
+        this.currentYear = selectYear;
+      });
+    }
+    else{
+      this.userSkillService.getByYear(localStorage.getItem('currentuser'), selectYear)
+      .subscribe((data: UserSkill[] | any) => {
+        console.log(data);
+        this.userSkills = data;
+        this.findDistCateg();
+        this.drawSvg();
+        this.currentYear = selectYear;
+      });
+    }
   }
 
   addMetric(){

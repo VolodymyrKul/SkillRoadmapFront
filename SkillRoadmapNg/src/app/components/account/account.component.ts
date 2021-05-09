@@ -5,6 +5,7 @@ import { EmployerDTO } from 'src/app/models/employer-dto';
 import { EmployerInfo } from 'src/app/models/employer-info';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { EmployerService } from 'src/app/services/employer.service';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-account',
@@ -16,12 +17,16 @@ export class AccountComponent implements OnInit {
   achievMode: boolean = false;
   userRole: string = '';
   roleMode: boolean = false;
+  empSelectMode: boolean = false;
   employerInfo: EmployerInfo = new EmployerInfo();
   employerDTO: EmployerDTO = new EmployerDTO();
   employeeInfo: EmployeeInfo = new EmployeeInfo();
   employeeDTO: EmployeeDTO = new EmployeeDTO();
+  employeeDTOs: EmployeeDTO[] = [];
+  employeeNSNs: string[] = [];
+  selectedEmployee: string = "";
 
-  constructor(private employeeService: EmployeeService, private employerService: EmployerService) { }
+  constructor(private employeeService: EmployeeService, private employerService: EmployerService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadUserInfo();
@@ -34,12 +39,6 @@ export class AccountComponent implements OnInit {
   loadUserInfo(){
     this.userRole = localStorage.getItem('currentrole');
     if(this.userRole == 'HR' || this.userRole == 'Mentor'){
-      /*this.employerService.getEmpInfo(localStorage.getItem('currentuser'))
-      .subscribe((data: EmployerInfo) => {
-        this.roleMode = true;
-        this.employerInfo = data;
-        localStorage.setItem("currentcompany", this.employerInfo.companyName);
-      });*/
 
       this.employerService.getEmpInfoFull(localStorage.getItem('currentuser'))
       .subscribe((data: EmployerDTO) => {
@@ -49,16 +48,21 @@ export class AccountComponent implements OnInit {
         localStorage.setItem("currentcompany", this.employerDTO.companyName);
         localStorage.setItem("currentcompanyid", this.employerDTO.idCompany.toString());
         console.log(this.employerDTO);
+
+          this.employeeService.getAll()
+          .subscribe((data: EmployeeDTO[] | any) => {
+              this.employeeDTOs = data;
+              if(this.userRole == 'Mentor'){
+                this.employeeDTOs = this.employeeDTOs.filter(emp => emp.idMentor == this.employerDTO.id);
+              }
+              this.employeeDTOs.forEach(emp => {
+                this.employeeNSNs.push(emp.firstname+" "+emp.lastname);
+              });      
+              this.selectedEmployee = this.employeeNSNs[0];        
+          });
       });
     }
     else{
-      /*this.employeeService.getEmpInfo(localStorage.getItem('currentuser'))
-      .subscribe((data: EmployeeInfo) => {
-        this.roleMode = false;
-        this.employeeInfo = data;
-        localStorage.setItem("currentcompany", this.employeeInfo.companyName);
-      });*/
-
       this.employeeService.getEmpInfoFull(localStorage.getItem('currentuser'))
       .subscribe((data: EmployeeDTO) => {
         this.employeeDTO = data;
@@ -69,5 +73,16 @@ export class AccountComponent implements OnInit {
         console.log(this.employeeDTO);
       });
     }
+  }
+
+  selectEmpRoadMap(){
+    console.log(this.selectedEmployee);
+    console.log(this.employeeDTOs.find(emp => emp.firstname+" "+emp.lastname == this.selectedEmployee).id);
+    localStorage.setItem("currentroadmap", this.employeeDTOs.find(emp => emp.firstname+" "+emp.lastname == this.selectedEmployee).email);
+    this.router.navigate(['roadmap']);  
+  }
+
+  openCloseSelect(){
+    this.empSelectMode = !this.empSelectMode;
   }
 }
