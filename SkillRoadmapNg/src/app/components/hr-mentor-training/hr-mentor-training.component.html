@@ -14,7 +14,7 @@
     <div *ngIf="trTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">TrainingTitle<span style="float: right; cursor: pointer;"><i (click)="byTrMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode1, 'fa-caret-up' : trmode1}"></i></span></th>
                 <th scope="col">TrainingLevel<span style="float: right; cursor: pointer;"><i (click)="byTrMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode2, 'fa-caret-up' : trmode2}"></i></span></th>
                 <th scope="col">StartDate<span style="float: right; cursor: pointer;"><i (click)="byTrMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode3, 'fa-caret-up' : trmode3}"></i></span></th>
@@ -67,14 +67,14 @@
     <div *ngIf="recTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateRecModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">TrainingTitle<span style="float: right; cursor: pointer;"><i (click)="byRecMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !recmode1, 'fa-caret-up' : recmode1}"></i></span></th>
                 <th scope="col">Invitation<span style="float: right; cursor: pointer;"><i (click)="byRecMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !recmode2, 'fa-caret-up' : recmode2}"></i></span></th>
             </thead>
             <tbody>
                 <ng-container *ngFor="let rec of recommendationDTOs let in=index">
                     <tr>
-                        <td>{{in + 1}}</td>
+                        <td style="width: 5%;">{{in + 1}}</td>
                         <td>{{rec.trainingTitle}}</td>
                         <td>{{rec.invitation}}</td>
                     </tr>
@@ -84,3 +84,87 @@
     </div>
 
 </div>
+
+<ng-template #trModal let-modal class="w-50">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create training</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+            <label for="TrainingTitle">TrainingTitle</label>
+            <input type="text" class="form-control" id="TrainingTitle" placeholder="Enter here certificate text" name="TrainingTitle" [(ngModel)]="newtrainingDTO.trainingTitle">
+        </div>
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <input type="text" class="form-control" id="Description" placeholder="Enter here certificate text" name="Description" [(ngModel)]="newtrainingDTO.description">
+        </div>
+        <div class="form-group">
+            <label for="TrainingLevel">TrainingLevel</label>
+            <input type="number" min="1" max="5" class="form-control" id="TrainingLevel" placeholder="Enter here certificate text" name="TrainingLevel" [(ngModel)]="newtrainingDTO.trainingLevel">
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+              <label for="StartDate">Start Date</label>
+              <input type="date" class="form-control" id="StartDate" placeholder="Enter start date" name="usStart" [(ngModel)]="newtrainingDTO.startDate">
+            </div>
+            <div class="form-group col">
+              <label for="EndDate">End Date</label>
+              <input type="date" class="form-control" id="EndDate" placeholder="Enter end date" name="usEnd" [(ngModel)]="newtrainingDTO.endDate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Payment">Payment</label>
+            <input type="number" class="form-control" id="Payment" placeholder="Enter here certificate text" name="Payment" [(ngModel)]="newtrainingDTO.payment">
+        </div>
+
+        <div class="form-group">
+            <label for="Category">Category</label>
+            <div class="input-group">
+              <div class="w-100">
+                <select class="form-control custom-select" id="Category" name="Category" [(ngModel)]="newtrainingDTO.idCategory">
+                  <option *ngFor="let ct of categoryDTOs let in=index" [value]="ct.id">{{ct.title}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="createTraining()">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #recModal let-modal class="w-50">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create recommendation</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+            <label for="Invitation">Invitation</label>
+            <input type="text" class="form-control" id="Invitation" placeholder="Enter here certificate text" name="Invitation" [(ngModel)]="newrecommendationDTO.invitation">
+        </div>
+
+        <div class="form-group">
+            <label for="RecTrainingTitle">TrainingTitle</label>
+            <div class="input-group">
+              <div class="w-100">
+                <select class="form-control custom-select" id="RecTrainingTitle" name="RecTrainingTitle" [(ngModel)]="newrecommendationDTO.idTraining">
+                  <option *ngFor="let tr of trainingDTOs let in=index" [value]="tr.id">{{tr.trainingTitle}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="createRecommendation()">Save</button>
+    </div>
+  </ng-template>

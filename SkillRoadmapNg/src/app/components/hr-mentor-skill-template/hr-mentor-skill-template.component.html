@@ -11,7 +11,7 @@
     <div *ngIf="stTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateTemplModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">TemplateTitle<span style="float: right; cursor: pointer;"><i (click)="byStMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode1, 'fa-caret-up' : stmode1}"></i></span></th>
                 <th scope="col">Description<span style="float: right; cursor: pointer;"><i (click)="byStMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode2, 'fa-caret-up' : stmode2}"></i></span></th>
                 <th scope="col">AverageSalary<span style="float: right; cursor: pointer;"><i (click)="byStMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode3, 'fa-caret-up' : stmode3}"></i></span></th>
@@ -19,7 +19,7 @@
             <tbody>
                 <ng-container *ngFor="let st of skillTemplateDTOs let in=index">
                     <tr>
-                        <td>{{in + 1}}</td>
+                        <td style="width: 5%;">{{in + 1}}</td>
                         <td style="width: 20% !important;">{{st.templateTitle}}</td>
                         <td>{{st.description}}</td>
                         <td style="width: 15% !important;">{{st.averageSalary}}</td>
@@ -32,7 +32,7 @@
     <div *ngIf="reqTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateReqModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">ReqTitle<span style="float: right; cursor: pointer;"><i (click)="byReqMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode1, 'fa-caret-up' : reqmode1}"></i></span></th>
                 <th scope="col">ReqLevel<span style="float: right; cursor: pointer;"><i (click)="byReqMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode2, 'fa-caret-up' : reqmode2}"></i></span></th>
                 <th scope="col">TemplateTitle<span style="float: right; cursor: pointer;"><i (click)="byReqMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode3, 'fa-caret-up' : reqmode3}"></i></span></th>
@@ -50,4 +50,65 @@
         </table>
     </div>
 
+    <ng-template #templateModal let-modal class="w-50">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Create template</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+                <label for="TemplateTitle">TemplateTitle</label>
+                <input type="text" class="form-control" id="TemplateTitle" placeholder="Enter here certificate text" name="TemplateTitle" [(ngModel)]="newskillTemplateDTO.templateTitle">
+            </div>
+            <div class="form-group">
+                <label for="Description">Description</label>
+                <input type="text" class="form-control" id="Description" placeholder="Enter here certificate text" name="Description" [(ngModel)]="newskillTemplateDTO.description">
+            </div>
+            <div class="form-group">
+                <label for="AverageSalary">AverageSalary</label>
+                <input type="number" min="0" max="10000" class="form-control" id="AverageSalary" placeholder="Enter here certificate text" name="AverageSalary" [(ngModel)]="newskillTemplateDTO.averageSalary">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="createTemplate()">Save</button>
+        </div>
+      </ng-template>
+
+      <ng-template #reqModal let-modal class="w-50">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Create requirement</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+                <label for="RequirementTitle">Requirement Title</label>
+                <input type="text" class="form-control" id="RequirementTitle" placeholder="Enter here certificate text" name="RequirementTitle" [(ngModel)]="newrequirementDTO.reqTitle">
+            </div>
+            <div class="form-group">
+                <label for="RequirementLevel">Requirement Level</label>
+                <input type="number" min="1" max="5" class="form-control" id="RequirementLevel" placeholder="Enter here certificate text" name="RequirementLevel" [(ngModel)]="newrequirementDTO.reqLevel">
+            </div>
+            <div class="form-group">
+                <label for="RecTemplateTitle">TemplateTitle</label>
+                <div class="input-group">
+                  <div class="w-100">
+                    <select class="form-control custom-select" id="RecTemplateTitle" name="RecTemplateTitle" [(ngModel)]="newrequirementDTO.idSkillTemplate">
+                      <option *ngFor="let st of skillTemplateDTOs let in=index" [value]="st.id">{{st.templateTitle}}</option>
+                    </select>
+                  </div>
+                </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="createRequirement()">Save</button>
+        </div>
+      </ng-template>
 </div>

@@ -5,6 +5,8 @@ import { SkillTemplateDTO } from 'src/app/models/skill-template-dto';
 import { ComparationService } from 'src/app/services/comparation.service';
 import { RequirementService } from 'src/app/services/requirement.service';
 import { SkillTemplateService } from 'src/app/services/skill-template.service';
+import { ViewChild, TemplateRef } from '@angular/core';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-hr-mentor-skill-template',
@@ -12,11 +14,20 @@ import { SkillTemplateService } from 'src/app/services/skill-template.service';
   styleUrls: ['./hr-mentor-skill-template.component.css']
 })
 export class HrMentorSkillTemplateComponent implements OnInit {
+
+  @ViewChild('templateModal')
+  private templateRef: TemplateRef<any>;
+  
+  @ViewChild('reqModal')
+  private reqRef: TemplateRef<any>;
+
   skillTemplateDTOs: SkillTemplateDTO[] = [];
   requirementDTOs: RequirementDTO[] = [];
   comparationDTOs: ComparationDTO[] = [];
   isHaveReqs: boolean[] = [];
   isMeetReqs: boolean[] = [];
+  newskillTemplateDTO: SkillTemplateDTO = new SkillTemplateDTO(0, "Title", "Description", 5000);
+  newrequirementDTO: RequirementDTO = new RequirementDTO(0, "Req Title", 1, 1);
 
   stTable: boolean = true;
   reqTable: boolean = false;
@@ -30,11 +41,18 @@ export class HrMentorSkillTemplateComponent implements OnInit {
   reqmode2: boolean = false;
   reqmode3: boolean = false;
 
+  closeResult = '';
+
   constructor(private skillTemplateService: SkillTemplateService,
     private requirementService: RequirementService,
-    private comparationService: ComparationService) { }
+    private comparationService: ComparationService,
+    private modalService: NgbModal) { }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(){
     this.skillTemplateService.getAll()
     .subscribe((data: SkillTemplateDTO[] | any) => {
       this.skillTemplateDTOs = data;
@@ -46,6 +64,43 @@ export class HrMentorSkillTemplateComponent implements OnInit {
       this.requirementDTOs = data;
       console.log(this.requirementDTOs);
     });
+  }
+
+  openCreateTemplModal(){
+    this.modalService.open(this.templateRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openCreateReqModal(){
+    this.modalService.open(this.reqRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  createTemplate(){
+    console.log(this.newskillTemplateDTO);
+    this.modalService.dismissAll();
+  }
+
+  createRequirement(){
+    this.newrequirementDTO.idSkillTemplate = parseInt(this.newrequirementDTO.idSkillTemplate.toString(), 10);
+    console.log(this.newrequirementDTO);
+    this.modalService.dismissAll();
   }
 
   selectStTable(){

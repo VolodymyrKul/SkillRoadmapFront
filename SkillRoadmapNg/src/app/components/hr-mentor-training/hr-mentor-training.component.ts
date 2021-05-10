@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { CategoryDTO } from 'src/app/models/category-dto';
+import { EmployerDTO } from 'src/app/models/employer-dto';
 import { RecommendationDTO } from 'src/app/models/recommendation-dto';
 import { TrainingDTO } from 'src/app/models/training-dto';
 import { TrainingMemberDTO } from 'src/app/models/training-member-dto';
+import { CategoryService } from 'src/app/services/category.service';
+import { EmployerService } from 'src/app/services/employer.service';
 import { RecommendationService } from 'src/app/services/recommendation.service';
 import { TrainingMemberService } from 'src/app/services/training-member.service';
 import { TrainingService } from 'src/app/services/training.service';
+import { ViewChild, TemplateRef } from '@angular/core';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-hr-mentor-training',
@@ -12,9 +18,20 @@ import { TrainingService } from 'src/app/services/training.service';
   styleUrls: ['./hr-mentor-training.component.css']
 })
 export class HrMentorTrainingComponent implements OnInit {
+
+  @ViewChild('trModal')
+  private trRef: TemplateRef<any>;
+
+  @ViewChild('recModal')
+  private recRef: TemplateRef<any>;
+
   trainingDTOs: TrainingDTO[] = [];
   recommendationDTOs: RecommendationDTO[] = [];
   trainingMemberDTOs: TrainingMemberDTO[] = [];
+  categoryDTOs: CategoryDTO[] = [];
+  employerDTOs: EmployerDTO[] = []; 
+  newtrainingDTO: TrainingDTO = new TrainingDTO(0,"Training Title", "Description", new Date(), new Date(), 1, 0, 1, 1);
+  newrecommendationDTO: RecommendationDTO = new RecommendationDTO(0,0,"Invitation", false, 1);
 
   trmode1: boolean = false;
   trmode2: boolean = false;
@@ -37,9 +54,20 @@ export class HrMentorTrainingComponent implements OnInit {
   trmemTable: boolean = false;
   recTable: boolean = false;
 
-  constructor(private trainingService: TrainingService, private recommendationService: RecommendationService, private trainingMemberService: TrainingMemberService) { }
+  closeResult = '';
+
+  constructor(private trainingService: TrainingService, 
+    private recommendationService: RecommendationService, 
+    private trainingMemberService: TrainingMemberService,
+    private categoryService: CategoryService,
+    private employerService: EmployerService,
+    private modalService: NgbModal) { }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(){
     this.trainingService.getByCoachId(parseInt(localStorage.getItem("currentuserid"), 10))
     .subscribe((data: TrainingDTO[] | any) => {
       this.trainingDTOs = data;
@@ -49,9 +77,9 @@ export class HrMentorTrainingComponent implements OnInit {
 
         this.recommendationService.getTrainingsById(tr.id)
         .subscribe((data: RecommendationDTO[] | any) => {
-          data.forEach(el => {
-            this.recommendationDTOs.push(el);
-          }); 
+          if(data != undefined && data != null && data.length > 1){
+            this.recommendationDTOs.push(data[0]);
+          }
         })
 
         this.trainingMemberService.getByTrainingId(tr.id)
@@ -61,11 +89,63 @@ export class HrMentorTrainingComponent implements OnInit {
           });
         });
       });
+
+      this.categoryService.getAll()
+      .subscribe((data : CategoryDTO[] | any) => {
+        this.categoryDTOs = data;
+      });
+
+      this.employerService.getAll()
+      .subscribe((data : EmployerDTO[] | any) => {
+        this.employerDTOs = data;
+      });
       console.log(this.trainingDTOs);
       console.log(this.recommendationDTOs);
       console.log(this.trainingMemberDTOs);
     });
+  }
 
+  openCreateModal(){
+    console.log(this.trRef);
+    this.modalService.open(this.trRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openCreateRecModal(){
+    console.log(this.trRef);
+    this.modalService.open(this.recRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  createTraining(){
+    this.newtrainingDTO.idCategory = parseInt(this.newtrainingDTO.idCategory.toString(), 10);
+    this.newtrainingDTO.idCoach = parseInt(localStorage.getItem("currentuserid"), 10);
+    console.log(this.newtrainingDTO);
+    //this.trainingService.pull(this.newtrainingDTO);
+    this.modalService.dismissAll();
+  }
+
+  createRecommendation(){
+    console.log(this.newrecommendationDTO);
+    this.newrecommendationDTO.idTraining = parseInt(this.newrecommendationDTO.idTraining.toString(), 10);
+    //this.recommendationService.pull(this.newrecommendationDTO);
+    this.modalService.dismissAll();
   }
 
   selectTrTable(){

@@ -18,6 +18,7 @@ export class AccountComponent implements OnInit {
   userRole: string = '';
   roleMode: boolean = false;
   empSelectMode: boolean = false;
+  empMatrixSelectMode: boolean = false;
   employerInfo: EmployerInfo = new EmployerInfo();
   employerDTO: EmployerDTO = new EmployerDTO();
   employeeInfo: EmployeeInfo = new EmployeeInfo();
@@ -84,5 +85,16 @@ export class AccountComponent implements OnInit {
 
   openCloseSelect(){
     this.empSelectMode = !this.empSelectMode;
+  }
+
+  openCloseMatrixSelect(){
+    this.empMatrixSelectMode = !this.empMatrixSelectMode;
+  }
+
+  selectMatrixEmp(){
+    console.log(this.selectedEmployee);
+    console.log(this.employeeDTOs.find(emp => emp.firstname+" "+emp.lastname == this.selectedEmployee).id);
+    localStorage.setItem("currentmatrixemp", this.employeeDTOs.find(emp => emp.firstname+" "+emp.lastname == this.selectedEmployee).id.toString());
+    this.router.navigate(['hrmatrix']);  
   }
 }

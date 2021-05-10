@@ -42,22 +42,6 @@ export class CertificatesComponent implements OnInit {
       this.getCertificatesForMentor();
     }
     else{
-      /*this.certificateService.getByEmail(localStorage.getItem('currentuser'))
-      .subscribe((data: Certificate[] | any) => {
-        this.mycertificates = data;
-        this.mycertificates.forEach(certificate => {
-          certificate.dateOfIssue = new Date(certificate.dateOfIssue);
-          certificate.expiryDate = new Date(certificate.expiryDate);
-        });
-
-        this.userSkillService.getOnly(localStorage.getItem('currentuser'))
-        .subscribe((data: UserSkill[] | any) => {
-          this.userSkills = data;
-          this.ordercertificate.userSkillName = this.userSkills[0].skillname;
-          console.log(this.userSkills);
-        });
-      });*/
-
       this.certificateService.getByUserId(parseInt(localStorage.getItem('currentuserid'), 10))
         .subscribe((data: CertificateDTO[] | any) => {
           this.mycertificatesDTO = data;
@@ -77,14 +61,6 @@ export class CertificatesComponent implements OnInit {
   }
 
   getCertificatesForMentor(){
-    /*this.certificateService.getByMentor(localStorage.getItem('currentuser'))
-      .subscribe((data: Certificate[] | any) => {
-        this.mycertificates = data;
-        this.mycertificates.forEach(certificate => {
-          certificate.dateOfIssue = new Date(certificate.dateOfIssue);
-          certificate.expiryDate = new Date(certificate.expiryDate);
-        });
-      });*/
     this.certificateService.getByMentorId(parseInt(localStorage.getItem('currentuserid'), 10))
     .subscribe((data: CertificateDTO[] | any) => {
       this.mycertificatesDTO = data;
@@ -126,16 +102,6 @@ export class CertificatesComponent implements OnInit {
   orderCertificateFun(){
     console.log(this.ordercertificate.userSkillName);
     console.log(this.ordercertificateDTO.recipientEmail);
-    /*this.certificateService.orderCertif(this.ordercertificate)
-    .subscribe((data: boolean | any) => {
-      this.isOrdered = data;
-      if(this.isOrdered){
-        console.log('New order created');
-      }
-      else{
-        console.log('New order was not created');
-      }
-    });*/
     this.certificateService.orderCertifNew(this.ordercertificateDTO)
     .subscribe((data: boolean | any) => {
       this.isOrdered = data;
@@ -152,10 +118,6 @@ export class CertificatesComponent implements OnInit {
   acceptCertificateFun(cer: CertificateDTO){
     this.openAcceptModal();
     console.log(cer);
-    //this.acceptCertificate.userSkill = cer.skillName;
-    //this.acceptCertificate.publisherNSN = cer.publisherNSN;
-    //this.acceptCertificate.recipientNSN = cer.recipientNSN;
-    //this.acceptCertificate.expiryDate;
 
     this.acceptCertificateDTO.skillName = cer.skillName;
     this.acceptCertificateDTO.publisherNSN = cer.publisherNSN;
