@@ -36,7 +36,10 @@
                         <td>{{ee.devLevel}}</td>
                         <td>{{ee.experience}}</td>
                         <td>{{ee.mentorNSN}}</td>
-                        <td>{{ee.companyName}}</td>
+                        <td>{{ee.companyName}}<span style="float: right; cursor: pointer;">
+                            <i class="fas fa-user-clock" (click)="setEmployeeHr(ee)" title="Set role as HR"></i>
+                            <i class="fas fa-users ml-1 mr-1" (click)="setEmployeeMentor(ee)" title="Set role as mentor"></i>
+                            <i class="fas fa-trash-alt" (click)="deleteEmployee(ee)" title="Delete employee"></i></span></td>
                     </tr>
                 </ng-container>
             </tbody>

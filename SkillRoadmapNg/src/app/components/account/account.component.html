@@ -1,7 +1,6 @@
 
-<div class="bgImg" style="height: 92vh;">
-    <div class="btn-group-vertical w-25 mt-5" style="float: left;">
-        <button type="button" class="btn btn-primary" routerLink="/matrix">Skill Matrix</button>
+<div class="bgImg" style="height: 92vh; display: flex;">
+    <div class="btn-group-vertical w-25 mt-5" style="height: 500px;">
         <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/roadmap">Skill Roadmap</button>
         <button type="button" *ngIf="roleMode" class="btn btn-primary" (click)="openCloseSelect()">Skill Roadmap</button>
         <div *ngIf="empSelectMode" style="width: 100%; background: lightblue; display: grid; justify-content: center; padding: 10px;">
@@ -12,15 +11,10 @@
             </select>
             <button type="button" class="btn btn-primary dropup" (click)="selectEmpRoadMap()" style="margin-bottom: 10px;">Submit</button>
         </div>
-        <!--<button type="button" class="btn btn-primary" routerLink="/trainings">Training</button>
-        <button type="button" class="btn btn-primary" routerLink="/trmembers">Training Members</button>-->
         <button type="button" class="btn btn-primary" routerLink="/mycertif">Certificates</button>
-        <!--<button type="button" class="btn btn-primary" routerLink="/management">Employees management</button>-->
         <button type="button" class="btn btn-primary" routerLink="/notif">Notifications</button>
         <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wtraining">Training</button>
         <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrtraining">Training</button>
-        <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wcertif">Certificates</button>
-        <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrcertif">Certificates</button>
         <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wmatrix">Skill Matrix</button>
         <button type="button" *ngIf="roleMode" class="btn btn-primary" (click)="openCloseMatrixSelect()">Skill Matrix</button>
         <div *ngIf="empMatrixSelectMode" style="width: 100%; background: lightblue; display: grid; justify-content: center; padding: 10px;">
@@ -35,16 +29,50 @@
         <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrtemplate">Template</button>
         <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wmanagement">Management</button>
         <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrmanagement">Management</button>
-        <button type="button" class="btn btn-primary dropup" (click)="changeachievMode()">
-            Statistics<span style="float: right; cursor: pointer;"><i [ngClass] = "{'fas' : true, 'fa-caret-down' : !achievMode, 'fa-caret-up' : achievMode}"></i></span>
-        </button>
-        <a *ngIf="achievMode" class="btn btn-primary" routerLink="/ownachievs">My achievements</a>
-        <a *ngIf="achievMode" class="btn btn-primary" routerLink="/antachievs">Another user achievements</a>
-        <a *ngIf="achievMode" class="btn btn-primary" routerLink="/compareachievs">Compare achievements</a>
     </div>
-    <div class="w-50 mt-5" style="float: left; background-color: gray;">
+    <div class="w-50 mt-5" style="display: flex; justify-content: center; flex-wrap: wrap;">
+        <div *ngIf="!roleMode" style="width: 90%;">
+            <table style="width: 95%;" class="mx-auto table table-striped bg-secondary">
+                <thead>
+                    <th scope="col">Year</th>
+                    <th scope="col">SkillCount</th>
+                    <th scope="col">AverageLevel</th>
+                    <th scope="col">StudyingTime(Days)</th>
+                    <th scope="col">Percent</th>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let tr of statisticsDTOs let in=index">
+                        <tr>
+                            <td>{{tr.statYear}}</td>
+                            <td>{{tr.newSkillCount}}</td>
+                            <td>{{tr.averageSkillLevel}}</td>
+                            <td>{{tr.studyingTime}}</td>
+                            <td>{{tr.betterThanPercent}}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="!roleMode" style="width: 90%;">
+            <table style="width: 95%;" class="mx-auto table table-striped bg-secondary">
+                <thead>
+                    <th scope="col">#</th>
+                    <th scope="col">TrainingTitle</th>
+                    <th scope="col">Invitation</th>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let rec of showRecommendationDTOs let in=index">
+                        <tr>
+                            <td>{{in + 1}}</td>
+                            <td>{{rec.trainingTitle}}</td>
+                            <td>{{rec.invitation}}<span style="float: right; cursor: pointer;"><i (click)="goToTraining(rec)" class="fas fa-arrow-right"></i></span></td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="w-25 mt-5" style="float: left;">
+    <div class="w-25 mt-5" >
         <div class="card mx-auto bg-secondary" style="width:300px; position: relative;">
           <img class="card-img-top mx-auto" style="width:250px; height: 300px;" src="https://www.clker.com/cliparts/g/l/R/7/h/u/teamstijl-person-icon-blue.svg" alt="Card image">
           <div class="card-body">

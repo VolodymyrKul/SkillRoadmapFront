@@ -6,6 +6,10 @@ import { EmployerInfo } from 'src/app/models/employer-info';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { EmployerService } from 'src/app/services/employer.service';
 import { Router } from '@angular/router'
+import { StatisticsDTO } from 'src/app/models/statistics-dto';
+import { StatisticsService } from 'src/app/services/statistics.service';
+import { RecommendationService } from 'src/app/services/recommendation.service';
+import { RecommendationDTO } from 'src/app/models/recommendation-dto';
 
 @Component({
   selector: 'app-account',
@@ -26,8 +30,12 @@ export class AccountComponent implements OnInit {
   employeeDTOs: EmployeeDTO[] = [];
   employeeNSNs: string[] = [];
   selectedEmployee: string = "";
+  statisticsDTOs: StatisticsDTO[] = [];
+  recommendationDTOs: RecommendationDTO[] = [];
+  showRecommendationDTOs: RecommendationDTO[] = [];
 
-  constructor(private employeeService: EmployeeService, private employerService: EmployerService, private router: Router) { }
+  constructor(private employeeService: EmployeeService, private employerService: EmployerService, private router: Router,
+    private statisticsService: StatisticsService, private recommendationService: RecommendationService) { }
 
   ngOnInit(): void {
     this.loadUserInfo();
@@ -64,6 +72,7 @@ export class AccountComponent implements OnInit {
       });
     }
     else{
+
       this.employeeService.getEmpInfoFull(localStorage.getItem('currentuser'))
       .subscribe((data: EmployeeDTO) => {
         this.employeeDTO = data;
@@ -72,8 +81,38 @@ export class AccountComponent implements OnInit {
         localStorage.setItem("currentcompany", this.employeeDTO.companyName);
         localStorage.setItem("currentcompanyid", this.employeeDTO.idCompany.toString());
         console.log(this.employeeDTO);
+        this.statisticsService.getAll()
+        .subscribe((data: StatisticsDTO[] | any) => {
+          this.statisticsDTOs = data;
+          this.statisticsDTOs = this.statisticsDTOs.filter(st => st.idEmployee == this.employeeDTO.id);
+          this.statisticsDTOs.forEach(st => {
+            st.betterThanPercent = Math.round(st.betterThanPercent)
+          });
+          console.log(this.statisticsDTOs);
+        });
+
+        this.recommendationService.getEmployeeById(this.employeeDTO.id)
+        .subscribe((data: RecommendationDTO[] | any) => {
+          this.recommendationDTOs = data;
+          //console.log(this.recommendationDTOs);
+          var randInt = this.getRandomInt(1, this.recommendationDTOs.length-5);
+          for(var i = randInt; i < randInt + 3; i++){
+            this.showRecommendationDTOs.push(this.recommendationDTOs[i]);
+          }
+          console.log(this.showRecommendationDTOs);
+        });
       });
     }
+  }
+
+  goToTraining(rec: RecommendationDTO){
+    this.router.navigate(['trainings'], { queryParams: { trId: rec.idTraining.toString() } });  
+  }
+
+  getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
 
   selectEmpRoadMap(){

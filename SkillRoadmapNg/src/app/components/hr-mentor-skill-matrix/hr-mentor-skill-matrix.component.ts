@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { CategoryDTO } from 'src/app/models/category-dto';
 import { CommentDTO } from 'src/app/models/comment-dto';
 import { SkillMetricDTO } from 'src/app/models/skill-metric-dto';
 import { SkillUnitDTO } from 'src/app/models/skill-unit-dto';
 import { UserSkillDTO } from 'src/app/models/user-skill-dto';
+import { CategoryService } from 'src/app/services/category.service';
 import { CommentService } from 'src/app/services/comment.service';
 import { SkillMetricService } from 'src/app/services/skill-metric.service';
 import { SkillUnitService } from 'src/app/services/skill-unit.service';
 import { UserSkillService } from 'src/app/services/user-skill.service';
+import { ViewChild, TemplateRef } from '@angular/core';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-hr-mentor-skill-matrix',
@@ -14,11 +18,31 @@ import { UserSkillService } from 'src/app/services/user-skill.service';
   styleUrls: ['./hr-mentor-skill-matrix.component.css']
 })
 export class HrMentorSkillMatrixComponent implements OnInit {
+
+  @ViewChild('usModal')
+  private usRef: TemplateRef<any>;
+
+  @ViewChild('suModal')
+  private suRef: TemplateRef<any>;
+
+  @ViewChild('smModal')
+  private smRef: TemplateRef<any>;
+
+  @ViewChild('cmModal')
+  private cmRef: TemplateRef<any>;
+
+  closeResult = '';
+
   userSkillDTOs: UserSkillDTO[] = [];
+  showUserSkillDTOs: UserSkillDTO[] = [];
   skillUnitDTOs: SkillUnitDTO[] = [];
+  showSkillUnitDTOs: SkillUnitDTO[] = [];
   skillMetricDTOs: SkillMetricDTO[] = [];
+  showSkillMetricDTOs: SkillMetricDTO[] = [];
   allCommentDTOs: CommentDTO[] = [];
-  commentDTOs: CommentDTO[] = []; 
+  commentDTOs: CommentDTO[] = [];
+  showCommentDTOs: CommentDTO[] = []; 
+  categoryDTOs: CategoryDTO[] = [];
   newuserSkillDTO: UserSkillDTO = new UserSkillDTO(0,"SkillName", new Date(), new Date(), 1, 1, parseInt(localStorage.getItem("currentmatrixemp"), 10));
   newskillUnitDTO: SkillUnitDTO = new SkillUnitDTO(0, "UnitName", new Date(), new Date(), 1, 1);
   newskillMetricDTO: SkillMetricDTO = new SkillMetricDTO(0, "MetricName", 1, 0.1, 1);
@@ -55,10 +79,78 @@ export class HrMentorSkillMatrixComponent implements OnInit {
   constructor(private userSkillService: UserSkillService, 
     private skillUnitService: SkillUnitService, 
     private skillMetricService: SkillMetricService,
-    private commentService: CommentService) { }
+    private commentService: CommentService,
+    private categoryService: CategoryService,
+    private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.loadData();
+    this.categoryService.getAll()
+    .subscribe((data : CategoryDTO[] | any) => {
+      this.categoryDTOs = data;
+    });
+  }
+
+  openCreateUsModal(){
+    this.modalService.open(this.usRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openCreateSuModal(){
+    this.modalService.open(this.suRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openCreateSmModal(){
+    this.modalService.open(this.smRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openCreateCmModal(){
+    this.modalService.open(this.cmRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  deleteUserSkill(us: UserSkillDTO){
+    this.userSkillService.delete(us.id)
+    .subscribe(() => this.loadData());
+  }
+
+  deleteSkillUnit(su: SkillUnitDTO){
+    this.skillUnitService.delete(su.id)
+    .subscribe(() => this.loadData());
+  }
+
+  deleteSkillMetric(sm: SkillMetricDTO){
+    this.skillUnitService.delete(sm.id)
+    .subscribe(() => this.loadData());
+  }
+
+  deleteComment(cm: CommentDTO){
+    this.skillUnitService.delete(cm.id)
+    .subscribe(() => this.loadData());
   }
 
   loadData(){
@@ -73,6 +165,8 @@ export class HrMentorSkillMatrixComponent implements OnInit {
         us.endDate = new Date(us.endDate);
       });
 
+      this.showUserSkillDTOs = this.userSkillDTOs.slice();
+
       this.commentService.getAll()
         .subscribe((data: CommentDTO[] | any) => {
           this.allCommentDTOs = data;
@@ -86,6 +180,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
                 this.skillUnitDTOs[this.skillUnitDTOs.length-1].startDate = new Date(this.skillUnitDTOs[this.skillUnitDTOs.length-1].startDate);
                 this.skillUnitDTOs[this.skillUnitDTOs.length-1].endDate = new Date(this.skillUnitDTOs[this.skillUnitDTOs.length-1].endDate);
               });
+              this.showSkillUnitDTOs = this.skillUnitDTOs.slice();
             });
     
             this.skillMetricService.getByUserSkillId(us.id)
@@ -93,15 +188,62 @@ export class HrMentorSkillMatrixComponent implements OnInit {
               data.forEach(element => {
                 this.skillMetricDTOs.push(element);  
               });
+              this.showSkillMetricDTOs = this.skillMetricDTOs.slice();
             });
     
             this.commentDTOs = this.commentDTOs.concat(this.allCommentDTOs.filter(com => com.idUserSkill == us.id));
           });
+
+          this.showCommentDTOs = this.commentDTOs.slice();
         });
           //console.log(this.userSkillDTOs);
           //console.log(this.skillUnitDTOs);
           //console.log(this.skillMetricDTOs);
     });
+  }
+
+  createUserSkill(){
+    this.newuserSkillDTO.idCategory = parseInt(this.newuserSkillDTO.idCategory.toString(), 10);
+    this.userSkillService.pull(this.newuserSkillDTO)
+    .subscribe(() => {
+      this.loadData();
+    });
+    console.log(this.newuserSkillDTO);
+    this.modalService.dismissAll();
+  }
+
+  createSkillUnit(){
+    this.newskillUnitDTO.idUserSkill = parseInt(this.newskillUnitDTO.idUserSkill.toString(), 10);
+    this.skillUnitService.pull(this.newskillUnitDTO)
+    .subscribe(() => {
+      this.loadData();
+    });
+    console.log(this.newskillUnitDTO);
+    this.modalService.dismissAll();
+  }
+
+  createSkillMetric(){
+    this.newskillMetricDTO.idUserSkill = parseInt(this.newskillMetricDTO.idUserSkill.toString(), 10);
+    this.skillMetricService.pull(this.newskillMetricDTO)
+    .subscribe(() => {
+      this.loadData();
+    });
+    console.log(this.newskillMetricDTO);
+    this.modalService.dismissAll();
+  }
+
+  createComment(){
+    this.newcommentDTO.idUserSkill = parseInt(this.newcommentDTO.idUserSkill.toString(), 10);
+    this.commentService.pull(this.newcommentDTO)
+    .subscribe(() => {
+      this.loadData();
+    });
+    console.log(this.newcommentDTO);
+    this.modalService.dismissAll();
+  }
+
+  filterByCategs(id: number){
+    this.showUserSkillDTOs = this.userSkillDTOs.filter(us => us.idCategory == id);
   }
 
   selectUsTable(){
@@ -118,6 +260,11 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.cmTable = false;
   }
 
+  showSelectSkillUnits(us: UserSkillDTO){
+    this.showSkillUnitDTOs = this.skillUnitDTOs.filter(su => su.idUserSkill == us.id);
+    this.selectSuTable();
+  }
+
   selectSmTable(){
     this.usTable = false;
     this.suTable = false;
@@ -125,11 +272,21 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.cmTable = false;
   }
 
+  showSelectSkillMetrics(us: UserSkillDTO){
+    this.showSkillMetricDTOs = this.skillMetricDTOs.filter(sm => sm.idUserSkill == us.id);
+    this.selectSmTable();
+  }
+
   selectCmTable(){
     this.usTable = false;
     this.suTable = false;
     this.smTable = false;
     this.cmTable = true;
+  }
+
+  showSelectComments(us: UserSkillDTO){
+    this.showCommentDTOs = this.commentDTOs.filter(cm => cm.idUserSkill == us.id);
+    this.selectCmTable();
   }
 
   byUsMode1(){

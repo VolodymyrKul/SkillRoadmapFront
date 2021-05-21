@@ -1,5 +1,5 @@
 <div style="width: 85%;" class="mx-auto mt-1">
-    <div class="row">
+    <!--<div class="row">
         <div class="col">
             <button class="btn btn-primary w-100" (click)="selectUsTable()" [disabled]="usTable" >UserSkills</button>
         </div>
@@ -12,7 +12,37 @@
         <div class="col">
             <button class="btn btn-primary w-100" (click)="selectCmTable()" [disabled]="cmTable" >Comments</button>
         </div>
+    </div>-->
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="Category">Category</label>
+                <div class="input-group">
+                  <div class="w-100">
+                    <select class="form-control custom-select" id="Category" name="Category" (change)="filterByCategs($event.target.value)" [(ngModel)]="newuserSkillDTO.idCategory">
+                      <option *ngFor="let ct of categoryDTOs let in=index" [value]="ct.id">{{ct.title}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="SkillLevel">SkillLevel</label>
+                <div class="input-group">
+                  <div class="w-100">
+                    <select class="form-control custom-select" id="SkillLevel" name="SkillLevel" (change)="filterBySkillLevel($event.target.value)" [(ngModel)]="filterLevel">
+                      <option *ngFor="let ct of filterSkillLevels let in=index" [value]="ct">{{ct}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="col">
+            <button style="margin-top: 2rem;" class="btn btn-primary w-100" (click)="loadData()">Reset</button>
+        </div>
     </div>
+
 
     <div *ngIf="usTable" class="row mt-4">
         <table class="table table-striped w-100">
@@ -32,9 +62,15 @@
                         <td>{{us.skillname}}</td>
                         <td>{{us?.startDate.toISOString().slice(0, 10)}}</td>
                         <td>{{us?.endDate.toISOString().slice(0, 10)}}</td>
-                        <td>{{us.skillLevel}}</td>
+                        <td>{{skillLevels[in]}}</td>
                         <td>{{us.categoryTitle}}</td>
-                        <td>{{us.employeeNSN}}</td>
+                        <td>{{us.employeeNSN}}
+                            <span style="float: right; cursor: pointer;">
+                                <i title="Open units for selected skill" (click)="showSelectSkillUnits(us)" class="fas fa-puzzle-piece"></i>
+                                <i title="Open metrics for selected skill" (click)="showSelectSkillMetrics(us)" class="ml-1 fas fa-ruler"></i>
+                                <i title="Open comments for selected skill" (click)="showSelectComments(us)" class="ml-1 fas fa-comments"></i>
+                            </span>
+                        </td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -44,7 +80,7 @@
     <div *ngIf="suTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col"><span style="float: left; cursor: pointer;"><i (click)="selectUsTable()" class="fas fa-caret-square-left mr-1"></i></span>#</th>
                 <th scope="col">Unitname<span style="float: right; cursor: pointer;"><i (click)="bySuMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode1, 'fa-caret-up' : sumode1}"></i></span></th>
                 <th scope="col">StartDate<span style="float: right; cursor: pointer;"><i (click)="bySuMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode2, 'fa-caret-up' : sumode2}"></i></span></th>
                 <th scope="col">EndDate<span style="float: right; cursor: pointer;"><i (click)="bySuMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode3, 'fa-caret-up' : sumode3}"></i></span></th>
@@ -58,7 +94,7 @@
                         <td>{{su.unitname}}</td>
                         <td>{{su.startDate.toISOString().slice(0, 10)}}</td>
                         <td>{{su.endDate.toISOString().slice(0, 10)}}</td>
-                        <td>{{su.unitLevel}}</td>
+                        <td>{{unitLevels[in]}}</td>
                         <td>{{su.skillName}}</td>
                     </tr>
                 </ng-container>
@@ -69,7 +105,7 @@
     <div *ngIf="smTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col"><span style="float: left; cursor: pointer;"><i (click)="selectUsTable()" class="fas fa-caret-square-left mr-1"></i></span>#</th>
                 <th scope="col">MetricName<span style="float: right; cursor: pointer;"><i (click)="bySmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode1, 'fa-caret-up' : smmode1}"></i></span></th>
                 <th scope="col">MetricValue<span style="float: right; cursor: pointer;"><i (click)="bySmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode2, 'fa-caret-up' : smmode2}"></i></span></th>
                 <th scope="col">MetricInfluence<span style="float: right; cursor: pointer;"><i (click)="bySmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode3, 'fa-caret-up' : smmode3}"></i></span></th>
@@ -80,7 +116,7 @@
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{sm.metricName}}</td>
-                        <td>{{sm.metricValue}}</td>
+                        <td>{{metricLevels[in]}}</td>
                         <td>{{sm.metricInfluence}}</td>
                         <td>{{sm.skillName}}</td>
                     </tr>
@@ -92,13 +128,13 @@
     <div *ngIf="cmTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col"><span style="float: left; cursor: pointer;"><i (click)="selectUsTable()" class="fas fa-caret-square-left mr-1"></i></span>#</th>
                 <th scope="col">CommentText<span style="float: right; cursor: pointer;"><i (click)="byCmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode1, 'fa-caret-up' : cmmode1}"></i></span></th>
                 <th scope="col">EmployerNSN<span style="float: right; cursor: pointer;"><i (click)="byCmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode2, 'fa-caret-up' : cmmode2}"></i></span></th>
                 <th scope="col">SkillName<span style="float: right; cursor: pointer;"><i (click)="byCmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode3, 'fa-caret-up' : cmmode3}"></i></span></th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let cm of commentDTOs let in=index">
+                <ng-container *ngFor="let cm of showCommentDTOs let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{cm.commentText}}</td>

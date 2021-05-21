@@ -22,7 +22,7 @@
                         <td style="width: 5%;">{{in + 1}}</td>
                         <td style="width: 20% !important;">{{st.templateTitle}}</td>
                         <td>{{st.description}}</td>
-                        <td style="width: 15% !important;">{{st.averageSalary}}</td>
+                        <td style="width: 15% !important;">{{st.averageSalary}}<span style="float: right; cursor: pointer;"><i (click)="showSelectedReqs(st)" class="fas fa-arrow-circle-right"></i></span></td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -32,13 +32,13 @@
     <div *ngIf="reqTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateReqModal()" class="fas fa-plus-circle"></i></span></th>
+                <th scope="col"><span style="float: left; cursor: pointer;"><i (click)="selectStTable()" class="fas fa-caret-square-left mr-1"></i></span>#<span style="float: right; cursor: pointer;"><i (click)="openCreateReqModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">ReqTitle<span style="float: right; cursor: pointer;"><i (click)="byReqMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode1, 'fa-caret-up' : reqmode1}"></i></span></th>
                 <th scope="col">ReqLevel<span style="float: right; cursor: pointer;"><i (click)="byReqMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode2, 'fa-caret-up' : reqmode2}"></i></span></th>
                 <th scope="col">TemplateTitle<span style="float: right; cursor: pointer;"><i (click)="byReqMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode3, 'fa-caret-up' : reqmode3}"></i></span></th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let req of requirementDTOs let in=index">
+                <ng-container *ngFor="let req of showRequirementDTOs let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{req.reqTitle}}</td>

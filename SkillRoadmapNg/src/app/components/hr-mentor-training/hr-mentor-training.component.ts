@@ -11,6 +11,7 @@ import { TrainingMemberService } from 'src/app/services/training-member.service'
 import { TrainingService } from 'src/app/services/training.service';
 import { ViewChild, TemplateRef } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { RequirementDTO } from 'src/app/models/requirement-dto';
 
 @Component({
   selector: 'app-hr-mentor-training',
@@ -28,6 +29,7 @@ export class HrMentorTrainingComponent implements OnInit {
   trainingDTOs: TrainingDTO[] = [];
   recommendationDTOs: RecommendationDTO[] = [];
   trainingMemberDTOs: TrainingMemberDTO[] = [];
+  showTrainingMemberDTOs: TrainingMemberDTO[] = [];
   categoryDTOs: CategoryDTO[] = [];
   employerDTOs: EmployerDTO[] = []; 
   newtrainingDTO: TrainingDTO = new TrainingDTO(0,"Training Title", "Description", new Date(), new Date(), 1, 0, 1, 1);
@@ -86,6 +88,7 @@ export class HrMentorTrainingComponent implements OnInit {
         .subscribe((data: TrainingMemberDTO[] | any) => {
           data.forEach(el => {
             this.trainingMemberDTOs.push(el);
+            this.showTrainingMemberDTOs.push(el);
           });
         });
       });
@@ -103,6 +106,16 @@ export class HrMentorTrainingComponent implements OnInit {
       console.log(this.recommendationDTOs);
       console.log(this.trainingMemberDTOs);
     });
+  }
+
+  deleteTraining(tr: TrainingDTO){
+    this.trainingService.delete(tr.id)
+    .subscribe(() => this.loadData());
+  }
+
+  deleteRequirement(req: RequirementDTO){
+    this.trainingService.delete(req.id)
+    .subscribe(() => this.loadData());
   }
 
   openCreateModal(){
@@ -166,6 +179,16 @@ export class HrMentorTrainingComponent implements OnInit {
 
   changemodearr(d: TrainingDTO){
     this.trainingMode[this.trainingDTOs.indexOf(d)] = !this.trainingMode[this.trainingDTOs.indexOf(d)];
+  }
+
+  showTrMembers(d: TrainingDTO){
+    this.showTrainingMemberDTOs = [];
+    this.trainingMemberDTOs.forEach(tm => {
+      this.showTrainingMemberDTOs.push(tm);
+    });
+    this.showTrainingMemberDTOs = this.showTrainingMemberDTOs.filter(tr => tr.idTraining == d.id);
+    console.log(this.showTrainingMemberDTOs);
+    this.selectTrMemTable();
   }
 
   byTrMode1(){

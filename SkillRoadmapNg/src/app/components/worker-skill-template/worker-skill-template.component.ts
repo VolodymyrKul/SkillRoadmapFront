@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { CategoryDTO } from 'src/app/models/category-dto';
 import { ComparationDTO } from 'src/app/models/comparation-dto';
 import { RequirementDTO } from 'src/app/models/requirement-dto';
 import { SkillTemplateDTO } from 'src/app/models/skill-template-dto';
+import { CategoryService } from 'src/app/services/category.service';
 import { ComparationService } from 'src/app/services/comparation.service';
 import { RequirementService } from 'src/app/services/requirement.service';
 import { SkillTemplateService } from 'src/app/services/skill-template.service';
@@ -13,6 +15,7 @@ import { SkillTemplateService } from 'src/app/services/skill-template.service';
 })
 export class WorkerSkillTemplateComponent implements OnInit {
   skillTemplateDTOs: SkillTemplateDTO[] = [];
+  loadrequirementDTOs: RequirementDTO[] = [];
   requirementDTOs: RequirementDTO[] = [];
   comparationDTOs: ComparationDTO[] = [];
   isHaveReqs: boolean[] = [];
@@ -35,6 +38,10 @@ export class WorkerSkillTemplateComponent implements OnInit {
     private comparationService: ComparationService) { }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(){
     this.skillTemplateService.getAll()
     .subscribe((data: SkillTemplateDTO[] | any) => {
       this.skillTemplateDTOs = data;
@@ -43,8 +50,9 @@ export class WorkerSkillTemplateComponent implements OnInit {
 
     this.requirementService.getAll()
     .subscribe((data: RequirementDTO[] | any) => {
+      this.loadrequirementDTOs = data;
       this.requirementDTOs = data;
-      console.log(this.requirementDTOs);
+      console.log(this.loadrequirementDTOs);
 
       this.comparationService.getByEmployeeId(parseInt(localStorage.getItem("currentuserid"), 10))
       .subscribe((data: ComparationDTO[] | any) => {
@@ -53,7 +61,7 @@ export class WorkerSkillTemplateComponent implements OnInit {
 
         this.isHaveReqs = [];
         this.isMeetReqs = [];
-        this.requirementDTOs.forEach(req => {
+        this.loadrequirementDTOs.forEach(req => {
           if(this.comparationDTOs.find(com => com.idRequirement == req.id) != undefined){
             this.isHaveReqs.push(true);
             this.isMeetReqs.push(this.comparationDTOs.find(com => com.idRequirement == req.id).isMeetCriteria);
@@ -67,6 +75,23 @@ export class WorkerSkillTemplateComponent implements OnInit {
       });
 
     });
+  }
+
+  showSelectedReqs(st: SkillTemplateDTO){
+    this.requirementDTOs = this.loadrequirementDTOs.filter(req => req.idSkillTemplate == st.id);
+    this.isHaveReqs = [];
+        this.isMeetReqs = [];
+        this.requirementDTOs.forEach(req => {
+          if(this.comparationDTOs.find(com => com.idRequirement == req.id) != undefined){
+            this.isHaveReqs.push(true);
+            this.isMeetReqs.push(this.comparationDTOs.find(com => com.idRequirement == req.id).isMeetCriteria);
+          }
+          else{
+            this.isHaveReqs.push(false);
+            this.isMeetReqs.push(false);
+          }
+        });
+        this.selectReqTable();
   }
 
   selectStTable(){

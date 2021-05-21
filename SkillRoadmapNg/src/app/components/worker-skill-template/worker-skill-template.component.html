@@ -1,12 +1,12 @@
 <div style="width: 85%;" class="mx-auto mt-1">
-    <div class="row">
+    <!--<div class="row">
         <div class="col">
             <button class="btn btn-primary w-100" (click)="selectStTable()" [disabled]="stTable" >SkillTemplates</button>
         </div>
         <div class="col">
             <button class="btn btn-primary w-100" (click)="selectReqTable()" [disabled]="reqTable" >Requirements</button>
         </div>
-    </div>
+    </div>-->
 
     <div *ngIf="stTable" class="row mt-4">
         <table class="table table-striped w-100">
@@ -22,7 +22,7 @@
                         <td>{{in + 1}}</td>
                         <td style="width: 20% !important;">{{st.templateTitle}}</td>
                         <td>{{st.description}}</td>
-                        <td style="width: 15% !important;">{{st.averageSalary}}</td>
+                        <td style="width: 15% !important;">{{st.averageSalary}}<span style="float: right; cursor: pointer;"><i title="Show requirements for selected template" (click)="showSelectedReqs(st)" class="fas fa-arrow-circle-right"></i></span></td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -32,7 +32,7 @@
     <div *ngIf="reqTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col"># <span style="float: left; cursor: pointer;"><i title="Back to templates" (click)="selectStTable()" class="fas fa-caret-square-left mr-1"></i></span></th>
                 <th scope="col">ReqTitle<span style="float: right; cursor: pointer;"><i (click)="byReqMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode1, 'fa-caret-up' : reqmode1}"></i></span></th>
                 <th scope="col">ReqLevel<span style="float: right; cursor: pointer;"><i (click)="byReqMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode2, 'fa-caret-up' : reqmode2}"></i></span></th>
                 <th scope="col">TemplateTitle<span style="float: right; cursor: pointer;"><i (click)="byReqMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode3, 'fa-caret-up' : reqmode3}"></i></span></th>
@@ -44,10 +44,10 @@
                         <td>{{req.reqTitle}}</td>
                         <td>{{req.reqLevel}}</td>
                         <td>{{req.templateTitle}}<span style="float: right; cursor: pointer;">
-                                <i *ngIf="isHaveReqs[in]" class="fas fa-check"></i>
-                                <i *ngIf="!isHaveReqs[in]" class="fas fa-times"></i>
-                                <i *ngIf="isMeetReqs[in]" class="ml-1 fas fa-plus"></i>
-                                <i *ngIf="!isMeetReqs[in]" class="ml-1 fas fa-minus"></i>
+                                <i title="Employee has skill" *ngIf="isHaveReqs[in]" class="fas fa-check"></i>
+                                <i title="Employee does not have skill" *ngIf="!isHaveReqs[in]" class="fas fa-times"></i>
+                                <i title="Employee has needed skill level" *ngIf="isMeetReqs[in]" class="ml-1 fas fa-plus"></i>
+                                <i title="Employee does not have needed skill level" *ngIf="!isMeetReqs[in]" class="ml-1 fas fa-minus"></i>
                             </span>
                         </td>
                     </tr>

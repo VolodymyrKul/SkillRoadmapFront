@@ -54,6 +54,10 @@ export class HrMentorManagementComponent implements OnInit {
     private categoryService: CategoryService) { }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(){
     this.employeeService.getAll()
     .subscribe((data : EmployeeDTO[] | any) => {
       this.employeeDTOs = data;
@@ -101,6 +105,27 @@ export class HrMentorManagementComponent implements OnInit {
     this.erTable = false;
     this.cmTable = false;
     this.ctTable = true;
+  }
+
+  setEmployeeHr(emp: EmployeeDTO){
+    this.employerService.setHrId(emp.id);
+    this.loadData();
+  }
+  setEmployeeMentor(emp: EmployeeDTO){
+    this.employerService.setMentorId(emp.id);
+    this.loadData();
+  }
+  deleteEmployee(emp: EmployeeDTO){
+    this.employeeService.delete(emp.id)
+    .subscribe(() => {
+      this.loadData();
+    });
+  }
+  deleteEmployer(emp: EmployerDTO){
+    this.employerService.delete(emp.id)
+    .subscribe(() => {
+      this.loadData();
+    });
   }
 
   byEeMode1(){

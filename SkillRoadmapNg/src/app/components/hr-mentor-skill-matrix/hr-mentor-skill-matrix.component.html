@@ -14,10 +14,23 @@
         </div>
     </div>
 
+    <div class="row">
+      <div class="form-group w-50">
+        <label for="Category">Category</label>
+        <div class="input-group">
+          <div class="w-100">
+            <select class="form-control custom-select" id="Category" name="Category" (change)="filterByCategs($event.target.value)" [(ngModel)]="newuserSkillDTO.idCategory">
+              <option *ngFor="let ct of categoryDTOs let in=index" [value]="ct.id">{{ct.title}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </div>
     <div *ngIf="usTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateUsModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">Skillname<span style="float: right; cursor: pointer;"><i (click)="byUsMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode1, 'fa-caret-up' : usmode1}"></i></span></th>
                 <th scope="col">StartDate<span style="float: right; cursor: pointer;"><i (click)="byUsMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode2, 'fa-caret-up' : usmode2}"></i></span></th>
                 <th scope="col">EndDate<span style="float: right; cursor: pointer;"><i (click)="byUsMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode3, 'fa-caret-up' : usmode3}"></i></span></th>
@@ -26,7 +39,7 @@
                 <th scope="col">EmployeeNSN<span style="float: right; cursor: pointer;"><i (click)="byUsMode6()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode6, 'fa-caret-up' : usmode6}"></i></span></th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let us of userSkillDTOs let in=index">
+                <ng-container *ngFor="let us of showUserSkillDTOs let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{us.skillname}}</td>
@@ -34,7 +47,7 @@
                         <td>{{us?.endDate.toISOString().slice(0, 10)}}</td>
                         <td>{{us.skillLevel}}</td>
                         <td>{{us.categoryTitle}}</td>
-                        <td>{{us.employeeNSN}}</td>
+                        <td>{{us.employeeNSN}}<span style="float: right; cursor: pointer;"><i (click)="showSelectSkillUnits(us)" class="fas fa-puzzle-piece"></i><i (click)="showSelectSkillMetrics(us)" class="ml-1 fas fa-ruler"></i><i (click)="showSelectComments(us)" class="ml-1 fas fa-comments"></i></span></td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -44,7 +57,7 @@
     <div *ngIf="suTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateSuModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">Unitname<span style="float: right; cursor: pointer;"><i (click)="bySuMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode1, 'fa-caret-up' : sumode1}"></i></span></th>
                 <th scope="col">StartDate<span style="float: right; cursor: pointer;"><i (click)="bySuMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode2, 'fa-caret-up' : sumode2}"></i></span></th>
                 <th scope="col">EndDate<span style="float: right; cursor: pointer;"><i (click)="bySuMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode3, 'fa-caret-up' : sumode3}"></i></span></th>
@@ -52,7 +65,7 @@
                 <th scope="col">SkillName<span style="float: right; cursor: pointer;"><i (click)="bySuMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode5, 'fa-caret-up' : sumode5}"></i></span></th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let su of skillUnitDTOs let in=index">
+                <ng-container *ngFor="let su of showSkillUnitDTOs let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{su.unitname}}</td>
@@ -69,14 +82,14 @@
     <div *ngIf="smTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateSmModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">MetricName<span style="float: right; cursor: pointer;"><i (click)="bySmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode1, 'fa-caret-up' : smmode1}"></i></span></th>
                 <th scope="col">MetricValue<span style="float: right; cursor: pointer;"><i (click)="bySmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode2, 'fa-caret-up' : smmode2}"></i></span></th>
                 <th scope="col">MetricInfluence<span style="float: right; cursor: pointer;"><i (click)="bySmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode3, 'fa-caret-up' : smmode3}"></i></span></th>
                 <th scope="col">SkillName<span style="float: right; cursor: pointer;"><i (click)="bySmMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode4, 'fa-caret-up' : smmode4}"></i></span></th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let sm of skillMetricDTOs let in=index">
+                <ng-container *ngFor="let sm of showSkillMetricDTOs let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{sm.metricName}}</td>
@@ -92,13 +105,13 @@
     <div *ngIf="cmTable" class="row mt-4">
         <table class="table table-striped w-100">
             <thead>
-                <th scope="col">#</th>
+                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateCmModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">CommentText<span style="float: right; cursor: pointer;"><i (click)="byCmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode1, 'fa-caret-up' : cmmode1}"></i></span></th>
                 <th scope="col">EmployerNSN<span style="float: right; cursor: pointer;"><i (click)="byCmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode2, 'fa-caret-up' : cmmode2}"></i></span></th>
                 <th scope="col">SkillName<span style="float: right; cursor: pointer;"><i (click)="byCmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode3, 'fa-caret-up' : cmmode3}"></i></span></th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let cm of commentDTOs let in=index">
+                <ng-container *ngFor="let cm of showCommentDTOs let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{cm.commentText}}</td>
@@ -122,11 +135,11 @@
       <form>
         <div class="form-group">
             <label for="SkillName">SkillName</label>
-            <input type="text" class="form-control" id="SkillName" placeholder="Enter here certificate text" name="SkillName" [(ngModel)]="newuserSkillDTO.trainingTitle">
+            <input type="text" class="form-control" id="SkillName" placeholder="Enter here certificate text" name="SkillName" [(ngModel)]="newuserSkillDTO.skillname">
         </div>
         <div class="form-group">
             <label for="SkillLevel">SkillLevel</label>
-            <input type="number" min="1" max="5" class="form-control" id="SkillLevel" placeholder="Enter here certificate text" name="SkillLevel" [(ngModel)]="newuserSkillDTO.trainingLevel">
+            <input type="number" min="1" max="5" class="form-control" id="SkillLevel" placeholder="Enter here certificate text" name="SkillLevel" [(ngModel)]="newuserSkillDTO.skillLevel">
         </div>
         <div class="form-row">
             <div class="form-group col">
@@ -137,10 +150,6 @@
               <label for="EndDate">End Date</label>
               <input type="date" class="form-control" id="EndDate" placeholder="Enter end date" name="EndDate" [(ngModel)]="newuserSkillDTO.endDate">
             </div>
-        </div>
-        <div class="form-group">
-            <label for="Payment">Payment</label>
-            <input type="number" class="form-control" id="Payment" placeholder="Enter here certificate text" name="Payment" [(ngModel)]="newuserSkillDTO.payment">
         </div>
 
         <div class="form-group">
@@ -156,7 +165,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="createTraining()">Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="createUserSkill()">Save</button>
     </div>
   </ng-template>
 
@@ -170,20 +179,20 @@
     <div class="modal-body">
       <form>
         <div class="form-group">
-            <label for="TrainingTitle">UnitName</label>
-            <input type="text" class="form-control" id="TrainingTitle" placeholder="Enter here certificate text" name="TrainingTitle" [(ngModel)]="newtrainingDTO.trainingTitle">
+            <label for="UnitName">UnitName</label>
+            <input type="text" class="form-control" id="UnitName" placeholder="Enter here certificate text" name="UnitName" [(ngModel)]="newskillUnitDTO.unitname">
         </div>
         <div class="form-group">
-            <label for="TrainingLevel">UnitLevel</label>
-            <input type="number" min="1" max="5" class="form-control" id="TrainingLevel" placeholder="Enter here certificate text" name="TrainingLevel" [(ngModel)]="newtrainingDTO.trainingLevel">
+            <label for="UnitLevel">UnitLevel</label>
+            <input type="number" min="1" max="5" class="form-control" id="UnitLevel" placeholder="Enter here certificate text" name="UnitLevel" [(ngModel)]="newskillUnitDTO.unitLevel">
         </div>
 
         <div class="form-group">
-            <label for="Category">User Skill</label>
+            <label for="SuUserSkill">User Skill</label>
             <div class="input-group">
               <div class="w-100">
-                <select class="form-control custom-select" id="Category" name="Category" [(ngModel)]="newtrainingDTO.idCategory">
-                  <option *ngFor="let ct of categoryDTOs let in=index" [value]="ct.id">{{ct.title}}</option>
+                <select class="form-control custom-select" id="SuUserSkill" name="SuUserSkill" [(ngModel)]="newskillUnitDTO.idUserSkill">
+                  <option *ngFor="let us of userSkillDTOs let in=index" [value]="us.id">{{us.skillname}}</option>
                 </select>
               </div>
             </div>
@@ -191,19 +200,19 @@
 
         <div class="form-row">
             <div class="form-group col">
-              <label for="StartDate">Start Date</label>
-              <input type="date" class="form-control" id="StartDate" placeholder="Enter start date" name="usStart" [(ngModel)]="newtrainingDTO.startDate">
+              <label for="SuStartDate">Start Date</label>
+              <input type="date" class="form-control" id="SuStartDate" placeholder="Enter start date" name="SuStartDate" [(ngModel)]="newskillUnitDTO.startDate">
             </div>
             <div class="form-group col">
-              <label for="EndDate">End Date</label>
-              <input type="date" class="form-control" id="EndDate" placeholder="Enter end date" name="usEnd" [(ngModel)]="newtrainingDTO.endDate">
+              <label for="SuEndDate">End Date</label>
+              <input type="date" class="form-control" id="SuEndDate" placeholder="Enter end date" name="SuEndDate" [(ngModel)]="newskillUnitDTO.endDate">
             </div>
         </div>
 
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="createTraining()">Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="createSkillUnit()">Save</button>
     </div>
   </ng-template>
 
@@ -217,38 +226,38 @@
     <div class="modal-body">
       <form>
         <div class="form-group">
-            <label for="TrainingTitle">MetricName</label>
-            <input type="text" class="form-control" id="TrainingTitle" placeholder="Enter here certificate text" name="TrainingTitle" [(ngModel)]="newtrainingDTO.trainingTitle">
+            <label for="MetricName">Metric Name</label>
+            <input type="text" class="form-control" id="MetricName" placeholder="Enter here certificate text" name="MetricName" [(ngModel)]="newskillMetricDTO.metricName">
         </div>
         <div class="form-group">
-            <label for="TrainingLevel">MetricValue</label>
-            <input type="number" min="1" max="5" class="form-control" id="TrainingLevel" placeholder="Enter here certificate text" name="TrainingLevel" [(ngModel)]="newtrainingDTO.trainingLevel">
+            <label for="MetricValue">MetricValue</label>
+            <input type="number" min="1" max="5" class="form-control" id="MetricValue" placeholder="Enter here certificate text" name="MetricValue" [(ngModel)]="newskillMetricDTO.metricValue">
         </div>
 
         <div class="form-group">
-            <label for="Category">User Skill</label>
+            <label for="SmUserSkill">User Skill</label>
             <div class="input-group">
               <div class="w-100">
-                <select class="form-control custom-select" id="Category" name="Category" [(ngModel)]="newtrainingDTO.idCategory">
-                  <option *ngFor="let ct of categoryDTOs let in=index" [value]="ct.id">{{ct.title}}</option>
+                <select class="form-control custom-select" id="SmUserSkill" name="SmUserSkill" [(ngModel)]="newskillMetricDTO.idUserSkill">
+                  <option *ngFor="let us of userSkillDTOs let in=index" [value]="us.id">{{us.skillname}}</option>
                 </select>
               </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="TrainingLevel">MetricInfluence</label>
-            <input type="number" min="1" max="5" class="form-control" id="TrainingLevel" placeholder="Enter here certificate text" name="TrainingLevel" [(ngModel)]="newtrainingDTO.trainingLevel">
+            <label for="MetricInfluence">Metric Influence</label>
+            <input type="number" min="0.1" max="1" step="0.1" class="form-control" id="MetricInfluence" placeholder="Enter here certificate text" name="MetricInfluence" [(ngModel)]="newskillMetricDTO.metricInfluence">
         </div>
 
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="createTraining()">Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="createSkillMetric()">Save</button>
     </div>
   </ng-template>
 
-  <ng-template #сmModal let-modal class="w-50">
+  <ng-template #cmModal let-modal class="w-50">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Create comment</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -258,24 +267,25 @@
     <div class="modal-body">
       <form>
         <div class="form-group">
-            <label for="TrainingTitle">Comment Text</label>
-            <input type="text" class="form-control" id="TrainingTitle" placeholder="Enter here certificate text" name="TrainingTitle" [(ngModel)]="newtrainingDTO.trainingTitle">
+          <label for="CommentText">Comment Text</label>
+          <input type="text" class="form-control" id="CommentText" placeholder="Enter here certificate text" name="CommentText" [(ngModel)]="newcommentDTO.commentText">
         </div>
 
         <div class="form-group">
-            <label for="Category">User Skill</label>
-            <div class="input-group">
-              <div class="w-100">
-                <select class="form-control custom-select" id="Category" name="Category" [(ngModel)]="newtrainingDTO.idCategory">
-                  <option *ngFor="let ct of categoryDTOs let in=index" [value]="ct.id">{{ct.title}}</option>
-                </select>
-              </div>
+          <label for="CmUserSkill">User Skill</label>
+          <div class="input-group">
+            <div class="w-100">
+              <select class="form-control custom-select" id="CmUserSkill" name="CmUserSkill" [(ngModel)]="newcommentDTO.idUserSkill">
+                <option *ngFor="let us of userSkillDTOs let in=index" [value]="us.id">{{us.skillname}}</option>
+              </select>
             </div>
+          </div>
         </div>
+
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="createTraining()">Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="createComment()">Save</button>
     </div>
   </ng-template>
 

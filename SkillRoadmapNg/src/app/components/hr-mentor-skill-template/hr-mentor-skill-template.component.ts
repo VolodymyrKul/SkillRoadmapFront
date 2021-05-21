@@ -7,6 +7,7 @@ import { RequirementService } from 'src/app/services/requirement.service';
 import { SkillTemplateService } from 'src/app/services/skill-template.service';
 import { ViewChild, TemplateRef } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { TrainingDTO } from 'src/app/models/training-dto';
 
 @Component({
   selector: 'app-hr-mentor-skill-template',
@@ -24,6 +25,9 @@ export class HrMentorSkillTemplateComponent implements OnInit {
   skillTemplateDTOs: SkillTemplateDTO[] = [];
   requirementDTOs: RequirementDTO[] = [];
   comparationDTOs: ComparationDTO[] = [];
+  showSkillTemplateDTOs: SkillTemplateDTO[] = [];
+  showRequirementDTOs: RequirementDTO[] = [];
+  showComparationDTOs: ComparationDTO[] = [];
   isHaveReqs: boolean[] = [];
   isMeetReqs: boolean[] = [];
   newskillTemplateDTO: SkillTemplateDTO = new SkillTemplateDTO(0, "Title", "Description", 5000);
@@ -56,12 +60,14 @@ export class HrMentorSkillTemplateComponent implements OnInit {
     this.skillTemplateService.getAll()
     .subscribe((data: SkillTemplateDTO[] | any) => {
       this.skillTemplateDTOs = data;
+      this.showSkillTemplateDTOs = data;
       console.log(this.skillTemplateDTOs);
     });
 
     this.requirementService.getAll()
     .subscribe((data: RequirementDTO[] | any) => {
       this.requirementDTOs = data;
+      this.showRequirementDTOs = data;
       console.log(this.requirementDTOs);
     });
   }
@@ -92,15 +98,43 @@ export class HrMentorSkillTemplateComponent implements OnInit {
     }
   }
 
+  deleteSkillTemplate(st: SkillTemplateDTO){
+    this.skillTemplateService.delete(st.id)
+    .subscribe(() => this.loadData());
+  }
+
+  deleteRequirement(req: RequirementDTO){
+    this.requirementService.delete(req.id)
+    .subscribe(() => this.loadData());
+  }
+
+  deleteComparation(com: ComparationDTO){
+    this.comparationService.delete(com.id)
+    .subscribe(() => this.loadData());
+  }
+
   createTemplate(){
     console.log(this.newskillTemplateDTO);
+    this.skillTemplateService.pull(this.newskillTemplateDTO)
+    .subscribe(() => {
+      this.loadData();
+    });
     this.modalService.dismissAll();
   }
 
   createRequirement(){
     this.newrequirementDTO.idSkillTemplate = parseInt(this.newrequirementDTO.idSkillTemplate.toString(), 10);
+    /*this.requirementService.pull(this.newrequirementDTO)
+    .subscribe(() => {
+      this.loadData();
+    });*/
     console.log(this.newrequirementDTO);
     this.modalService.dismissAll();
+  }
+
+  showSelectedReqs(st: SkillTemplateDTO){
+    this.showRequirementDTOs = this.requirementDTOs.filter(req => req.idSkillTemplate == st.id);
+    this.selectReqTable();
   }
 
   selectStTable(){

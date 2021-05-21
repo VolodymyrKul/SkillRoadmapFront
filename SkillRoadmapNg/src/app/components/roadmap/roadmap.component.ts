@@ -9,6 +9,7 @@ import { SkillUnit } from '../../models/skill-unit';
 import { SkillMetric } from '../../models/skill-metric';
 import { SkillMetricService } from '../../services/skill-metric.service';
 import { SkillUnitService } from 'src/app/services/skill-unit.service';
+import { SkillMetricDTO } from 'src/app/models/skill-metric-dto';
 
 @Component({
   selector: 'app-roadmap',
@@ -60,7 +61,13 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
   unit3: boolean = false;
   currentStep: number = 1;
   userRole: string = '';
+  skillMetricDTOs: SkillMetricDTO[] = []; 
   ngOnInit(): void {
+    this.skillMetricService.getAll()
+    .subscribe((data: SkillMetricDTO[] | any) => {
+      this.skillMetricDTOs = data;
+    });
+
     this.userRole = localStorage.getItem('currentrole');
     if(this.userRole == 'HR' || this.userRole == 'Mentor'){
       this.userSkillService.getYears(localStorage.getItem('currentroadmap'))
@@ -170,7 +177,7 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
 
       svgItem.setAttribute("height","20");
       const catskills: UserSkill[] = this.userSkills.filter(us => us?.categoryName === this.categories[index]);
-      //console.log(catskills.length);
+      console.log(catskills);
 
       catskills.forEach(skill => {
         svgItem.setAttribute("height", (parseInt(svgItem.getAttribute("height"),10)+40).toString());
@@ -190,18 +197,48 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
         const elmwidth = (endMonth*300 + (endDay)*1.0/this.daysInMonth(endMonth+1, tmpyear)*300) - xpos;
         rect.setAttribute("width", elmwidth.toString());
         rect.setAttribute("height","10");
-        rect.setAttribute("style","fill:url(#solids)");
-        //rect.setAttribute("style","fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)");
-        rect.addEventListener("click", () => {this.openCustomDialog()});
-        var res = this.comments.find(com => com.userSkillName == skill.skillname.toString());
-        if(res != undefined){
-          rect.innerHTML = "<title>" + 'User ' + res.employerEmail + ' leave this comment: ' + res.commentText + "</title>"
+        //rect.setAttribute("style","fill:url(#solids)");
+        if(skill.skillLevel == 1){
+          rect.setAttribute("style","fill:rgb(230, 47, 44);stroke-width:3;stroke:rgb(0,0,0)");
         }
+        else if(skill.skillLevel == 2){
+          rect.setAttribute("style","fill:rgb(221, 230, 44);stroke-width:3;stroke:rgb(0,0,0)");
+        }
+        else if(skill.skillLevel == 3){
+          rect.setAttribute("style","fill:rgb(91, 230, 44);stroke-width:3;stroke:rgb(0,0,0)");
+        }
+        else if(skill.skillLevel == 4){
+          rect.setAttribute("style","fill:rgb(44, 230, 211);stroke-width:3;stroke:rgb(0,0,0)");
+        }
+        else {
+          rect.setAttribute("style","fill:rgb(44, 103, 230);stroke-width:3;stroke:rgb(0,0,0)");
+        }
+        rect.addEventListener("click", () => {this.openCustomDialog()});
+        var res = this.comments.filter(com => com.userSkillName == skill.skillname.toString());
+        var smetrics = this.skillMetricDTOs.filter(sm => sm.skillName == skill.skillname.toString());
+        var tmpcomments = "";
+        var tmpmetrics = "\nThere are metrics for this skill:\n";
+        if(res != undefined){
+          res.forEach(r => {
+            tmpcomments += 'User ' + r.employerEmail + ' leave this comment: ' + r.commentText + '\n';
+          });
+          console.log(tmpcomments);
+        }
+        if(smetrics != undefined){
+          smetrics = smetrics.slice(0, 3);
+          smetrics.forEach(sm => {
+            tmpmetrics += sm.metricName + " : " + sm.metricValue.toString() + " : " + sm.metricInfluence.toString() + '\n';
+          });
+        }
+        rect.innerHTML = "<title>" + tmpcomments + tmpmetrics + "</title>";
+        /*if(res != undefined){
+          rect.innerHTML = "<title>" + 'User ' + res.employerEmail + ' leave this comment: ' + res.commentText + "\n" + "Hello world" + "</title>";
+        }*/
         svgItem.appendChild(rect);
 
         const txt = document.createElementNS("http://www.w3.org/2000/svg","text");
         txt.setAttribute("name", "SkillText");
-        txt.setAttribute("fill", "red");
+        txt.setAttribute("fill", "black");
         txt.setAttribute("x", xpos.toString());
         txt.setAttribute("y", (ypos-10).toString());
         txt.innerHTML = skill.skillname.toString();

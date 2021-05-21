@@ -8,6 +8,7 @@ import { RecommendationDTO } from 'src/app/models/recommendation-dto';
 import { EmployeeDTO } from 'src/app/models/employee-dto';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { RecommendationService } from 'src/app/services/recommendation.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-trainings',
@@ -16,7 +17,7 @@ import { RecommendationService } from 'src/app/services/recommendation.service';
 })
 export class TrainingsComponent implements OnInit {
 
-  @ViewChild('trainingModal')
+  /*@ViewChild('trainingModal')
   private createRef: TemplateRef<any>;
 
   trainings: Training[] = [];
@@ -31,25 +32,24 @@ export class TrainingsComponent implements OnInit {
   closeResult: string = "";
   addedRecommend: RecommendationDTO = new RecommendationDTO(0,0,"",false,0,"","","");
   recInvitation: string = "";
-  employees: EmployeeDTO[] = [];
+  employees: EmployeeDTO[] = [];*/
+  trainingDTO: TrainingDTO = new TrainingDTO();
 
   constructor(private trainingService: TrainingService, private modalService: NgbModal, 
-    private employeeService: EmployeeService, private recommendationService: RecommendationService) { }
+    private employeeService: EmployeeService, private recommendationService: RecommendationService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem('currentrole');
+    console.log(this.route.snapshot.queryParamMap.get('trId'));
+    this.trainingService.getById(parseInt(this.route.snapshot.queryParamMap.get('trId'), 10))
+    .subscribe((data: TrainingDTO | any) => {
+      this.trainingDTO = data;
+      this.trainingDTO.startDate = new Date(this.trainingDTO.startDate);
+      this.trainingDTO.endDate = new Date(this.trainingDTO.endDate);
+    });
+
+    /*this.userRole = localStorage.getItem('currentrole');
     if(this.userRole == 'HR' || this.userRole == 'Mentor'){
       this.tableMode = true;
-      /*this.trainingService.getByCoach(localStorage.getItem("currentuser"))
-      .subscribe((data : Training[] | any) => {
-        this.showTrainings = data;
-        this.trainingMode = [];
-        this.showTrainings.forEach(tr => {
-          this.trainingMode.push(false);
-          tr.startDate = new Date(tr.startDate);
-          tr.endDate = new Date(tr.endDate);
-        })
-      });*/
       this.trainingService.getByCoachId(parseInt(localStorage.getItem("currentuserid"), 10))
       .subscribe((data: TrainingDTO[] | any) => {
         this.showTrainingsDTO = data;
@@ -67,19 +67,6 @@ export class TrainingsComponent implements OnInit {
     }
     else{
       this.tableMode = false;
-      /*this.trainingService.getWithCategs()
-      .subscribe((data : Training[] | any) => {
-        this.trainings = data;
-        this.trainingMode = [];
-        this.trainings.forEach(tr => {
-          this.categs.push(tr.categoryName);
-          tr.startDate = new Date(tr.startDate);
-          tr.endDate = new Date(tr.endDate);
-        });
-        this.categs = this.categs.filter((x, i, a) => a.indexOf(x) === i);
-        this.showTrainings = this.trainings.filter(tr => tr.categoryName == this.categs[0]);
-        this.showTrainings.forEach(tr => this.trainingMode.push(false));
-      });*/
       this.trainingService.getAll()
       .subscribe((data : TrainingDTO[] | any) => {
         this.trainingsDTO = data;
@@ -93,10 +80,10 @@ export class TrainingsComponent implements OnInit {
         this.showTrainingsDTO = this.trainingsDTO.filter(tr => tr.categoryTitle == this.categs[0]);
         this.showTrainingsDTO.forEach(tr => this.trainingMode.push(false));
       });
-    }
+    }*/
   }
 
-  selectCateg(categ: string){
+  /*selectCateg(categ: string){
     this.showTrainings = this.trainings.filter(tr => tr.categoryName == categ);
     this.trainingMode = [];
     this.showTrainings.forEach(tr => this.trainingMode.push(false));
@@ -107,7 +94,6 @@ export class TrainingsComponent implements OnInit {
   }
 
   openCreateTrModal(){
-    //console.log(this.createRef);
     this.modalService.open(this.createRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -136,5 +122,5 @@ export class TrainingsComponent implements OnInit {
       this.addedRecommend.idTraining = training.id;
       this.recommendationService.pull(this.addedRecommend);
     })    
-  }
+  }*/
 }
