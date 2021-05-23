@@ -31,7 +31,7 @@ export class HrMentorSkillTemplateComponent implements OnInit {
   isHaveReqs: boolean[] = [];
   isMeetReqs: boolean[] = [];
   newskillTemplateDTO: SkillTemplateDTO = new SkillTemplateDTO(0, "Title", "Description", 5000);
-  newrequirementDTO: RequirementDTO = new RequirementDTO(0, "Req Title", 1, 1);
+  newrequirementDTO: RequirementDTO = new RequirementDTO(0, "Req Title", 1, 1, '');
 
   stTable: boolean = true;
   reqTable: boolean = false;
@@ -134,6 +134,8 @@ export class HrMentorSkillTemplateComponent implements OnInit {
 
   showSelectedReqs(st: SkillTemplateDTO){
     this.showRequirementDTOs = this.requirementDTOs.filter(req => req.idSkillTemplate == st.id);
+    this.newrequirementDTO.idSkillTemplate = st.id;
+    this.newrequirementDTO.templateTitle = st.templateTitle;
     this.selectReqTable();
   }
 
@@ -193,11 +195,11 @@ export class HrMentorSkillTemplateComponent implements OnInit {
 
   byReqMode1(){
     if(this.reqmode1){
-      this.requirementDTOs.sort((a,b) => (a.reqTitle==undefined || b.reqTitle==undefined) ? 
+      this.showRequirementDTOs.sort((a,b) => (a.reqTitle==undefined || b.reqTitle==undefined) ? 
       0 : (a.reqTitle > b.reqTitle) ? 1 : (b.reqTitle > a.reqTitle) ? -1 : 0);
     }
     else{
-      this.requirementDTOs.sort((a,b) => (a.reqTitle==undefined || b.reqTitle==undefined) ? 
+      this.showRequirementDTOs.sort((a,b) => (a.reqTitle==undefined || b.reqTitle==undefined) ? 
       0 : (a.reqTitle < b.reqTitle) ? 1 : (b.reqTitle < a.reqTitle) ? -1 : 0);
     }
     this.reqmode1=!this.reqmode1;
@@ -205,11 +207,11 @@ export class HrMentorSkillTemplateComponent implements OnInit {
 
   byReqMode2(){
     if(this.reqmode2){
-      this.requirementDTOs.sort((a,b) => (a.reqLevel==undefined || b.reqLevel==undefined) ? 
+      this.showRequirementDTOs.sort((a,b) => (a.reqLevel==undefined || b.reqLevel==undefined) ? 
       0 : (a.reqLevel > b.reqLevel) ? 1 : (b.reqLevel > a.reqLevel) ? -1 : 0);
     }
     else{
-      this.requirementDTOs.sort((a,b) => (a.reqLevel==undefined || b.reqLevel==undefined) ? 
+      this.showRequirementDTOs.sort((a,b) => (a.reqLevel==undefined || b.reqLevel==undefined) ? 
       0 : (a.reqLevel < b.reqLevel) ? 1 : (b.reqLevel < a.reqLevel) ? -1 : 0);
     }
     this.reqmode2=!this.reqmode2;
@@ -217,11 +219,11 @@ export class HrMentorSkillTemplateComponent implements OnInit {
 
   byReqMode3(){
     if(this.reqmode3){
-      this.requirementDTOs.sort((a,b) => (a.templateTitle==undefined || b.templateTitle==undefined) ? 
+      this.showRequirementDTOs.sort((a,b) => (a.templateTitle==undefined || b.templateTitle==undefined) ? 
       0 : (a.templateTitle > b.templateTitle) ? 1 : (b.templateTitle > a.templateTitle) ? -1 : 0);
     }
     else{
-      this.requirementDTOs.sort((a,b) => (a.templateTitle==undefined || b.templateTitle==undefined) ? 
+      this.showRequirementDTOs.sort((a,b) => (a.templateTitle==undefined || b.templateTitle==undefined) ? 
       0 : (a.templateTitle < b.templateTitle) ? 1 : (b.templateTitle < a.templateTitle) ? -1 : 0);
     }
     this.reqmode3=!this.reqmode3;

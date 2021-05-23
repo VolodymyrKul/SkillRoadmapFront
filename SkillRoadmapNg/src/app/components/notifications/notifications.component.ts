@@ -41,13 +41,25 @@ export class NotificationsComponent implements OnInit {
     private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.notificationService.getByEmpployee(localStorage.getItem('currentuser'))
-    .subscribe((data: Notification[] | any) => {
-      this.mynotifications = data;
-      this.mynotifications.forEach(n => {
-        n.sendingDate = new Date(n.sendingDate);
+    var userRole = localStorage.getItem('currentrole');
+    if(userRole == 'HR' || userRole == 'Mentor'){
+      this.notificationService.getByEmpployer(localStorage.getItem('currentuser'))
+      .subscribe((data: Notification[] | any) => {
+        this.mynotifications = data;
+        this.mynotifications.forEach(n => {
+          n.sendingDate = new Date(n.sendingDate);
+        });
       });
-    });
+    }
+    else{
+      this.notificationService.getByEmpployee(localStorage.getItem('currentuser'))
+      .subscribe((data: Notification[] | any) => {
+        this.mynotifications = data;
+        this.mynotifications.forEach(n => {
+          n.sendingDate = new Date(n.sendingDate);
+        });
+      });
+    }
     this.employerService.getAll()
     .subscribe((data: EmployerDTO[] | any) => {
       this.employers = data;

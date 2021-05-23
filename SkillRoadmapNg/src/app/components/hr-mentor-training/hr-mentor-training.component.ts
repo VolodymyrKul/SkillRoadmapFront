@@ -28,6 +28,7 @@ export class HrMentorTrainingComponent implements OnInit {
 
   trainingDTOs: TrainingDTO[] = [];
   recommendationDTOs: RecommendationDTO[] = [];
+  showRecommendationDTOs: RecommendationDTO[] = [];
   trainingMemberDTOs: TrainingMemberDTO[] = [];
   showTrainingMemberDTOs: TrainingMemberDTO[] = [];
   categoryDTOs: CategoryDTO[] = [];
@@ -58,6 +59,8 @@ export class HrMentorTrainingComponent implements OnInit {
 
   closeResult = '';
 
+  trLevels: string[] = [];
+
   constructor(private trainingService: TrainingService, 
     private recommendationService: RecommendationService, 
     private trainingMemberService: TrainingMemberService,
@@ -69,18 +72,56 @@ export class HrMentorTrainingComponent implements OnInit {
     this.loadData();
   }
 
+  updateTrLevels(){
+    this.trLevels = [];
+    this.trainingDTOs.forEach(us => {
+      switch (us.trainingLevel) {
+        case 1:
+            this.trLevels.push("Beginner");
+            break;
+        case 2:
+            this.trLevels.push("Elementary");
+            break;
+        case 3:
+            this.trLevels.push("Intermediate");
+            break;
+        case 4:
+            this.trLevels.push("Advanced");
+            break;
+        case 5:
+            this.trLevels.push("Proficiency");
+            break;
+      }
+    })
+  }
+
   loadData(){
     this.trainingService.getByCoachId(parseInt(localStorage.getItem("currentuserid"), 10))
     .subscribe((data: TrainingDTO[] | any) => {
       this.trainingDTOs = data;
+      this.updateTrLevels();
       this.trainingDTOs.forEach(tr => {
         tr.startDate = new Date(tr.startDate);
         tr.endDate = new Date(tr.endDate);
 
         this.recommendationService.getTrainingsById(tr.id)
         .subscribe((data: RecommendationDTO[] | any) => {
-          if(data != undefined && data != null && data.length > 1){
-            this.recommendationDTOs.push(data[0]);
+          var currentRecommendations: RecommendationDTO[] = data;
+          var recInvitations: string[] = [];
+          if(currentRecommendations != undefined && currentRecommendations != null && currentRecommendations.length > 1){
+            recInvitations.push(currentRecommendations[0].invitation);
+            this.recommendationDTOs.push(currentRecommendations[0]);
+            currentRecommendations.forEach(cur => {
+              var isRepeat=false;
+              recInvitations.forEach(inv => {
+                if(inv == cur.invitation){
+                  isRepeat=true;
+                }
+              });
+              if(isRepeat == false){
+                this.recommendationDTOs.push(cur);
+              }
+            });
           }
         })
 
@@ -191,6 +232,17 @@ export class HrMentorTrainingComponent implements OnInit {
     this.selectTrMemTable();
   }
 
+  showTrRecs(d: TrainingDTO){
+    this.showRecommendationDTOs = [];
+    this.recommendationDTOs.forEach(tr => {
+      this.showRecommendationDTOs.push(tr);
+    });
+    this.showRecommendationDTOs = this.showRecommendationDTOs.filter(tr => tr.idTraining == d.id);
+    this.newrecommendationDTO.idTraining = d.id;
+    this.newrecommendationDTO.trainingTitle = d.trainingTitle;
+    this.selectRecTable();
+  }
+
   byTrMode1(){
     if(this.trmode1){
       this.trainingDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
@@ -200,6 +252,7 @@ export class HrMentorTrainingComponent implements OnInit {
       this.trainingDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
       0 : (a.trainingTitle < b.trainingTitle) ? 1 : (b.trainingTitle < a.trainingTitle) ? -1 : 0);
     }
+    this.updateTrLevels();
     this.trmode1=!this.trmode1;
   }
   byTrMode2(){
@@ -211,6 +264,7 @@ export class HrMentorTrainingComponent implements OnInit {
       this.trainingDTOs.sort((a,b) => (a.trainingLevel==undefined || b.trainingLevel==undefined) ? 
       0 : (a.trainingLevel < b.trainingLevel) ? 1 : (b.trainingLevel < a.trainingLevel) ? -1 : 0);
     }
+    this.updateTrLevels();
     this.trmode2=!this.trmode2;
   }
   byTrMode3(){
@@ -222,6 +276,7 @@ export class HrMentorTrainingComponent implements OnInit {
       this.trainingDTOs.sort((a,b) => (a.startDate==undefined || b.startDate==undefined) ? 
       0 : (a.startDate < b.startDate) ? 1 : (b.startDate < a.startDate) ? -1 : 0);
     }
+    this.updateTrLevels();
     this.trmode3=!this.trmode3;
   }
   byTrMode4(){
@@ -233,6 +288,7 @@ export class HrMentorTrainingComponent implements OnInit {
       this.trainingDTOs.sort((a,b) => (a.endDate==undefined || b.endDate==undefined) ? 
       0 : (a.endDate < b.endDate) ? 1 : (b.endDate < a.endDate) ? -1 : 0);
     }
+    this.updateTrLevels();
     this.trmode4=!this.trmode4;
   }
   byTrMode5(){
@@ -244,6 +300,7 @@ export class HrMentorTrainingComponent implements OnInit {
       this.trainingDTOs.sort((a,b) => (a.payment==undefined || b.payment==undefined) ? 
       0 : (a.payment < b.payment) ? 1 : (b.payment < a.payment) ? -1 : 0);
     }
+    this.updateTrLevels();
     this.trmode5=!this.trmode5;
   }
   byTrMode6(){
@@ -255,6 +312,7 @@ export class HrMentorTrainingComponent implements OnInit {
       this.trainingDTOs.sort((a,b) => (a.coachNSN==undefined || b.coachNSN==undefined) ? 
       0 : (a.coachNSN < b.coachNSN) ? 1 : (b.coachNSN < a.coachNSN) ? -1 : 0);
     }
+    this.updateTrLevels();
     this.trmode6=!this.trmode6;
   }
   byTrMode7(){
@@ -266,16 +324,17 @@ export class HrMentorTrainingComponent implements OnInit {
       this.trainingDTOs.sort((a,b) => (a.categoryTitle==undefined || b.categoryTitle==undefined) ? 
       0 : (a.categoryTitle < b.categoryTitle) ? 1 : (b.categoryTitle < a.categoryTitle) ? -1 : 0);
     }
+    this.updateTrLevels();
     this.trmode7=!this.trmode7;
   }
 
   byRecMode1(){
     if(this.recmode1){
-      this.recommendationDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
+      this.showRecommendationDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
       0 : (a.trainingTitle > b.trainingTitle) ? 1 : (b.trainingTitle > a.trainingTitle) ? -1 : 0);
     }
     else{
-      this.recommendationDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
+      this.showRecommendationDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
       0 : (a.trainingTitle < b.trainingTitle) ? 1 : (b.trainingTitle < a.trainingTitle) ? -1 : 0);
     }
     this.recmode1=!this.recmode1;
@@ -283,11 +342,11 @@ export class HrMentorTrainingComponent implements OnInit {
 
   byRecMode2(){
     if(this.recmode2){
-      this.recommendationDTOs.sort((a,b) => (a.invitation==undefined || b.invitation==undefined) ? 
+      this.showRecommendationDTOs.sort((a,b) => (a.invitation==undefined || b.invitation==undefined) ? 
       0 : (a.invitation > b.invitation) ? 1 : (b.invitation > a.invitation) ? -1 : 0);
     }
     else{
-      this.recommendationDTOs.sort((a,b) => (a.invitation==undefined || b.invitation==undefined) ? 
+      this.showRecommendationDTOs.sort((a,b) => (a.invitation==undefined || b.invitation==undefined) ? 
       0 : (a.invitation < b.invitation) ? 1 : (b.invitation < a.invitation) ? -1 : 0);
     }
     this.recmode2=!this.recmode2;
@@ -295,11 +354,11 @@ export class HrMentorTrainingComponent implements OnInit {
 
   byMemMode1(){
     if(this.memmode1){
-      this.trainingMemberDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
+      this.showTrainingMemberDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
       0 : (a.trainingTitle > b.trainingTitle) ? 1 : (b.trainingTitle > a.trainingTitle) ? -1 : 0);
     }
     else{
-      this.trainingMemberDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
+      this.showTrainingMemberDTOs.sort((a,b) => (a.trainingTitle==undefined || b.trainingTitle==undefined) ? 
       0 : (a.trainingTitle < b.trainingTitle) ? 1 : (b.trainingTitle < a.trainingTitle) ? -1 : 0);
     }
     this.memmode1=!this.memmode1;
@@ -307,11 +366,11 @@ export class HrMentorTrainingComponent implements OnInit {
 
   byMemMode2(){
     if(this.memmode2){
-      this.trainingMemberDTOs.sort((a,b) => (a.memberNSN==undefined || b.memberNSN==undefined) ? 
+      this.showTrainingMemberDTOs.sort((a,b) => (a.memberNSN==undefined || b.memberNSN==undefined) ? 
       0 : (a.memberNSN > b.memberNSN) ? 1 : (b.memberNSN > a.memberNSN) ? -1 : 0);
     }
     else{
-      this.trainingMemberDTOs.sort((a,b) => (a.memberNSN==undefined || b.memberNSN==undefined) ? 
+      this.showTrainingMemberDTOs.sort((a,b) => (a.memberNSN==undefined || b.memberNSN==undefined) ? 
       0 : (a.memberNSN < b.memberNSN) ? 1 : (b.memberNSN < a.memberNSN) ? -1 : 0);
     }
     this.memmode2=!this.memmode2;
@@ -319,11 +378,11 @@ export class HrMentorTrainingComponent implements OnInit {
 
   byMemMode3(){
     if(this.memmode3){
-      this.trainingMemberDTOs.sort((a,b) => (a.isEnded==undefined || b.isEnded==undefined) ? 
+      this.showTrainingMemberDTOs.sort((a,b) => (a.isEnded==undefined || b.isEnded==undefined) ? 
       0 : (a.isEnded > b.isEnded) ? 1 : (b.isEnded > a.isEnded) ? -1 : 0);
     }
     else{
-      this.trainingMemberDTOs.sort((a,b) => (a.isEnded==undefined || b.isEnded==undefined) ? 
+      this.showTrainingMemberDTOs.sort((a,b) => (a.isEnded==undefined || b.isEnded==undefined) ? 
       0 : (a.isEnded < b.isEnded) ? 1 : (b.isEnded < a.isEnded) ? -1 : 0);
     }
     this.memmode3=!this.memmode3;

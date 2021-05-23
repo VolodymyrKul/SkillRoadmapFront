@@ -9,7 +9,42 @@
     </div>-->
 
     <div *ngIf="stTable" class="row mt-4">
-        <table class="table table-striped w-100">
+        <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">TemplateTitle
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byStMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode1, 'fa-caret-up' : stmode1}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Description
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byStMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode2, 'fa-caret-up' : stmode2}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">AverageSalary
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byStMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode3, 'fa-caret-up' : stmode3}"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+            <div style="width: 25%;" *ngFor="let st of skillTemplateDTOs let in=index">
+                <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
+                    <div><strong>TemplateTitle: </strong>{{st.templateTitle}}</div>
+                    <div><strong>Description: </strong>{{st.description}}</div>
+                    <div><strong>AverageSalary: </strong>{{st.averageSalary}}</div>
+                    <div><i title="Show requirements for selected template" (click)="showSelectedReqs(st)" class="fas fa-arrow-circle-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!--<table class="table table-striped w-100">
             <thead>
                 <th scope="col">#</th>
                 <th scope="col">TemplateTitle<span style="float: right; cursor: pointer;"><i (click)="byStMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode1, 'fa-caret-up' : stmode1}"></i></span></th>
@@ -26,11 +61,59 @@
                     </tr>
                 </ng-container>
             </tbody>
-        </table>
+        </table>-->
     </div>
 
     <div *ngIf="reqTable" class="row mt-4">
-        <table class="table table-striped w-100">
+
+        <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-warning w-100">Back to tempalates
+                    <span style="float: right; cursor: pointer;">
+                        <i title="Back to templates" (click)="selectStTable()" class="fas fa-caret-square-left"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">ReqTitle
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byReqMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode1, 'fa-caret-up' : reqmode1}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">ReqLevel
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byReqMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode2, 'fa-caret-up' : reqmode2}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">TemplateTitle
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byReqMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode3, 'fa-caret-up' : reqmode3}"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+            <div style="width: 25%;" *ngFor="let req of requirementDTOs let in=index">
+                <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
+                    <div><strong>ReqTitle: </strong>{{req.reqTitle}}</div>
+                    <div><strong>ReqLevel: </strong>{{req.reqLevel}}</div>
+                    <div><strong>TemplateTitle: </strong>{{req.templateTitle}}</div>
+                    <div>
+                        <i title="Employee has skill" *ngIf="isHaveReqs[in]" class="fas fa-check"></i>
+                        <i title="Employee does not have skill" *ngIf="!isHaveReqs[in]" class="fas fa-times"></i>
+                        <i title="Employee has needed skill level" *ngIf="isMeetReqs[in]" class="ml-1 fas fa-plus"></i>
+                        <i title="Employee does not have needed skill level" *ngIf="!isMeetReqs[in]" class="ml-1 fas fa-minus"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<table class="table table-striped w-100">
             <thead>
                 <th scope="col"># <span style="float: left; cursor: pointer;"><i title="Back to templates" (click)="selectStTable()" class="fas fa-caret-square-left mr-1"></i></span></th>
                 <th scope="col">ReqTitle<span style="float: right; cursor: pointer;"><i (click)="byReqMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode1, 'fa-caret-up' : reqmode1}"></i></span></th>
@@ -53,7 +136,7 @@
                     </tr>
                 </ng-container>
             </tbody>
-        </table>
+        </table>-->
     </div>
 
 </div>

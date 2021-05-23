@@ -30,6 +30,7 @@ export class WorkerTrainingComponent implements OnInit {
   trmode5: boolean = false;
   trmode6: boolean = false;
   trmode7: boolean = false;
+  trmode8: boolean = false;
 
   mytrmode1: boolean = false;
   mytrmode2: boolean = false;
@@ -38,6 +39,7 @@ export class WorkerTrainingComponent implements OnInit {
   mytrmode5: boolean = false;
   mytrmode6: boolean = false;
   mytrmode7: boolean = false;
+  mytrmode8: boolean = false;
 
   recmode1: boolean = false;
   recmode2: boolean = false;
@@ -536,6 +538,18 @@ export class WorkerTrainingComponent implements OnInit {
     this.updateTrLevels();
     this.trmode7=!this.trmode7;
   }
+  byTrMode8(){
+    if(this.trmode8){
+      this.trainingDTOs.sort((a,b) => (a.description==undefined || b.description==undefined) ? 
+      0 : (a.description > b.description) ? 1 : (b.description > a.description) ? -1 : 0);
+    }
+    else{
+      this.trainingDTOs.sort((a,b) => (a.description==undefined || b.description==undefined) ? 
+      0 : (a.description < b.description) ? 1 : (b.description < a.description) ? -1 : 0);
+    }
+    this.updateTrLevels();
+    this.trmode8=!this.trmode8;
+  }
 
   byMyTrMode1(){
     if(this.mytrmode1){
@@ -620,6 +634,18 @@ export class WorkerTrainingComponent implements OnInit {
     }
     this.updateMyTrLevels();
     this.mytrmode7=!this.mytrmode7;
+  }
+  byMyTrMode8(){
+    if(this.mytrmode8){
+      this.myTrainingDTOs.sort((a,b) => (a.description==undefined || b.description==undefined) ? 
+      0 : (a.description > b.description) ? 1 : (b.description > a.description) ? -1 : 0);
+    }
+    else{
+      this.myTrainingDTOs.sort((a,b) => (a.description==undefined || b.description==undefined) ? 
+      0 : (a.description < b.description) ? 1 : (b.description < a.description) ? -1 : 0);
+    }
+    this.updateTrLevels();
+    this.mytrmode8=!this.mytrmode8;
   }
 
   byRecMode1(){

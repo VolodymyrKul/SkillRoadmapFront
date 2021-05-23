@@ -1,6 +1,19 @@
 <div class="w-75 mx-auto mt-1">
   <button class="btn btn-primary w-100" (click)="openNotifModal()" >Create notification</button>
-  <table class="table table-striped w-100">
+
+  <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+    <div style="width: 25%;" *ngFor="let notif of mynotifications let in=index">
+        <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
+            <div><strong>Notification text: </strong>{{notif?.notificationText}}</div>
+            <div><strong>Employee: </strong>{{notif?.employeeNSN}}</div>
+            <div><strong>Employer: </strong>{{notif?.employerNSN}}</div>
+            <div><strong>Skill name: </strong>{{notif?.skillname}}</div>
+            <div><strong>Sending date: </strong>{{notif?.sendingDate.toISOString().slice(0, 10)}}</div>
+        </div>
+    </div>
+  </div>
+
+  <!--<table class="table table-striped w-100">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -23,7 +36,7 @@
             </tr>
         </ng-container>
     </tbody>
-  </table>
+  </table>-->
 </div>
 
 <ng-template #notificationModal let-modal class="w-50">

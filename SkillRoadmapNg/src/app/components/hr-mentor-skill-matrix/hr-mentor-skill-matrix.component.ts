@@ -34,11 +34,15 @@ export class HrMentorSkillMatrixComponent implements OnInit {
   closeResult = '';
 
   userSkillDTOs: UserSkillDTO[] = [];
-  showUserSkillDTOs: UserSkillDTO[] = [];
+  //showUserSkillDTOs: UserSkillDTO[] = [];
+  //skillUnitDTOs: SkillUnitDTO[] = [];
+  //showSkillUnitDTOs: SkillUnitDTO[] = [];
+  //skillMetricDTOs: SkillMetricDTO[] = [];
+  //showSkillMetricDTOs: SkillMetricDTO[] = [];
+  loadskillUnitDTOs: SkillUnitDTO[] = [];
   skillUnitDTOs: SkillUnitDTO[] = [];
-  showSkillUnitDTOs: SkillUnitDTO[] = [];
+  loadskillMetricDTOs: SkillMetricDTO[] = [];
   skillMetricDTOs: SkillMetricDTO[] = [];
-  showSkillMetricDTOs: SkillMetricDTO[] = [];
   allCommentDTOs: CommentDTO[] = [];
   commentDTOs: CommentDTO[] = [];
   showCommentDTOs: CommentDTO[] = []; 
@@ -48,6 +52,12 @@ export class HrMentorSkillMatrixComponent implements OnInit {
   newskillMetricDTO: SkillMetricDTO = new SkillMetricDTO(0, "MetricName", 1, 0.1, 1);
   newcommentDTO: CommentDTO = new CommentDTO(0, "CommentText", parseInt(localStorage.getItem("currentuserid"), 10), 1);
 
+  filterSkillLevels: string[] = ["Beginner", "Elementary", "Intermediate", "Advanced", "Proficiency"];
+  filterLevel: string = "Beginner";
+  
+  skillLevels: string[] = [];
+  unitLevels: string[] = [];
+  metricLevels: string[] = [];
 
   usTable: boolean = true;
   suTable: boolean = false;
@@ -153,7 +163,247 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     .subscribe(() => this.loadData());
   }
 
+  filterByCategs(id: number){
+    this.loadskillUnitDTOs = [];
+    this.loadskillMetricDTOs = [];
+    this.allCommentDTOs = [];
+    this.commentDTOs = [];
+    this.showCommentDTOs = [];
+    this.userSkillService.getAll()
+    .subscribe((data: UserSkillDTO[] | any) => {
+      this.userSkillDTOs = data;
+
+      this.userSkillDTOs = this.userSkillDTOs.filter(us => us.idEmployee == parseInt(localStorage.getItem("currentmatrixemp"), 10));
+
+      this.userSkillDTOs.forEach(us => {
+        us.startDate = new Date(us.startDate);
+        us.endDate = new Date(us.endDate);
+      });
+
+      this.userSkillDTOs = this.userSkillDTOs.filter(us => us.idCategory == id);
+      this.updateUserSkillLevels();
+
+      this.commentService.getAll()
+        .subscribe((data: CommentDTO[] | any) => {
+          this.allCommentDTOs = data;
+        
+          this.userSkillDTOs.forEach(us => {
+
+            this.skillUnitService.getByUserSkillId(us.id)
+            .subscribe((data: SkillUnitDTO[] | any) => {
+              data.forEach(element => {
+                this.loadskillUnitDTOs.push(element);
+                this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].startDate = new Date(this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].startDate);
+                this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].endDate = new Date(this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].endDate);
+              });
+              this.skillUnitDTOs = this.loadskillUnitDTOs.slice();
+            });
+    
+            this.skillMetricService.getByUserSkillId(us.id)
+            .subscribe((data: SkillMetricDTO[] | any) => {
+              data.forEach(element => {
+                this.loadskillMetricDTOs.push(element);  
+              });
+              this.skillMetricDTOs = this.loadskillMetricDTOs.slice();
+            });
+    
+            this.commentDTOs = this.commentDTOs.concat(this.allCommentDTOs.filter(com => com.idUserSkill == us.id));
+          });
+          this.showCommentDTOs = this.commentDTOs.slice();
+        });
+    });
+  }
+
+  filterBySkillLevel(level: string){
+    var selectedLevel: number = 1;
+    switch (level) {
+      case "Beginner":
+          selectedLevel = 1;
+          break;
+      case "Elementary":
+          selectedLevel = 2;
+          break;
+      case "Intermediate":
+          selectedLevel = 3;
+          break;
+      case "Advanced":
+          selectedLevel = 4;
+          break;
+      case "Proficiency":
+          selectedLevel = 5;
+          break;
+    }
+
+    this.loadskillUnitDTOs = [];
+    this.loadskillMetricDTOs = [];
+    this.allCommentDTOs = [];
+    this.commentDTOs = [];
+    this.showCommentDTOs = [];
+    this.userSkillService.getAll()
+    .subscribe((data: UserSkillDTO[] | any) => {
+      this.userSkillDTOs = data;
+
+      this.userSkillDTOs = this.userSkillDTOs.filter(us => us.idEmployee == parseInt(localStorage.getItem("currentmatrixemp"), 10));
+
+      this.userSkillDTOs.forEach(us => {
+        us.startDate = new Date(us.startDate);
+        us.endDate = new Date(us.endDate);
+      });
+
+      this.userSkillDTOs = this.userSkillDTOs.filter(us => us.skillLevel == selectedLevel);
+      this.updateUserSkillLevels();
+
+      this.commentService.getAll()
+        .subscribe((data: CommentDTO[] | any) => {
+          this.allCommentDTOs = data;
+        
+          this.userSkillDTOs.forEach(us => {
+
+            this.skillUnitService.getByUserSkillId(us.id)
+            .subscribe((data: SkillUnitDTO[] | any) => {
+              data.forEach(element => {
+                this.loadskillUnitDTOs.push(element);
+                this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].startDate = new Date(this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].startDate);
+                this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].endDate = new Date(this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].endDate);
+              });
+              this.skillUnitDTOs = this.loadskillUnitDTOs.slice();
+            });
+    
+            this.skillMetricService.getByUserSkillId(us.id)
+            .subscribe((data: SkillMetricDTO[] | any) => {
+              data.forEach(element => {
+                this.loadskillMetricDTOs.push(element);  
+              });
+              this.skillMetricDTOs = this.loadskillMetricDTOs.slice();
+            });
+    
+            this.commentDTOs = this.commentDTOs.concat(this.allCommentDTOs.filter(com => com.idUserSkill == us.id));
+          });
+          this.showCommentDTOs = this.commentDTOs.slice();
+        });
+    });
+  }
+
+  updateUserSkillLevels(){
+    this.skillLevels = [];
+    this.userSkillDTOs.forEach(us => {
+      switch (us.skillLevel) {
+        case 1:
+            this.skillLevels.push("Beginner");
+            break;
+        case 2:
+            this.skillLevels.push("Elementary");
+            break;
+        case 3:
+            this.skillLevels.push("Intermediate");
+            break;
+        case 4:
+            this.skillLevels.push("Advanced");
+            break;
+        case 5:
+            this.skillLevels.push("Proficiency");
+            break;
+      }
+    });
+  }
+
+  updateSkillUnitLevels(){
+    this.unitLevels = [];
+    this.skillUnitDTOs.forEach(us => {
+      switch (us.unitLevel) {
+        case 1:
+            this.unitLevels.push("Beginner");
+            break;
+        case 2:
+            this.unitLevels.push("Elementary");
+            break;
+        case 3:
+            this.unitLevels.push("Intermediate");
+            break;
+        case 4:
+            this.unitLevels.push("Advanced");
+            break;
+        case 5:
+            this.unitLevels.push("Proficiency");
+            break;
+      }
+    });
+  }
+
+  updateSkillMettricLevels(){
+    this.metricLevels = [];
+    this.skillMetricDTOs.forEach(us => {
+      switch (us.metricValue) {
+        case 1:
+            this.metricLevels.push("Beginner");
+            break;
+        case 2:
+            this.metricLevels.push("Elementary");
+            break;
+        case 3:
+            this.metricLevels.push("Intermediate");
+            break;
+        case 4:
+            this.metricLevels.push("Advanced");
+            break;
+        case 5:
+            this.metricLevels.push("Proficiency");
+            break;
+      }
+    });
+  }
+
   loadData(){
+    this.loadskillUnitDTOs = [];
+    this.loadskillMetricDTOs = [];
+    this.allCommentDTOs = [];
+    this.commentDTOs = [];
+    this.showCommentDTOs = [];
+    this.userSkillService.getAll()
+    .subscribe((data: UserSkillDTO[] | any) => {
+      this.userSkillDTOs = data;
+
+      this.userSkillDTOs = this.userSkillDTOs.filter(us => us.idEmployee == parseInt(localStorage.getItem("currentmatrixemp"), 10));
+
+      this.userSkillDTOs.forEach(us => {
+        us.startDate = new Date(us.startDate);
+        us.endDate = new Date(us.endDate);
+      });
+
+      this.updateUserSkillLevels();
+
+      this.commentService.getAll()
+        .subscribe((data: CommentDTO[] | any) => {
+          this.allCommentDTOs = data;
+        
+          this.userSkillDTOs.forEach(us => {
+
+            this.skillUnitService.getByUserSkillId(us.id)
+            .subscribe((data: SkillUnitDTO[] | any) => {
+              data.forEach(element => {
+                this.loadskillUnitDTOs.push(element);
+                this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].startDate = new Date(this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].startDate);
+                this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].endDate = new Date(this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].endDate);
+              });
+              this.skillUnitDTOs = this.loadskillUnitDTOs.slice();
+            });
+    
+            this.skillMetricService.getByUserSkillId(us.id)
+            .subscribe((data: SkillMetricDTO[] | any) => {
+              data.forEach(element => {
+                this.loadskillMetricDTOs.push(element);  
+              });
+              this.skillMetricDTOs = this.loadskillMetricDTOs.slice();
+            });
+    
+            this.commentDTOs = this.commentDTOs.concat(this.allCommentDTOs.filter(com => com.idUserSkill == us.id));
+          });
+          this.showCommentDTOs = this.commentDTOs.slice();
+        });
+    });
+  }
+
+  /*loadData(){
     this.userSkillService.getAll()
     .subscribe((data: UserSkillDTO[] | any) => {
       this.userSkillDTOs = data;
@@ -196,11 +446,8 @@ export class HrMentorSkillMatrixComponent implements OnInit {
 
           this.showCommentDTOs = this.commentDTOs.slice();
         });
-          //console.log(this.userSkillDTOs);
-          //console.log(this.skillUnitDTOs);
-          //console.log(this.skillMetricDTOs);
     });
-  }
+  }*/
 
   createUserSkill(){
     this.newuserSkillDTO.idCategory = parseInt(this.newuserSkillDTO.idCategory.toString(), 10);
@@ -242,9 +489,9 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
-  filterByCategs(id: number){
+  /*filterByCategs(id: number){
     this.showUserSkillDTOs = this.userSkillDTOs.filter(us => us.idCategory == id);
-  }
+  }*/
 
   selectUsTable(){
     this.usTable = true;
@@ -260,8 +507,15 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.cmTable = false;
   }
 
-  showSelectSkillUnits(us: UserSkillDTO){
+  /*showSelectSkillUnits(us: UserSkillDTO){
     this.showSkillUnitDTOs = this.skillUnitDTOs.filter(su => su.idUserSkill == us.id);
+    this.selectSuTable();
+  }*/
+  showSelectSkillUnits(us: UserSkillDTO){
+    this.skillUnitDTOs = this.loadskillUnitDTOs.filter(su => su.idUserSkill == us.id);
+    this.newskillUnitDTO.idUserSkill = us.id;
+    this.newskillUnitDTO.skillName = us.skillname;
+    this.updateSkillUnitLevels();
     this.selectSuTable();
   }
 
@@ -272,8 +526,15 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.cmTable = false;
   }
 
-  showSelectSkillMetrics(us: UserSkillDTO){
+  /*showSelectSkillMetrics(us: UserSkillDTO){
     this.showSkillMetricDTOs = this.skillMetricDTOs.filter(sm => sm.idUserSkill == us.id);
+    this.selectSmTable();
+  }*/
+  showSelectSkillMetrics(us: UserSkillDTO){
+    this.skillMetricDTOs = this.loadskillMetricDTOs.filter(sm => sm.idUserSkill == us.id);
+    this.newskillMetricDTO.idUserSkill = us.id;
+    this.newskillMetricDTO.skillName = us.skillname;
+    this.updateSkillMettricLevels();
     this.selectSmTable();
   }
 
@@ -284,8 +545,14 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.cmTable = true;
   }
 
+  /*showSelectComments(us: UserSkillDTO){
+    this.showCommentDTOs = this.commentDTOs.filter(cm => cm.idUserSkill == us.id);
+    this.selectCmTable();
+  }*/
   showSelectComments(us: UserSkillDTO){
     this.showCommentDTOs = this.commentDTOs.filter(cm => cm.idUserSkill == us.id);
+    this.newcommentDTO.idUserSkill = us.id;
+    this.newcommentDTO.skillName = us.skillname;
     this.selectCmTable();
   }
 
@@ -298,6 +565,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.userSkillDTOs.sort((a,b) => (a.skillname==undefined || b.skillname==undefined) ? 
       0 : (a.skillname < b.skillname) ? 1 : (b.skillname < a.skillname) ? -1 : 0);
     }
+    this.updateUserSkillLevels();
     this.usmode1=!this.usmode1;
   }
 
@@ -310,6 +578,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.userSkillDTOs.sort((a,b) => (a.startDate==undefined || b.startDate==undefined) ? 
       0 : (a.startDate < b.startDate) ? 1 : (b.startDate < a.startDate) ? -1 : 0);
     }
+    this.updateUserSkillLevels();
     this.usmode2=!this.usmode2;
   }
 
@@ -322,6 +591,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.userSkillDTOs.sort((a,b) => (a.endDate==undefined || b.endDate==undefined) ? 
       0 : (a.endDate < b.endDate) ? 1 : (b.endDate < a.endDate) ? -1 : 0);
     }
+    this.updateUserSkillLevels();
     this.usmode3=!this.usmode3;
   }
 
@@ -334,6 +604,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.userSkillDTOs.sort((a,b) => (a.skillLevel==undefined || b.skillLevel==undefined) ? 
       0 : (a.skillLevel < b.skillLevel) ? 1 : (b.skillLevel < a.skillLevel) ? -1 : 0);
     }
+    this.updateUserSkillLevels();
     this.usmode4=!this.usmode4;
   }
 
@@ -346,6 +617,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.userSkillDTOs.sort((a,b) => (a.categoryTitle==undefined || b.categoryTitle==undefined) ? 
       0 : (a.categoryTitle < b.categoryTitle) ? 1 : (b.categoryTitle < a.categoryTitle) ? -1 : 0);
     }
+    this.updateUserSkillLevels();
     this.usmode5=!this.usmode5;
   }
 
@@ -358,6 +630,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.userSkillDTOs.sort((a,b) => (a.employeeNSN==undefined || b.employeeNSN==undefined) ? 
       0 : (a.employeeNSN < b.employeeNSN) ? 1 : (b.employeeNSN < a.employeeNSN) ? -1 : 0);
     }
+    this.updateUserSkillLevels();
     this.usmode6=!this.usmode6;
   }
 
@@ -370,6 +643,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.skillUnitDTOs.sort((a,b) => (a.unitname==undefined || b.unitname==undefined) ? 
       0 : (a.unitname < b.unitname) ? 1 : (b.unitname < a.unitname) ? -1 : 0);
     }
+    this.updateSkillUnitLevels();
     this.sumode1=!this.sumode1;
   }
 
@@ -382,6 +656,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.skillUnitDTOs.sort((a,b) => (a.startDate==undefined || b.startDate==undefined) ? 
       0 : (a.startDate < b.startDate) ? 1 : (b.startDate < a.startDate) ? -1 : 0);
     }
+    this.updateSkillUnitLevels();
     this.sumode2=!this.sumode2;
   }
 
@@ -394,6 +669,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.skillUnitDTOs.sort((a,b) => (a.endDate==undefined || b.endDate==undefined) ? 
       0 : (a.endDate < b.endDate) ? 1 : (b.endDate < a.endDate) ? -1 : 0);
     }
+    this.updateSkillUnitLevels();
     this.sumode3=!this.sumode3;
   }
 
@@ -406,6 +682,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.skillUnitDTOs.sort((a,b) => (a.unitLevel==undefined || b.unitLevel==undefined) ? 
       0 : (a.unitLevel < b.unitLevel) ? 1 : (b.unitLevel < a.unitLevel) ? -1 : 0);
     }
+    this.updateSkillUnitLevels();
     this.sumode4=!this.sumode4;
   }
 
@@ -418,6 +695,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.skillUnitDTOs.sort((a,b) => (a.skillName==undefined || b.skillName==undefined) ? 
       0 : (a.skillName < b.skillName) ? 1 : (b.skillName < a.skillName) ? -1 : 0);
     }
+    this.updateSkillUnitLevels();
     this.sumode5=!this.sumode5;
   }
 
@@ -430,6 +708,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.skillMetricDTOs.sort((a,b) => (a.metricName==undefined || b.metricName==undefined) ? 
       0 : (a.metricName < b.metricName) ? 1 : (b.metricName < a.metricName) ? -1 : 0);
     }
+    this.updateSkillMettricLevels();
     this.smmode1=!this.smmode1;
   }
 
@@ -442,6 +721,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.skillMetricDTOs.sort((a,b) => (a.metricValue==undefined || b.metricValue==undefined) ? 
       0 : (a.metricValue < b.metricValue) ? 1 : (b.metricValue < a.metricValue) ? -1 : 0);
     }
+    this.updateSkillMettricLevels();
     this.smmode2=!this.smmode2;
   }
 
@@ -454,6 +734,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.skillMetricDTOs.sort((a,b) => (a.metricInfluence==undefined || b.metricInfluence==undefined) ? 
       0 : (a.metricInfluence < b.metricInfluence) ? 1 : (b.metricInfluence < a.metricInfluence) ? -1 : 0);
     }
+    this.updateSkillMettricLevels();
     this.smmode3=!this.smmode3;
   }
 
@@ -466,6 +747,7 @@ export class HrMentorSkillMatrixComponent implements OnInit {
       this.skillMetricDTOs.sort((a,b) => (a.skillName==undefined || b.skillName==undefined) ? 
       0 : (a.skillName < b.skillName) ? 1 : (b.skillName < a.skillName) ? -1 : 0);
     }
+    this.updateSkillMettricLevels();
     this.smmode4=!this.smmode4;
   }
 

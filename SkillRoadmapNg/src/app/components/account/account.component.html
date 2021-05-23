@@ -11,7 +11,8 @@
             </select>
             <button type="button" class="btn btn-primary dropup" (click)="selectEmpRoadMap()" style="margin-bottom: 10px;">Submit</button>
         </div>
-        <button type="button" class="btn btn-primary" routerLink="/mycertif">Certificates</button>
+        <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wcertif">Certificates</button>
+        <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrcertif">Certificates</button>
         <button type="button" class="btn btn-primary" routerLink="/notif">Notifications</button>
         <button type="button" *ngIf="!roleMode" class="btn btn-primary" routerLink="/wtraining">Training</button>
         <button type="button" *ngIf="roleMode" class="btn btn-primary" routerLink="/hrtraining">Training</button>

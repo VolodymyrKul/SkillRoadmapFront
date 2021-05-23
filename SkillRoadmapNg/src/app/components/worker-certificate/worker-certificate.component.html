@@ -1,1 +1,29 @@
-<p>worker-certificate works!</p>
+<div class="w-75 mx-auto mt-1">
+    <table class="table table-striped mt-1">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">UserSkill</th>
+          <th scope="col">SkillLevel</th>
+          <th scope="col">DateOfIssue</th>
+          <th scope="col">ExpiryDate</th>
+          <th scope="col">PublisherNSN</th>
+        </tr>
+      </thead>
+      <tbody>
+          <ng-container *ngFor="let certif of mycertificatesDTO let in=index">
+              <tr>
+                  <td>{{in + 1}}</td>
+                  <td>{{certif?.skillName}}</td>
+                  <td>{{certif?.skillLevel}}</td>
+                  <td >{{certif?.dateOfIssue.toISOString().slice(0, 10)}}</td>
+                  <td >{{certif?.expiryDate.toISOString().slice(0, 10)}}</td>
+                  <td >{{certif?.publisherNSN}}
+                    <span style="float: right; cursor: pointer;">
+                      <i class="fas fa-print" (click)="printCertif(certif)"></i></span>
+                  </td>
+              </tr>
+          </ng-container>
+      </tbody>
+    </table>
+  </div>

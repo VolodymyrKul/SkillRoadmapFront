@@ -11,8 +11,8 @@
         </div>-->
     </div>
 
-    <div class="row">
-        <div class="col">
+    <div style="display: flex; width: 100%; flex-wrap: wrap;  border: orange 1px solid; border-radius: 5px; margin-top: 1rem; margin-bottom: 1rem;">
+        <div style="width: 25%; padding: 1rem;">
             <div class="form-group">
                 <label for="Category">Category</label>
                 <div class="input-group">
@@ -24,7 +24,7 @@
                 </div>
               </div>
         </div>
-        <div class="col">
+        <div style="width: 25%; padding: 1rem;">
             <div class="form-group">
                 <label for="Coach">Coach</label>
                 <div class="input-group">
@@ -36,7 +36,7 @@
                 </div>
               </div>
         </div>
-        <div class="col">
+        <div style="width: 25%; padding: 1rem;">
             <div class="form-group">
                 <label for="TrainingLevel">TrainingLevel</label>
                 <div class="input-group">
@@ -48,13 +48,91 @@
                 </div>
               </div>
         </div>
-        <div class="col">
+        <div style="width: 25%; padding: 1rem;">
             <button style="margin-top: 2rem;" class="btn btn-primary w-100" (click)="loadData()">Reset</button>
         </div>
     </div>
 
     <div *ngIf="trTable" class="row mt-4">
-        <table class="table table-striped w-100">
+
+        <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">TrainingTitle
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byTrMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode1, 'fa-caret-up' : trmode1}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">TrainingLevel
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byTrMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode2, 'fa-caret-up' : trmode2}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">StartDate
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byTrMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode3, 'fa-caret-up' : trmode3}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">EndDate
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byTrMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode4, 'fa-caret-up' : trmode4}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Payment
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byTrMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode5, 'fa-caret-up' : trmode5}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Coach
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byTrMode6()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode6, 'fa-caret-up' : trmode6}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Category
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byTrMode7()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode7, 'fa-caret-up' : trmode7}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Description
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byTrMode8()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode8, 'fa-caret-up' : trmode8}"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+            <div style="width: 25%;" *ngFor="let tr of trainingDTOs let in=index">
+                <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
+                    <div><strong>TrainingTitle: </strong>{{tr.trainingTitle}}</div>
+                    <div><strong>TrainingLevel: </strong>{{trLevels[in]}}</div>
+                    <div><strong>StartDate: </strong>{{tr.startDate.toISOString().slice(0, 10)}}</div>
+                    <div><strong>EndDate: </strong>{{tr.endDate.toISOString().slice(0, 10)}}</div>
+                    <div><strong>Payment: </strong>{{tr.payment}}</div>
+                    <div><strong>Coach: </strong>{{tr.coachNSN}}</div>
+                    <div><strong>Category: </strong>{{tr.categoryTitle}}</div>
+                    <div><strong>Description: </strong>{{tr.description}}</div>
+                    <div>
+                        <i (click)="goToTraining(tr)" class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<table class="table table-striped w-100">
             <thead>
                 <th scope="col">#</th>
                 <th scope="col">TrainingTitle<span style="float: right; cursor: pointer;"><i (click)="byTrMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode1, 'fa-caret-up' : trmode1}"></i></span></th>
@@ -82,11 +160,89 @@
                     </tr>
                 </ng-container>
             </tbody>
-        </table>
+        </table>-->
     </div>
 
     <div *ngIf="mytrTable" class="row mt-4">
-        <table class="table table-striped w-100">
+
+        <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">TrainingTitle
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byMyTrMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !mytrmode1, 'fa-caret-up' : mytrmode1}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">TrainingLevel
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byMyTrMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !mytrmode2, 'fa-caret-up' : mytrmode2}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">StartDate
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byMyTrMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !mytrmode3, 'fa-caret-up' : mytrmode3}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">EndDate
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byMyTrMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !mytrmode4, 'fa-caret-up' : mytrmode4}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Payment
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byMyTrMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !mytrmode5, 'fa-caret-up' : mytrmode5}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Coach
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byMyTrMode6()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !mytrmode6, 'fa-caret-up' : mytrmode6}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Category
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byMyTrMode7()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !mytrmode7, 'fa-caret-up' : mytrmode7}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Description
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byMyTrMode8()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !mytrmode8, 'fa-caret-up' : mytrmode8}"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+            <div style="width: 25%;" *ngFor="let tr of myTrainingDTOs let in=index">
+                <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
+                    <div><strong>TrainingTitle: </strong>{{tr.trainingTitle}}</div>
+                    <div><strong>TrainingLevel: </strong>{{mytrLevels[in]}}</div>
+                    <div><strong>StartDate: </strong>{{tr.startDate.toISOString().slice(0, 10)}}</div>
+                    <div><strong>EndDate: </strong>{{tr.endDate.toISOString().slice(0, 10)}}</div>
+                    <div><strong>Payment: </strong>{{tr.payment}}</div>
+                    <div><strong>Coach: </strong>{{tr.coachNSN}}</div>
+                    <div><strong>Category: </strong>{{tr.categoryTitle}}</div>
+                    <div><strong>Description: </strong>{{tr.description}}</div>
+                    <div>
+                        <i *ngIf="isEnded[in]" class="fas fa-stamp"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<table class="table table-striped w-100">
             <thead>
                 <th scope="col">#</th>
                 <th scope="col">TrainingTitle<span style="float: right; cursor: pointer;"><i (click)="byMyTrMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !mytrmode1, 'fa-caret-up' : mytrmode1}"></i></span></th>
@@ -114,7 +270,7 @@
                     </tr>
                 </ng-container>
             </tbody>
-        </table>
+        </table>-->
     </div>
 
     <div *ngIf="recTable" class="row mt-4">

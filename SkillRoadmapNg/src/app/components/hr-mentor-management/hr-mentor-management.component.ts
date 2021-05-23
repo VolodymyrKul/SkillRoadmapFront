@@ -7,6 +7,8 @@ import { CategoryService } from 'src/app/services/category.service';
 import { CompanyService } from 'src/app/services/company.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { EmployerService } from 'src/app/services/employer.service';
+import { ViewChild, TemplateRef } from '@angular/core';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-hr-mentor-management',
@@ -14,10 +16,19 @@ import { EmployerService } from 'src/app/services/employer.service';
   styleUrls: ['./hr-mentor-management.component.css']
 })
 export class HrMentorManagementComponent implements OnInit {
+
+  @ViewChild('comModal')
+  private comRef: TemplateRef<any>;
+
+  @ViewChild('catModal')
+  private catRef: TemplateRef<any>;
+
   employeeDTOs: EmployeeDTO[] = [];
   employerDTOs: EmployerDTO[] = [];
   companyDTOs: CompanyDTO[] = [];
   categoryDTOs: CategoryDTO[] = [];
+  newCompanyDTO: CompanyDTO = new CompanyDTO(0, '', 1000, '', '', '', '');
+  newCategoryDTO: CategoryDTO = new CategoryDTO(0, '', '');
 
   eeTable: boolean = true;
   erTable: boolean = false;
@@ -48,10 +59,13 @@ export class HrMentorManagementComponent implements OnInit {
   ctmode1: boolean = false;
   ctmode2: boolean = false;
 
+  closeResult = '';
+
   constructor(private employeeService: EmployeeService,
     private employerService: EmployerService,
     private companyService: CompanyService,
-    private categoryService: CategoryService) { }
+    private categoryService: CategoryService,
+    private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -77,6 +91,44 @@ export class HrMentorManagementComponent implements OnInit {
     .subscribe((data : CategoryDTO[] | any) => {
       this.categoryDTOs = data;
     });
+  }
+
+  openCreateComModal(){
+    console.log(this.comRef);
+    this.modalService.open(this.comRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openCreateCatModal(){
+    console.log(this.catRef);
+    this.modalService.open(this.catRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  createCompany(){
+    //this.companyService.pull(this.newCompanyDTO);
+    this.modalService.dismissAll();
+  }
+
+  createCategory(){
+    //this.categoryService.pull(this.newCategoryDTO);
+    this.modalService.dismissAll();
   }
 
   selectEeTable(){

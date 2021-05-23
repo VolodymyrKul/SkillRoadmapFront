@@ -1,5 +1,5 @@
 <div style="width: 85%;" class="mx-auto mt-1">
-    <div class="row">
+    <!--<div class="row">
         <div class="col">
             <button class="btn btn-primary w-100" (click)="selectUsTable()" [disabled]="usTable" >UserSkills</button>
         </div>
@@ -12,23 +12,141 @@
         <div class="col">
             <button class="btn btn-primary w-100" (click)="selectCmTable()" [disabled]="cmTable" >Comments</button>
         </div>
-    </div>
+    </div>-->
 
-    <div class="row">
-      <div class="form-group w-50">
-        <label for="Category">Category</label>
-        <div class="input-group">
-          <div class="w-100">
-            <select class="form-control custom-select" id="Category" name="Category" (change)="filterByCategs($event.target.value)" [(ngModel)]="newuserSkillDTO.idCategory">
-              <option *ngFor="let ct of categoryDTOs let in=index" [value]="ct.id">{{ct.title}}</option>
-            </select>
-          </div>
-        </div>
+    <!--<div class="row">
+      <div class="col">
+          <div class="form-group">
+              <label for="Category">Category</label>
+              <div class="input-group">
+                <div class="w-100">
+                  <select class="form-control custom-select" id="Category" name="Category" (change)="filterByCategs($event.target.value)" [(ngModel)]="newuserSkillDTO.idCategory">
+                    <option *ngFor="let ct of categoryDTOs let in=index" [value]="ct.id">{{ct.title}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
       </div>
+      <div class="col">
+          <div class="form-group">
+              <label for="SkillLevel">SkillLevel</label>
+              <div class="input-group">
+                <div class="w-100">
+                  <select class="form-control custom-select" id="SkillLevel" name="SkillLevel" (change)="filterBySkillLevel($event.target.value)" [(ngModel)]="filterLevel">
+                    <option *ngFor="let ct of filterSkillLevels let in=index" [value]="ct">{{ct}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+      </div>
+      <div class="col">
+          <button style="margin-top: 2rem;" class="btn btn-primary w-100" (click)="loadData()">Reset</button>
+      </div>
+  </div>-->
 
-    </div>
     <div *ngIf="usTable" class="row mt-4">
-        <table class="table table-striped w-100">
+
+          <div style="display: flex; width: 100%; flex-wrap: wrap;  border: orange 1px solid; border-radius: 5px; margin-bottom: 1rem;">
+            <div style="width: 25%; padding: 1rem;">
+                <div class="form-group">
+                    <label for="Category">Category</label>
+                    <div class="input-group">
+                      <div class="w-100">
+                        <select class="form-control custom-select" id="Category" name="Category" (change)="filterByCategs($event.target.value)" [(ngModel)]="newuserSkillDTO.idCategory">
+                          <option *ngFor="let ct of categoryDTOs let in=index" [value]="ct.id">{{ct.title}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <div class="form-group">
+                    <label for="SkillLevel">SkillLevel</label>
+                    <div class="input-group">
+                      <div class="w-100">
+                        <select class="form-control custom-select" id="SkillLevel" name="SkillLevel" (change)="filterBySkillLevel($event.target.value)" [(ngModel)]="filterLevel">
+                          <option *ngFor="let ct of filterSkillLevels let in=index" [value]="ct">{{ct}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button style="margin-top: 2rem;" class="btn btn-primary w-100" (click)="loadData()">Reset</button>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-warning w-100">Create user skill
+                    <span style="float: right; cursor: pointer;">
+                      <i title="Create user skill" (click)="openCreateUsModal()" class="fas fa-plus-circle"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Skillname
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byUsMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode1, 'fa-caret-up' : usmode1}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">StartDate
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byUsMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode2, 'fa-caret-up' : usmode2}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">EndDate
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byUsMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode3, 'fa-caret-up' : usmode3}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">SkillLevel
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byUsMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode4, 'fa-caret-up' : usmode4}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">CategoryTitle
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byUsMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode5, 'fa-caret-up' : usmode5}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Employee
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byUsMode6()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode6, 'fa-caret-up' : usmode6}"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+            <div style="width: 25%;" *ngFor="let us of userSkillDTOs let in=index">
+                <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
+                    <div><strong>Skillname: </strong>{{us.skillname}}</div>
+                    <div><strong>StartDate: </strong>{{us?.startDate.toISOString().slice(0, 10)}}</div>
+                    <div><strong>EndDate: </strong>{{us?.endDate.toISOString().slice(0, 10)}}</div>
+                    <div><strong>SkillLevel: </strong>{{skillLevels[in]}}</div>
+                    <div><strong>CategoryTitle: </strong>{{us.categoryTitle}}</div>
+                    <div><strong>Employee: </strong>{{us.employeeNSN}}</div>
+                    <div>
+                        <i title="Open units for selected skill" (click)="showSelectSkillUnits(us)" class="fas fa-puzzle-piece"></i>
+                        <i title="Open metrics for selected skill" (click)="showSelectSkillMetrics(us)" class="ml-1 fas fa-ruler"></i>
+                        <i title="Open comments for selected skill" (click)="showSelectComments(us)" class="ml-1 fas fa-comments"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<table class="table table-striped w-100">
             <thead>
                 <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateUsModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">Skillname<span style="float: right; cursor: pointer;"><i (click)="byUsMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode1, 'fa-caret-up' : usmode1}"></i></span></th>
@@ -39,25 +157,90 @@
                 <th scope="col">EmployeeNSN<span style="float: right; cursor: pointer;"><i (click)="byUsMode6()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode6, 'fa-caret-up' : usmode6}"></i></span></th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let us of showUserSkillDTOs let in=index">
+                <ng-container *ngFor="let us of userSkillDTOs let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{us.skillname}}</td>
                         <td>{{us?.startDate.toISOString().slice(0, 10)}}</td>
                         <td>{{us?.endDate.toISOString().slice(0, 10)}}</td>
-                        <td>{{us.skillLevel}}</td>
+                        <td>{{skillLevels[in]}}</td>
                         <td>{{us.categoryTitle}}</td>
                         <td>{{us.employeeNSN}}<span style="float: right; cursor: pointer;"><i (click)="showSelectSkillUnits(us)" class="fas fa-puzzle-piece"></i><i (click)="showSelectSkillMetrics(us)" class="ml-1 fas fa-ruler"></i><i (click)="showSelectComments(us)" class="ml-1 fas fa-comments"></i></span></td>
                     </tr>
                 </ng-container>
             </tbody>
-        </table>
+        </table>-->
     </div>
 
     <div *ngIf="suTable" class="row mt-4">
-        <table class="table table-striped w-100">
+
+        <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-warning w-100">Back to user skills
+                    <span style="float: right; cursor: pointer;">
+                        <i title="Back to user skills" (click)="selectUsTable()" class="fas fa-caret-square-left"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-warning w-100">Create skill unit
+                    <span style="float: right; cursor: pointer;">
+                      <i title="Create skill unit" (click)="openCreateSuModal()" class="fas fa-plus-circle"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Unitname
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="bySuMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode1, 'fa-caret-up' : sumode1}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">StartDate
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="bySuMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode2, 'fa-caret-up' : sumode2}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">EndDate
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="bySuMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode3, 'fa-caret-up' : sumode3}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">UnitLevel
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="bySuMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode4, 'fa-caret-up' : sumode4}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">SkillName
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="bySuMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode5, 'fa-caret-up' : sumode5}"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+            <div style="width: 25%;" *ngFor="let su of skillUnitDTOs let in=index">
+                <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
+                    <div><strong>Unitname: </strong>{{su.unitname}}</div>
+                    <div><strong>StartDate: </strong>{{su.startDate.toISOString().slice(0, 10)}}</div>
+                    <div><strong>EndDate: </strong>{{su.endDate.toISOString().slice(0, 10)}}</div>
+                    <div><strong>UnitLevel: </strong>{{unitLevels[in]}}</div>
+                    <div><strong>SkillName: </strong>{{su.skillName}}</div>
+                </div>
+            </div>
+        </div>
+
+        <!--<table class="table table-striped w-100">
             <thead>
-                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateSuModal()" class="fas fa-plus-circle"></i></span></th>
+                <th scope="col"><span style="float: left; cursor: pointer;"><i (click)="selectUsTable()" class="fas fa-caret-square-left mr-1"></i></span>#<span style="float: right; cursor: pointer;"><i (click)="openCreateSuModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">Unitname<span style="float: right; cursor: pointer;"><i (click)="bySuMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode1, 'fa-caret-up' : sumode1}"></i></span></th>
                 <th scope="col">StartDate<span style="float: right; cursor: pointer;"><i (click)="bySuMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode2, 'fa-caret-up' : sumode2}"></i></span></th>
                 <th scope="col">EndDate<span style="float: right; cursor: pointer;"><i (click)="bySuMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode3, 'fa-caret-up' : sumode3}"></i></span></th>
@@ -65,47 +248,153 @@
                 <th scope="col">SkillName<span style="float: right; cursor: pointer;"><i (click)="bySuMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode5, 'fa-caret-up' : sumode5}"></i></span></th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let su of showSkillUnitDTOs let in=index">
+                <ng-container *ngFor="let su of skillUnitDTOs let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{su.unitname}}</td>
                         <td>{{su.startDate.toISOString().slice(0, 10)}}</td>
                         <td>{{su.endDate.toISOString().slice(0, 10)}}</td>
-                        <td>{{su.unitLevel}}</td>
+                        <td>{{unitLevels[in]}}</td>
                         <td>{{su.skillName}}</td>
                     </tr>
                 </ng-container>
             </tbody>
-        </table>
+        </table>-->
     </div>
 
     <div *ngIf="smTable" class="row mt-4">
-        <table class="table table-striped w-100">
+
+        <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-warning w-100">Back to user skills
+                    <span style="float: right; cursor: pointer;">
+                        <i title="Back to user skills" (click)="selectUsTable()" class="fas fa-caret-square-left"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-warning w-100">Create skill metric
+                    <span style="float: right; cursor: pointer;">
+                      <i title="Create skill metric" (click)="openCreateSmModal()" class="fas fa-plus-circle"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">MetricName
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="bySmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode1, 'fa-caret-up' : smmode1}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">MetricValue
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="bySmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode2, 'fa-caret-up' : smmode2}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">MetricInfluence
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="bySmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode3, 'fa-caret-up' : smmode3}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">SkillName
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="bySmMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode4, 'fa-caret-up' : smmode4}"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+            <div style="width: 25%;" *ngFor="let sm of skillMetricDTOs let in=index">
+                <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
+                    <div><strong>MetricName: </strong>{{sm.metricName}}</div>
+                    <div><strong>MetricValue: </strong>{{metricLevels[in]}}</div>
+                    <div><strong>MetricInfluence: </strong>{{sm.metricInfluence}}</div>
+                    <div><strong>SkillName: </strong>{{sm.skillName}}</div>
+                </div>
+            </div>
+        </div>
+
+        <!--<table class="table table-striped w-100">
             <thead>
-                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateSmModal()" class="fas fa-plus-circle"></i></span></th>
+                <th scope="col"><span style="float: left; cursor: pointer;"><i (click)="selectUsTable()" class="fas fa-caret-square-left mr-1"></i></span>#<span style="float: right; cursor: pointer;"><i (click)="openCreateSmModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">MetricName<span style="float: right; cursor: pointer;"><i (click)="bySmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode1, 'fa-caret-up' : smmode1}"></i></span></th>
                 <th scope="col">MetricValue<span style="float: right; cursor: pointer;"><i (click)="bySmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode2, 'fa-caret-up' : smmode2}"></i></span></th>
                 <th scope="col">MetricInfluence<span style="float: right; cursor: pointer;"><i (click)="bySmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode3, 'fa-caret-up' : smmode3}"></i></span></th>
                 <th scope="col">SkillName<span style="float: right; cursor: pointer;"><i (click)="bySmMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode4, 'fa-caret-up' : smmode4}"></i></span></th>
             </thead>
             <tbody>
-                <ng-container *ngFor="let sm of showSkillMetricDTOs let in=index">
+                <ng-container *ngFor="let sm of skillMetricDTOs let in=index">
                     <tr>
                         <td>{{in + 1}}</td>
                         <td>{{sm.metricName}}</td>
-                        <td>{{sm.metricValue}}</td>
+                        <td>{{metricLevels[in]}}</td>
                         <td>{{sm.metricInfluence}}</td>
                         <td>{{sm.skillName}}</td>
                     </tr>
                 </ng-container>
             </tbody>
-        </table>
+        </table>-->
     </div>
 
     <div *ngIf="cmTable" class="row mt-4">
-        <table class="table table-striped w-100">
+
+        <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-warning w-100">Back to user skills
+                    <span style="float: right; cursor: pointer;">
+                        <i title="Back to user skills" (click)="selectUsTable()" class="fas fa-caret-square-left"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-warning w-100">Create comment
+                    <span style="float: right; cursor: pointer;">
+                      <i title="Create comment" (click)="openCreateCmModal()" class="fas fa-plus-circle"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">CommentText
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byCmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode1, 'fa-caret-up' : cmmode1}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">Employer
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byCmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode2, 'fa-caret-up' : cmmode2}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100">SkillName
+                    <span style="float: right; cursor: pointer;">
+                        <i (click)="byCmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode3, 'fa-caret-up' : cmmode3}"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+            <div style="width: 25%;" *ngFor="let cm of showCommentDTOs let in=index">
+                <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
+                    <div><strong>CommentText: </strong>{{cm.commentText}}</div>
+                    <div><strong>Employer: </strong>{{cm.employerNSN}}</div>
+                    <div><strong>SkillName: </strong>{{cm.skillName}}</div>
+                </div>
+            </div>
+        </div>
+
+        <!--<table class="table table-striped w-100">
             <thead>
-                <th scope="col">#<span style="float: right; cursor: pointer;"><i (click)="openCreateCmModal()" class="fas fa-plus-circle"></i></span></th>
+                <th scope="col"><span style="float: left; cursor: pointer;"><i (click)="selectUsTable()" class="fas fa-caret-square-left mr-1"></i></span>#<span style="float: right; cursor: pointer;"><i (click)="openCreateCmModal()" class="fas fa-plus-circle"></i></span></th>
                 <th scope="col">CommentText<span style="float: right; cursor: pointer;"><i (click)="byCmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode1, 'fa-caret-up' : cmmode1}"></i></span></th>
                 <th scope="col">EmployerNSN<span style="float: right; cursor: pointer;"><i (click)="byCmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode2, 'fa-caret-up' : cmmode2}"></i></span></th>
                 <th scope="col">SkillName<span style="float: right; cursor: pointer;"><i (click)="byCmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode3, 'fa-caret-up' : cmmode3}"></i></span></th>
@@ -120,7 +409,7 @@
                     </tr>
                 </ng-container>
             </tbody>
-        </table>
+        </table>-->
     </div>
 </div>
 
@@ -268,7 +557,7 @@
       <form>
         <div class="form-group">
           <label for="CommentText">Comment Text</label>
-          <input type="text" class="form-control" id="CommentText" placeholder="Enter here certificate text" name="CommentText" [(ngModel)]="newcommentDTO.commentText">
+          <input type="text" class="form-control" id="CommentText" placeholder="Enter here comment text" name="CommentText" [(ngModel)]="newcommentDTO.commentText">
         </div>
 
         <div class="form-group">

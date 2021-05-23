@@ -9,6 +9,8 @@ import { EmployeeDTO } from 'src/app/models/employee-dto';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { RecommendationService } from 'src/app/services/recommendation.service';
 import { ActivatedRoute } from '@angular/router';
+import { TrainingMemberService } from 'src/app/services/training-member.service';
+import { TrainingMemberDTO } from 'src/app/models/training-member-dto';
 
 @Component({
   selector: 'app-trainings',
@@ -34,9 +36,18 @@ export class TrainingsComponent implements OnInit {
   recInvitation: string = "";
   employees: EmployeeDTO[] = [];*/
   trainingDTO: TrainingDTO = new TrainingDTO();
+  newTrainingMemberDTO: TrainingMemberDTO = new TrainingMemberDTO(0, 1, 1, false, '', '', '');
 
   constructor(private trainingService: TrainingService, private modalService: NgbModal, 
-    private employeeService: EmployeeService, private recommendationService: RecommendationService, private route: ActivatedRoute) { }
+    private employeeService: EmployeeService, private recommendationService: RecommendationService, private route: ActivatedRoute,
+    private trainingMemberService: TrainingMemberService) { }
+
+  createTrainingMember(){
+    var employeeId: number = parseInt(localStorage.getItem("currentuserid"), 10);
+    this.newTrainingMemberDTO.idTraining = this.trainingDTO.id;
+    this.newTrainingMemberDTO.idMember = employeeId;
+    this.trainingMemberService.pull(this.newTrainingMemberDTO);
+  }
 
   ngOnInit(): void {
     console.log(this.route.snapshot.queryParamMap.get('trId'));
