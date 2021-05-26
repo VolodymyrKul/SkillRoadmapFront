@@ -56,6 +56,7 @@ export class AccountComponent implements OnInit {
         localStorage.setItem("currentuserid", this.employerDTO.id.toString());
         localStorage.setItem("currentcompany", this.employerDTO.companyName);
         localStorage.setItem("currentcompanyid", this.employerDTO.idCompany.toString());
+        localStorage.setItem("currentUserNSN", this.employerDTO.firstname + " " + this.employerDTO.lastname);
         console.log(this.employerDTO);
 
           this.employeeService.getAll()
@@ -80,6 +81,7 @@ export class AccountComponent implements OnInit {
         localStorage.setItem("currentuserid", this.employeeDTO.id.toString());
         localStorage.setItem("currentcompany", this.employeeDTO.companyName);
         localStorage.setItem("currentcompanyid", this.employeeDTO.idCompany.toString());
+        localStorage.setItem("currentUserNSN", this.employeeDTO.firstname + " " + this.employeeDTO.lastname);
         console.log(this.employeeDTO);
         this.statisticsService.getAll()
         .subscribe((data: StatisticsDTO[] | any) => {
@@ -133,6 +135,7 @@ export class AccountComponent implements OnInit {
   selectMatrixEmp(){
     console.log(this.selectedEmployee);
     console.log(this.employeeDTOs.find(emp => emp.firstname+" "+emp.lastname == this.selectedEmployee).id);
+    localStorage.setItem("currentmatrixempNSN", this.selectedEmployee);
     localStorage.setItem("currentmatrixemp", this.employeeDTOs.find(emp => emp.firstname+" "+emp.lastname == this.selectedEmployee).id.toString());
     this.router.navigate(['hrmatrix']);  
   }

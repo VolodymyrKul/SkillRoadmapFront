@@ -8,6 +8,10 @@ import { SkillTemplateService } from 'src/app/services/skill-template.service';
 import { ViewChild, TemplateRef } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { TrainingDTO } from 'src/app/models/training-dto';
+import { NotificationService } from 'src/app/services/notification.service';
+import { EmployeeService } from 'src/app/services/employee.service';
+import { EmployeeDTO } from 'src/app/models/employee-dto';
+import { NotificationDTO } from 'src/app/models/notification-dto';
 
 @Component({
   selector: 'app-hr-mentor-skill-template',
@@ -45,12 +49,16 @@ export class HrMentorSkillTemplateComponent implements OnInit {
   reqmode2: boolean = false;
   reqmode3: boolean = false;
 
+  employeeDTOs: EmployeeDTO[] = [];
+
   closeResult = '';
 
   constructor(private skillTemplateService: SkillTemplateService,
     private requirementService: RequirementService,
     private comparationService: ComparationService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private notificationService: NotificationService,
+    private employeeService: EmployeeService) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -69,6 +77,11 @@ export class HrMentorSkillTemplateComponent implements OnInit {
       this.requirementDTOs = data;
       this.showRequirementDTOs = data;
       console.log(this.requirementDTOs);
+    });
+
+    this.employeeService.getAll()
+    .subscribe((data: EmployeeDTO[]) => {
+      this.employeeDTOs = data;
     });
   }
 
@@ -118,16 +131,26 @@ export class HrMentorSkillTemplateComponent implements OnInit {
     this.skillTemplateService.pull(this.newskillTemplateDTO)
     .subscribe(() => {
       this.loadData();
+      var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new skill template ${this.newskillTemplateDTO}`;
+      this.employeeDTOs.forEach(emp => {
+        var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, emp.id, parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
+        this.notificationService.pull(notif);
+      });
     });
     this.modalService.dismissAll();
   }
 
   createRequirement(){
     this.newrequirementDTO.idSkillTemplate = parseInt(this.newrequirementDTO.idSkillTemplate.toString(), 10);
-    /*this.requirementService.pull(this.newrequirementDTO)
+    this.requirementService.pull(this.newrequirementDTO)
     .subscribe(() => {
       this.loadData();
-    });*/
+      var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new requirement ${this.newrequirementDTO.reqTitle}`;
+      this.employeeDTOs.forEach(emp => {
+        var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, emp.id, parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
+        this.notificationService.pull(notif);
+      });
+    });
     console.log(this.newrequirementDTO);
     this.modalService.dismissAll();
   }

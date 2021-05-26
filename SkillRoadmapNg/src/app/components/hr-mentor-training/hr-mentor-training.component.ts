@@ -12,6 +12,10 @@ import { TrainingService } from 'src/app/services/training.service';
 import { ViewChild, TemplateRef } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { RequirementDTO } from 'src/app/models/requirement-dto';
+import { EmployeeDTO } from 'src/app/models/employee-dto';
+import { EmployeeService } from 'src/app/services/employee.service';
+import { NotificationDTO } from 'src/app/models/notification-dto';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-hr-mentor-training',
@@ -59,6 +63,8 @@ export class HrMentorTrainingComponent implements OnInit {
 
   closeResult = '';
 
+  employeeDTOs: EmployeeDTO[] = [];
+
   trLevels: string[] = [];
 
   constructor(private trainingService: TrainingService, 
@@ -66,7 +72,9 @@ export class HrMentorTrainingComponent implements OnInit {
     private trainingMemberService: TrainingMemberService,
     private categoryService: CategoryService,
     private employerService: EmployerService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private employeeService: EmployeeService,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -143,10 +151,16 @@ export class HrMentorTrainingComponent implements OnInit {
       .subscribe((data : EmployerDTO[] | any) => {
         this.employerDTOs = data;
       });
+
       console.log(this.trainingDTOs);
       console.log(this.recommendationDTOs);
       console.log(this.trainingMemberDTOs);
     });
+
+    this.employeeService.getAll()
+    .subscribe((data: EmployeeDTO[] | any) => {
+      this.employeeDTOs = data;
+    })
   }
 
   deleteTraining(tr: TrainingDTO){
@@ -191,14 +205,22 @@ export class HrMentorTrainingComponent implements OnInit {
     this.newtrainingDTO.idCategory = parseInt(this.newtrainingDTO.idCategory.toString(), 10);
     this.newtrainingDTO.idCoach = parseInt(localStorage.getItem("currentuserid"), 10);
     console.log(this.newtrainingDTO);
-    //this.trainingService.pull(this.newtrainingDTO);
+    this.trainingService.pull(this.newtrainingDTO)
+    .subscribe((data: any) => {
+      var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new training ${this.newtrainingDTO.trainingTitle}`;
+      this.employeeDTOs.forEach(emp => {
+        var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, emp.id, parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
+        this.notificationService.pull(notif);
+      });
+    })
     this.modalService.dismissAll();
   }
 
   createRecommendation(){
     console.log(this.newrecommendationDTO);
     this.newrecommendationDTO.idTraining = parseInt(this.newrecommendationDTO.idTraining.toString(), 10);
-    //this.recommendationService.pull(this.newrecommendationDTO);
+    this.recommendationService.pull(this.newrecommendationDTO)
+    .subscribe((data: any) => {});
     this.modalService.dismissAll();
   }
 

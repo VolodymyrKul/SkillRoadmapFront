@@ -11,6 +11,8 @@ import { SkillUnitService } from 'src/app/services/skill-unit.service';
 import { UserSkillService } from 'src/app/services/user-skill.service';
 import { ViewChild, TemplateRef } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationDTO } from 'src/app/models/notification-dto';
 
 @Component({
   selector: 'app-hr-mentor-skill-matrix',
@@ -91,7 +93,8 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     private skillMetricService: SkillMetricService,
     private commentService: CommentService,
     private categoryService: CategoryService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -454,6 +457,9 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.userSkillService.pull(this.newuserSkillDTO)
     .subscribe(() => {
       this.loadData();
+      var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new skill ${this.newuserSkillDTO.skillname} for employee ${localStorage.getItem("currentmatrixempNSN")}`;
+      var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, parseInt(localStorage.getItem("currentmatrixemp"), 10), parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
+      this.notificationService.pull(notif);
     });
     console.log(this.newuserSkillDTO);
     this.modalService.dismissAll();
@@ -464,6 +470,9 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.skillUnitService.pull(this.newskillUnitDTO)
     .subscribe(() => {
       this.loadData();
+      var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new skill unit ${this.newuserSkillDTO.skillname} for employee ${localStorage.getItem("currentmatrixempNSN")}`;
+      var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, parseInt(localStorage.getItem("currentmatrixemp"), 10), parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
+      this.notificationService.pull(notif);
     });
     console.log(this.newskillUnitDTO);
     this.modalService.dismissAll();
@@ -474,6 +483,9 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.skillMetricService.pull(this.newskillMetricDTO)
     .subscribe(() => {
       this.loadData();
+      var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new skill metric ${this.newuserSkillDTO.skillname} for employee ${localStorage.getItem("currentmatrixempNSN")}`;
+      var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, parseInt(localStorage.getItem("currentmatrixemp"), 10), parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
+      this.notificationService.pull(notif);
     });
     console.log(this.newskillMetricDTO);
     this.modalService.dismissAll();
@@ -484,6 +496,9 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.commentService.pull(this.newcommentDTO)
     .subscribe(() => {
       this.loadData();
+      var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new comment ${this.newuserSkillDTO.skillname} for employee ${localStorage.getItem("currentmatrixempNSN")}`;
+      var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, parseInt(localStorage.getItem("currentmatrixemp"), 10), parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
+      this.notificationService.pull(notif);
     });
     console.log(this.newcommentDTO);
     this.modalService.dismissAll();

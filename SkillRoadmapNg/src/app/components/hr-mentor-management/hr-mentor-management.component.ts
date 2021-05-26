@@ -9,6 +9,8 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { EmployerService } from 'src/app/services/employer.service';
 import { ViewChild, TemplateRef } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NotificationDTO } from 'src/app/models/notification-dto';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-hr-mentor-management',
@@ -65,7 +67,8 @@ export class HrMentorManagementComponent implements OnInit {
     private employerService: EmployerService,
     private companyService: CompanyService,
     private categoryService: CategoryService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -122,12 +125,28 @@ export class HrMentorManagementComponent implements OnInit {
   }
 
   createCompany(){
-    //this.companyService.pull(this.newCompanyDTO);
+    this.companyService.pull(this.newCompanyDTO)
+    .subscribe((data: any) => {
+      var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new company ${this.newCompanyDTO.name}`;
+      this.employeeDTOs.forEach(emp => {
+        var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, emp.id, parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
+        this.notificationService.pull(notif);
+      });
+      this.loadData();
+    });
     this.modalService.dismissAll();
   }
 
   createCategory(){
-    //this.categoryService.pull(this.newCategoryDTO);
+    this.categoryService.pull(this.newCategoryDTO)
+    .subscribe((data: any) => {
+      var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new company ${this.newCompanyDTO.name}`;
+      this.employeeDTOs.forEach(emp => {
+        var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, emp.id, parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
+        this.notificationService.pull(notif);
+      });
+      this.loadData();
+    });
     this.modalService.dismissAll();
   }
 

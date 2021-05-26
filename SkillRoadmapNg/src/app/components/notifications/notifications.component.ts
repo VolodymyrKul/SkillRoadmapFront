@@ -32,7 +32,7 @@ export class NotificationsComponent implements OnInit {
   closeResult = '';
   currentUser: string;
   userMode: false;
-  addedNotif: NotificationDTO = new NotificationDTO(0,"",new Date(),false,0,0,0,"","","","","");
+  addedNotif: NotificationDTO = new NotificationDTO(0,"",new Date(),false,0,0,"","","","");
 
   constructor(private notificationService: NotificationService, 
     private employeeService: EmployeeService, 
@@ -106,7 +106,6 @@ export class NotificationsComponent implements OnInit {
     this.addedNotif.idEmployee = this.employees.find(emp => emp.firstname == employeeNSN[0] && emp.lastname == employeeNSN[1]).id;
     const employerNSN: string[] = this.selEmployer.split(' ');
     this.addedNotif.idEmployee = this.employees.find(emp => emp.firstname == employerNSN[0] && emp.lastname == employerNSN[1]).id;
-    this.addedNotif.idUserSkill = this.userSkill.id;
     this.addedNotif.sendingDate = new Date();
 
     this.notificationService.pull(this.addedNotif);
