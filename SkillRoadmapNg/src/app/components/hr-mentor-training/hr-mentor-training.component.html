@@ -15,58 +15,65 @@
 
         <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">TrainingTitle
+                <button class="btn btn-warning w-100" (click)="openCreateModal()">Create training
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byTrMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode1, 'fa-caret-up' : trmode1}"></i>
+                        <i title="Create training" class="fas fa-plus-circle"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">TrainingLevel
+                <button class="btn btn-secondary w-100" (click)="byTrMode1()">TrainingTitle
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byTrMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode2, 'fa-caret-up' : trmode2}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode1, 'fa-caret-up' : trmode1}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">StartDate
+                <button class="btn btn-secondary w-100" (click)="byTrMode2()">TrainingLevel
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byTrMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode3, 'fa-caret-up' : trmode3}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode2, 'fa-caret-up' : trmode2}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">EndDate
+                <button class="btn btn-secondary w-100" (click)="byTrMode3()">StartDate
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byTrMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode4, 'fa-caret-up' : trmode4}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode3, 'fa-caret-up' : trmode3}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">Payment
+                <button class="btn btn-secondary w-100" (click)="byTrMode4()">EndDate
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byTrMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode5, 'fa-caret-up' : trmode5}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode4, 'fa-caret-up' : trmode4}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">Coach
+                <button class="btn btn-secondary w-100" (click)="byTrMode5()">Payment
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byTrMode6()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode6, 'fa-caret-up' : trmode6}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode5, 'fa-caret-up' : trmode5}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">Category
+                <button class="btn btn-secondary w-100" (click)="byTrMode6()">Coach
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byTrMode7()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode7, 'fa-caret-up' : trmode7}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode6, 'fa-caret-up' : trmode6}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">Description
+                <button class="btn btn-secondary w-100" (click)="byTrMode7()">Category
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byTrMode8()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode8, 'fa-caret-up' : trmode8}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode7, 'fa-caret-up' : trmode7}"></i>
+                    </span>
+                </button>
+            </div>
+            <div style="width: 25%; padding: 1rem;">
+                <button class="btn btn-secondary w-100" (click)="byTrMode8()">Description
+                    <span style="float: right; cursor: pointer;">
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !trmode8, 'fa-caret-up' : trmode8}"></i>
                     </span>
                 </button>
             </div>
@@ -126,30 +133,30 @@
 
           <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
               <div style="width: 25%; padding: 1rem;">
-                  <button class="btn btn-warning w-100">Back to trainings
+                  <button class="btn btn-warning w-100" (click)="selectTrTable()">Back to trainings
                       <span style="float: right; cursor: pointer;">
-                        <i title="Back to trainings" (click)="selectTrTable()" class="fas fa-caret-square-left mr-1"></i>
+                        <i title="Back to trainings" class="fas fa-caret-square-left mr-1"></i>
                       </span>
                   </button>
               </div>
               <div style="width: 25%; padding: 1rem;">
-                  <button class="btn btn-secondary w-100">TrainingTitle
+                  <button class="btn btn-secondary w-100" (click)="byMemMode1()">TrainingTitle
                       <span style="float: right; cursor: pointer;">
-                        <i (click)="byMemMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !memmode1, 'fa-caret-up' : memmode1}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !memmode1, 'fa-caret-up' : memmode1}"></i>
                       </span>
                   </button>
               </div>
               <div style="width: 25%; padding: 1rem;">
-                  <button class="btn btn-secondary w-100">Member
+                  <button class="btn btn-secondary w-100" (click)="byMemMode2()">Member
                       <span style="float: right; cursor: pointer;">
-                        <i (click)="byMemMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !memmode2, 'fa-caret-up' : memmode2}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !memmode2, 'fa-caret-up' : memmode2}"></i>
                       </span>
                   </button>
               </div>
               <div style="width: 25%; padding: 1rem;">
-                  <button class="btn btn-secondary w-100">IsEnded
+                  <button class="btn btn-secondary w-100" (click)="byMemMode3()">IsEnded
                       <span style="float: right; cursor: pointer;">
-                        <i (click)="byMemMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !memmode3, 'fa-caret-up' : memmode3}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !memmode3, 'fa-caret-up' : memmode3}"></i>
                       </span>
                   </button>
               </div>
@@ -196,23 +203,23 @@
             </button>
         </div>
         <div style="width: 25%; padding: 1rem;">
-          <button class="btn btn-warning w-100">Create recommendation
+          <button class="btn btn-warning w-100" (click)="openCreateRecModal()">Create recommendation
               <span style="float: right; cursor: pointer;">
-                <i title="Create recommendation" (click)="openCreateRecModal()" class="fas fa-plus-circle"></i>
+                <i title="Create recommendation" class="fas fa-plus-circle"></i>
               </span>
           </button>
         </div>
         <div style="width: 25%; padding: 1rem;">
-            <button class="btn btn-secondary w-100">TrainingTitle
+            <button class="btn btn-secondary w-100" (click)="byRecMode1()">TrainingTitle
                 <span style="float: right; cursor: pointer;">
-                  <i (click)="byRecMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !recmode1, 'fa-caret-up' : recmode1}"></i>
+                  <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !recmode1, 'fa-caret-up' : recmode1}"></i>
                 </span>
             </button>
         </div>
         <div style="width: 25%; padding: 1rem;">
-            <button class="btn btn-secondary w-100">Invitation
+            <button class="btn btn-secondary w-100" (click)="byRecMode2()">Invitation
                 <span style="float: right; cursor: pointer;">
-                  <i (click)="byRecMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !recmode2, 'fa-caret-up' : recmode2}"></i>
+                  <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !recmode2, 'fa-caret-up' : recmode2}"></i>
                 </span>
             </button>
         </div>
@@ -223,6 +230,7 @@
           <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
               <div><strong>TrainingTitle: </strong>{{rec.trainingTitle}}</div>
               <div><strong>Invitation: </strong>{{rec.invitation}}</div>
+              <div><strong>Employee: </strong>{{rec.employeeNSN}}</div>
           </div>
       </div>
   </div>
@@ -266,7 +274,18 @@
         </div>
         <div class="form-group">
             <label for="TrainingLevel">TrainingLevel</label>
-            <input type="number" min="1" max="5" class="form-control" id="TrainingLevel" placeholder="Enter here certificate text" name="TrainingLevel" [(ngModel)]="newtrainingDTO.trainingLevel">
+            <div class="input-group">
+                <div class="w-100">
+                  <select class="form-control custom-select" id="TrainingLevel" name="TrainingLevel" [(ngModel)]="selectedTrLevel">
+                    <option [value]="1" selected>Beginner</option>
+                    <option [value]="2">Elementary</option>
+                    <option [value]="3">Intermediate</option>
+                    <option [value]="4">Advanced</option>
+                    <option [value]="5">Proficiency</option>
+                  </select>
+                </div>
+            </div>
+            <!--<input type="number" min="1" max="5" class="form-control" id="TrainingLevel" placeholder="Enter here certificate text" name="TrainingLevel" [(ngModel)]="newtrainingDTO.trainingLevel">-->
         </div>
         <div class="form-row">
             <div class="form-group col">

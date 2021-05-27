@@ -46,7 +46,11 @@ export class TrainingsComponent implements OnInit {
     var employeeId: number = parseInt(localStorage.getItem("currentuserid"), 10);
     this.newTrainingMemberDTO.idTraining = this.trainingDTO.id;
     this.newTrainingMemberDTO.idMember = employeeId;
-    this.trainingMemberService.pull(this.newTrainingMemberDTO);
+    console.log(this.newTrainingMemberDTO);
+    this.trainingMemberService.pull(this.newTrainingMemberDTO)
+    .subscribe((data: any) => {
+      alert("You connected successful");
+    });
   }
 
   ngOnInit(): void {

@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoryDTO } from 'src/app/models/category-dto';
+import { CertificateDTO } from 'src/app/models/certificate-dto';
 import { EmployerDTO } from 'src/app/models/employer-dto';
 import { RecommendationDTO } from 'src/app/models/recommendation-dto';
 import { TrainingDTO } from 'src/app/models/training-dto';
 import { TrainingMemberDTO } from 'src/app/models/training-member-dto';
+import { UserSkillDTO } from 'src/app/models/user-skill-dto';
 import { CategoryService } from 'src/app/services/category.service';
+import { CertificateService } from 'src/app/services/certificate.service';
 import { EmployerService } from 'src/app/services/employer.service';
 import { RecommendationService } from 'src/app/services/recommendation.service';
 import { TrainingMemberService } from 'src/app/services/training-member.service';
 import { TrainingService } from 'src/app/services/training.service';
+import { UserSkillService } from 'src/app/services/user-skill.service';
 
 @Component({
   selector: 'app-worker-training',
@@ -61,7 +65,9 @@ export class WorkerTrainingComponent implements OnInit {
 
   constructor(private trainingService: TrainingService, private recommendationService: RecommendationService, 
     private trainingMemberService: TrainingMemberService, private router: Router, private categoryService: CategoryService,
-    private employerService: EmployerService) { }
+    private employerService: EmployerService,
+    private userSkillService: UserSkillService,
+    private certificateService: CertificateService) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -373,6 +379,40 @@ export class WorkerTrainingComponent implements OnInit {
             break;
       }
     })
+  }
+
+  orderCertificate(tr: TrainingDTO){
+    var userSkillDTOs: UserSkillDTO[] = [];
+    var newUserSkill: UserSkillDTO = new UserSkillDTO(0, 
+      tr.trainingTitle, 
+      tr.startDate, 
+      tr.endDate, 
+      tr.idCategory, 
+      tr.trainingLevel, 
+      parseInt(localStorage.getItem("currentuserid")), "", "", "", true);
+    
+      this.userSkillService.pull(newUserSkill)
+      .subscribe((data: any) => {
+        this.userSkillService.getAll()
+        .subscribe((usData: UserSkillDTO[] | any) => {
+          userSkillDTOs = usData;
+          userSkillDTOs = userSkillDTOs.filter(us => us.idEmployee == parseInt(localStorage.getItem("currentuserid")));
+          console.log(userSkillDTOs);
+          var tmp = userSkillDTOs.find(us => us.skillname == newUserSkill.skillname && 
+            us.idCategory == newUserSkill.idCategory && us.skillLevel == newUserSkill.skillLevel);
+          if(tmp != undefined){
+            var newCertif: CertificateDTO = new CertificateDTO(0, tmp.id, "", tmp.skillLevel, new Date(), new Date(), tmp.idEmployee, 
+            tr.idCoach, "", "", "", "", "");
+            this.certificateService.pull(newCertif)
+            .subscribe((cerdata: any) => {
+              alert("Your certificate was ordered");
+            })
+          }
+          else{
+            console.log("No userskill");
+          }
+        })
+      })
   }
 
   loadData(){

@@ -37,6 +37,8 @@ export class HrMentorSkillTemplateComponent implements OnInit {
   newskillTemplateDTO: SkillTemplateDTO = new SkillTemplateDTO(0, "Title", "Description", 5000);
   newrequirementDTO: RequirementDTO = new RequirementDTO(0, "Req Title", 1, 1, '');
 
+  selectedSkillTemplateDTO: SkillTemplateDTO = new SkillTemplateDTO();
+
   stTable: boolean = true;
   reqTable: boolean = false;
   comTable: boolean = false;
@@ -144,7 +146,12 @@ export class HrMentorSkillTemplateComponent implements OnInit {
     this.newrequirementDTO.idSkillTemplate = parseInt(this.newrequirementDTO.idSkillTemplate.toString(), 10);
     this.requirementService.pull(this.newrequirementDTO)
     .subscribe(() => {
-      this.loadData();
+      this.requirementService.getAll()
+      .subscribe((data: RequirementDTO[] | any) => {
+        this.requirementDTOs = data;
+        this.showRequirementDTOs = this.requirementDTOs.filter(req => req.idSkillTemplate == this.newrequirementDTO.idSkillTemplate);
+        console.log(this.requirementDTOs);
+      });
       var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new requirement ${this.newrequirementDTO.reqTitle}`;
       this.employeeDTOs.forEach(emp => {
         var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, emp.id, parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
@@ -157,8 +164,8 @@ export class HrMentorSkillTemplateComponent implements OnInit {
 
   showSelectedReqs(st: SkillTemplateDTO){
     this.showRequirementDTOs = this.requirementDTOs.filter(req => req.idSkillTemplate == st.id);
-    this.newrequirementDTO.idSkillTemplate = st.id;
-    this.newrequirementDTO.templateTitle = st.templateTitle;
+    this.selectedSkillTemplateDTO.id = this.newrequirementDTO.idSkillTemplate = st.id;
+    this.selectedSkillTemplateDTO.templateTitle = this.newrequirementDTO.templateTitle = st.templateTitle;
     this.selectReqTable();
   }
 

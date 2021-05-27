@@ -54,6 +54,12 @@ export class HrMentorSkillMatrixComponent implements OnInit {
   newskillMetricDTO: SkillMetricDTO = new SkillMetricDTO(0, "MetricName", 1, 0.1, 1);
   newcommentDTO: CommentDTO = new CommentDTO(0, "CommentText", parseInt(localStorage.getItem("currentuserid"), 10), 1);
 
+  selectedUserSkillDTO: UserSkillDTO = new UserSkillDTO();
+
+  selectedUsLevel: string = "1";
+  selectedSuLevel: string = "1";
+  selectedSmLevel: string = "1";
+
   filterSkillLevels: string[] = ["Beginner", "Elementary", "Intermediate", "Advanced", "Proficiency"];
   filterLevel: string = "Beginner";
   
@@ -406,53 +412,8 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     });
   }
 
-  /*loadData(){
-    this.userSkillService.getAll()
-    .subscribe((data: UserSkillDTO[] | any) => {
-      this.userSkillDTOs = data;
-
-      this.userSkillDTOs = this.userSkillDTOs.filter(us => us.idEmployee == parseInt(localStorage.getItem("currentmatrixemp"), 10));
-
-      this.userSkillDTOs.forEach(us => {
-        us.startDate = new Date(us.startDate);
-        us.endDate = new Date(us.endDate);
-      });
-
-      this.showUserSkillDTOs = this.userSkillDTOs.slice();
-
-      this.commentService.getAll()
-        .subscribe((data: CommentDTO[] | any) => {
-          this.allCommentDTOs = data;
-        
-          this.userSkillDTOs.forEach(us => {
-
-            this.skillUnitService.getByUserSkillId(us.id)
-            .subscribe((data: SkillUnitDTO[] | any) => {
-              data.forEach(element => {
-                this.skillUnitDTOs.push(element);
-                this.skillUnitDTOs[this.skillUnitDTOs.length-1].startDate = new Date(this.skillUnitDTOs[this.skillUnitDTOs.length-1].startDate);
-                this.skillUnitDTOs[this.skillUnitDTOs.length-1].endDate = new Date(this.skillUnitDTOs[this.skillUnitDTOs.length-1].endDate);
-              });
-              this.showSkillUnitDTOs = this.skillUnitDTOs.slice();
-            });
-    
-            this.skillMetricService.getByUserSkillId(us.id)
-            .subscribe((data: SkillMetricDTO[] | any) => {
-              data.forEach(element => {
-                this.skillMetricDTOs.push(element);  
-              });
-              this.showSkillMetricDTOs = this.skillMetricDTOs.slice();
-            });
-    
-            this.commentDTOs = this.commentDTOs.concat(this.allCommentDTOs.filter(com => com.idUserSkill == us.id));
-          });
-
-          this.showCommentDTOs = this.commentDTOs.slice();
-        });
-    });
-  }*/
-
   createUserSkill(){
+    this.newuserSkillDTO.skillLevel = parseInt(this.selectedUsLevel);
     this.newuserSkillDTO.idCategory = parseInt(this.newuserSkillDTO.idCategory.toString(), 10);
     this.userSkillService.pull(this.newuserSkillDTO)
     .subscribe(() => {
@@ -466,10 +427,25 @@ export class HrMentorSkillMatrixComponent implements OnInit {
   }
 
   createSkillUnit(){
+    this.newskillUnitDTO.unitLevel = parseInt(this.selectedSuLevel);
     this.newskillUnitDTO.idUserSkill = parseInt(this.newskillUnitDTO.idUserSkill.toString(), 10);
     this.skillUnitService.pull(this.newskillUnitDTO)
     .subscribe(() => {
-      this.loadData();
+      this.loadskillUnitDTOs = [];
+      this.userSkillDTOs.forEach(us => {
+
+        this.skillUnitService.getByUserSkillId(us.id)
+        .subscribe((data: SkillUnitDTO[] | any) => {
+          data.forEach(element => {
+            this.loadskillUnitDTOs.push(element);
+            this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].startDate = new Date(this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].startDate);
+            this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].endDate = new Date(this.loadskillUnitDTOs[this.loadskillUnitDTOs.length-1].endDate);
+          });
+          this.skillUnitDTOs = this.loadskillUnitDTOs.filter(su => su.idUserSkill == this.selectedUserSkillDTO.id);
+          this.updateSkillUnitLevels();
+        });
+      });
+
       var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new skill unit ${this.newuserSkillDTO.skillname} for employee ${localStorage.getItem("currentmatrixempNSN")}`;
       var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, parseInt(localStorage.getItem("currentmatrixemp"), 10), parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
       this.notificationService.pull(notif);
@@ -479,10 +455,23 @@ export class HrMentorSkillMatrixComponent implements OnInit {
   }
 
   createSkillMetric(){
+    this.newskillMetricDTO.metricValue = parseInt(this.selectedSmLevel);
     this.newskillMetricDTO.idUserSkill = parseInt(this.newskillMetricDTO.idUserSkill.toString(), 10);
     this.skillMetricService.pull(this.newskillMetricDTO)
     .subscribe(() => {
-      this.loadData();
+      
+      this.loadskillMetricDTOs = [];
+      this.userSkillDTOs.forEach(us => {
+        this.skillMetricService.getByUserSkillId(us.id)
+        .subscribe((data: SkillMetricDTO[] | any) => {
+          data.forEach(element => {
+            this.loadskillMetricDTOs.push(element);  
+          });
+          this.skillMetricDTOs = this.loadskillMetricDTOs.filter(sm => sm.idUserSkill == this.selectedUserSkillDTO.id);
+          this.updateSkillMettricLevels();
+        });
+      });
+
       var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new skill metric ${this.newuserSkillDTO.skillname} for employee ${localStorage.getItem("currentmatrixempNSN")}`;
       var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, parseInt(localStorage.getItem("currentmatrixemp"), 10), parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
       this.notificationService.pull(notif);
@@ -495,7 +484,17 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.newcommentDTO.idUserSkill = parseInt(this.newcommentDTO.idUserSkill.toString(), 10);
     this.commentService.pull(this.newcommentDTO)
     .subscribe(() => {
-      this.loadData();
+      
+      this.commentService.getAll()
+        .subscribe((data: CommentDTO[] | any) => {
+          this.allCommentDTOs = data;
+        
+          this.userSkillDTOs.forEach(us => {    
+            this.commentDTOs = this.commentDTOs.concat(this.allCommentDTOs.filter(com => com.idUserSkill == us.id));
+          });
+          this.showCommentDTOs = this.commentDTOs.filter(cm => cm.idUserSkill == this.selectedUserSkillDTO.id);
+        });
+
       var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new comment ${this.newuserSkillDTO.skillname} for employee ${localStorage.getItem("currentmatrixempNSN")}`;
       var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, parseInt(localStorage.getItem("currentmatrixemp"), 10), parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
       this.notificationService.pull(notif);
@@ -503,10 +502,6 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     console.log(this.newcommentDTO);
     this.modalService.dismissAll();
   }
-
-  /*filterByCategs(id: number){
-    this.showUserSkillDTOs = this.userSkillDTOs.filter(us => us.idCategory == id);
-  }*/
 
   selectUsTable(){
     this.usTable = true;
@@ -522,14 +517,12 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.cmTable = false;
   }
 
-  /*showSelectSkillUnits(us: UserSkillDTO){
-    this.showSkillUnitDTOs = this.skillUnitDTOs.filter(su => su.idUserSkill == us.id);
-    this.selectSuTable();
-  }*/
   showSelectSkillUnits(us: UserSkillDTO){
     this.skillUnitDTOs = this.loadskillUnitDTOs.filter(su => su.idUserSkill == us.id);
-    this.newskillUnitDTO.idUserSkill = us.id;
-    this.newskillUnitDTO.skillName = us.skillname;
+    this.selectedUserSkillDTO.id = this.newskillUnitDTO.idUserSkill = us.id;
+    this.selectedUserSkillDTO.skillname = this.newskillUnitDTO.skillName = us.skillname;
+    this.newskillUnitDTO.startDate = us.startDate;
+    this.newskillUnitDTO.endDate = us.endDate;
     this.updateSkillUnitLevels();
     this.selectSuTable();
   }
@@ -541,14 +534,10 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.cmTable = false;
   }
 
-  /*showSelectSkillMetrics(us: UserSkillDTO){
-    this.showSkillMetricDTOs = this.skillMetricDTOs.filter(sm => sm.idUserSkill == us.id);
-    this.selectSmTable();
-  }*/
   showSelectSkillMetrics(us: UserSkillDTO){
     this.skillMetricDTOs = this.loadskillMetricDTOs.filter(sm => sm.idUserSkill == us.id);
-    this.newskillMetricDTO.idUserSkill = us.id;
-    this.newskillMetricDTO.skillName = us.skillname;
+    this.selectedUserSkillDTO.id = this.newskillMetricDTO.idUserSkill = us.id;
+    this.selectedUserSkillDTO.skillname = this.newskillMetricDTO.skillName = us.skillname;
     this.updateSkillMettricLevels();
     this.selectSmTable();
   }
@@ -560,14 +549,10 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     this.cmTable = true;
   }
 
-  /*showSelectComments(us: UserSkillDTO){
-    this.showCommentDTOs = this.commentDTOs.filter(cm => cm.idUserSkill == us.id);
-    this.selectCmTable();
-  }*/
   showSelectComments(us: UserSkillDTO){
     this.showCommentDTOs = this.commentDTOs.filter(cm => cm.idUserSkill == us.id);
-    this.newcommentDTO.idUserSkill = us.id;
-    this.newcommentDTO.skillName = us.skillname;
+    this.selectedUserSkillDTO.id = this.newcommentDTO.idUserSkill = us.id;
+    this.selectedUserSkillDTO.skillname = this.newcommentDTO.skillName = us.skillname;
     this.selectCmTable();
   }
 

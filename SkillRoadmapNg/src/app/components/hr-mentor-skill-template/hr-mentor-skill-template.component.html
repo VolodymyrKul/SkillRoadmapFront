@@ -11,30 +11,30 @@
     <div *ngIf="stTable" class="row mt-4">
         <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
           <div style="width: 25%; padding: 1rem;">
-            <button class="btn btn-warning w-100">Create template
+            <button class="btn btn-warning w-100" (click)="openCreateTemplModal()">Create template
                 <span style="float: right; cursor: pointer;">
-                  <i title="Create template" (click)="openCreateTemplModal()" class="fas fa-plus-circle"></i>
+                  <i title="Create template" class="fas fa-plus-circle"></i>
                 </span>
             </button>
           </div>
           <div style="width: 25%; padding: 1rem;">
-              <button class="btn btn-secondary w-100">TemplateTitle
+              <button class="btn btn-secondary w-100" (click)="byStMode1()">TemplateTitle
                   <span style="float: right; cursor: pointer;">
-                      <i (click)="byStMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode1, 'fa-caret-up' : stmode1}"></i>
+                      <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode1, 'fa-caret-up' : stmode1}"></i>
                   </span>
               </button>
           </div>
           <div style="width: 25%; padding: 1rem;">
-              <button class="btn btn-secondary w-100">Description
+              <button class="btn btn-secondary w-100" (click)="byStMode2()">Description
                   <span style="float: right; cursor: pointer;">
-                      <i (click)="byStMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode2, 'fa-caret-up' : stmode2}"></i>
+                      <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode2, 'fa-caret-up' : stmode2}"></i>
                   </span>
               </button>
           </div>
           <div style="width: 25%; padding: 1rem;">
-              <button class="btn btn-secondary w-100">AverageSalary
+              <button class="btn btn-secondary w-100" (click)="byStMode3()">AverageSalary
                   <span style="float: right; cursor: pointer;">
-                      <i (click)="byStMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode3, 'fa-caret-up' : stmode3}"></i>
+                      <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !stmode3, 'fa-caret-up' : stmode3}"></i>
                   </span>
               </button>
           </div>
@@ -74,37 +74,37 @@
     <div *ngIf="reqTable" class="row mt-4">
         <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
           <div style="width: 25%; padding: 1rem;">
-              <button class="btn btn-warning w-100">Back to tempalates
+              <button class="btn btn-warning w-100" (click)="selectStTable()">Back to tempalates
                   <span style="float: right; cursor: pointer;">
-                      <i title="Back to templates" (click)="selectStTable()" class="fas fa-caret-square-left"></i>
+                      <i title="Back to templates" class="fas fa-caret-square-left"></i>
                   </span>
               </button>
           </div>
           <div style="width: 25%; padding: 1rem;">
-            <button class="btn btn-warning w-100">Create requirement
+            <button class="btn btn-warning w-100" (click)="openCreateReqModal()">Create requirement
                 <span style="float: right; cursor: pointer;">
-                  <i title="Create requirement" (click)="openCreateReqModal()" class="fas fa-plus-circle"></i>
+                  <i title="Create requirement" class="fas fa-plus-circle"></i>
                 </span>
             </button>
           </div>
           <div style="width: 25%; padding: 1rem;">
-              <button class="btn btn-secondary w-100">ReqTitle
+              <button class="btn btn-secondary w-100" (click)="byReqMode1()">ReqTitle
                   <span style="float: right; cursor: pointer;">
-                      <i (click)="byReqMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode1, 'fa-caret-up' : reqmode1}"></i>
+                      <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode1, 'fa-caret-up' : reqmode1}"></i>
                   </span>
               </button>
           </div>
           <div style="width: 25%; padding: 1rem;">
-              <button class="btn btn-secondary w-100">ReqLevel
+              <button class="btn btn-secondary w-100" (click)="byReqMode2()">ReqLevel
                   <span style="float: right; cursor: pointer;">
-                      <i (click)="byReqMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode2, 'fa-caret-up' : reqmode2}"></i>
+                      <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode2, 'fa-caret-up' : reqmode2}"></i>
                   </span>
               </button>
           </div>
           <div style="width: 25%; padding: 1rem;">
-              <button class="btn btn-secondary w-100">TemplateTitle
+              <button class="btn btn-secondary w-100" (click)="byReqMode3()">TemplateTitle
                   <span style="float: right; cursor: pointer;">
-                      <i (click)="byReqMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode3, 'fa-caret-up' : reqmode3}"></i>
+                      <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !reqmode3, 'fa-caret-up' : reqmode3}"></i>
                   </span>
               </button>
           </div>
@@ -157,11 +157,11 @@
           <form>
             <div class="form-group">
                 <label for="TemplateTitle">TemplateTitle</label>
-                <input type="text" class="form-control" id="TemplateTitle" placeholder="Enter here certificate text" name="TemplateTitle" [(ngModel)]="newskillTemplateDTO.templateTitle">
+                <input required maxlength="100" type="text" class="form-control" id="TemplateTitle" placeholder="Enter here certificate text" name="TemplateTitle" [(ngModel)]="newskillTemplateDTO.templateTitle">
             </div>
             <div class="form-group">
                 <label for="Description">Description</label>
-                <input type="text" class="form-control" id="Description" placeholder="Enter here certificate text" name="Description" [(ngModel)]="newskillTemplateDTO.description">
+                <input required maxlength="1000" type="text" class="form-control" id="Description" placeholder="Enter here certificate text" name="Description" [(ngModel)]="newskillTemplateDTO.description">
             </div>
             <div class="form-group">
                 <label for="AverageSalary">AverageSalary</label>
@@ -185,7 +185,7 @@
           <form>
             <div class="form-group">
                 <label for="RequirementTitle">Requirement Title</label>
-                <input type="text" class="form-control" id="RequirementTitle" placeholder="Enter here certificate text" name="RequirementTitle" [(ngModel)]="newrequirementDTO.reqTitle">
+                <input required maxlength="100" type="text" class="form-control" id="RequirementTitle" placeholder="Enter here certificate text" name="RequirementTitle" [(ngModel)]="newrequirementDTO.reqTitle">
             </div>
             <div class="form-group">
                 <label for="RequirementLevel">Requirement Level</label>

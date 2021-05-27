@@ -236,7 +236,7 @@
                     <div><strong>Category: </strong>{{tr.categoryTitle}}</div>
                     <div><strong>Description: </strong>{{tr.description}}</div>
                     <div>
-                        <i *ngIf="isEnded[in]" class="fas fa-stamp"></i>
+                        <i *ngIf="isEnded[in]" class="fas fa-stamp" (click)="orderCertificate(tr)" title="Order certificate"></i>
                     </div>
                 </div>
             </div>

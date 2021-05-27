@@ -10,7 +10,9 @@ import { UserSkillService } from 'src/app/services/user-skill.service';
 })
 export class HrMentorCertificateComponent implements OnInit {
   mycertificatesDTO: CertificateDTO[] = [];
+  confCertificatesDTO: CertificateDTO[] = [];
   isMentor: boolean = false;
+  isNotConfirmed: boolean[] = [];
 
   constructor(private certificateService: CertificateService, private userSkillService: UserSkillService) { }
 
@@ -19,14 +21,47 @@ export class HrMentorCertificateComponent implements OnInit {
   }
 
   getCertificatesForMentor(){
-    this.certificateService.getByMentorId(parseInt(localStorage.getItem('currentuserid'), 10))
+    this.isNotConfirmed = [];
+    this.certificateService.getAll()
     .subscribe((data: CertificateDTO[] | any) => {
       this.mycertificatesDTO = data;
+      this.mycertificatesDTO = this.mycertificatesDTO.filter(cer => cer.idPublisher == (parseInt(localStorage.getItem('currentuserid'), 10)));
       this.mycertificatesDTO.forEach(certificate => {
         certificate.dateOfIssue = new Date(certificate.dateOfIssue);
         certificate.expiryDate = new Date(certificate.expiryDate);
+        if(certificate.certificateTitle == ""){
+          this.isNotConfirmed.push(true);
+        }
+        else{
+          this.isNotConfirmed.push(false);
+        }
       });
     });
+  }
+
+  confirmCertif(cer: CertificateDTO, index: number){
+    /*this.certificateService.getAll()
+    .subscribe((data: CertificateDTO[] | any) => {
+      this.confCertificatesDTO = data;
+      var tmp = this.confCertificatesDTO.find(cert => cert.id == cer.id);
+      if(tmp != undefined){
+        tmp.certificateTitle="We confirmed certificate";
+        this.certificateService.update(tmp)
+        .subscribe((data: any) => {
+          this.isNotConfirmed[index] = false;
+        });  
+      }
+      else{
+        console.log("Not find");
+      }
+    })*/
+    cer.certificateTitle="We confirmed certificate";
+    this.certificateService.update(cer)
+    .subscribe((data: any) => {
+      this.isNotConfirmed[index] = false;
+    })
+    //cer.certificateTitle="We confirmed certificate";
+    console.log(cer);
   }
 
   printCertif(cer: CertificateDTO){

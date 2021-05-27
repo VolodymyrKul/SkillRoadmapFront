@@ -14,9 +14,11 @@ export class WorkerCertificateComponent implements OnInit {
   constructor(private certificateService: CertificateService, private userSkillService: UserSkillService) { }
 
   ngOnInit(): void {
-    this.certificateService.getByUserId(parseInt(localStorage.getItem('currentuserid'), 10))
+    this.certificateService.getAll()
         .subscribe((data: CertificateDTO[] | any) => {
           this.mycertificatesDTO = data;
+          this.mycertificatesDTO = this.mycertificatesDTO.filter(cer => cer.idRecipient == parseInt(localStorage.getItem('currentuserid'), 10))
+          this.mycertificatesDTO = this.mycertificatesDTO.filter(cer => cer.certificateTitle != "");
           this.mycertificatesDTO.forEach(certificate => {
             certificate.dateOfIssue = new Date(certificate.dateOfIssue);
             certificate.expiryDate = new Date(certificate.expiryDate);
@@ -31,7 +33,8 @@ export class WorkerCertificateComponent implements OnInit {
         });
   }
   printCertif(cer: CertificateDTO){
-    
+    this.certificateService.printCertificate(cer)
+    .subscribe((data: boolean | any) => console.log(data));
   }
 
 }

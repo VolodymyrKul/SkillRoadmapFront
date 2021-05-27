@@ -78,51 +78,51 @@
 
         <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-warning w-100">Create user skill
+                <button class="btn btn-warning w-100" (click)="openCreateUsModal()">Create user skill
                     <span style="float: right; cursor: pointer;">
-                      <i title="Create user skill" (click)="openCreateUsModal()" class="fas fa-plus-circle"></i>
+                      <i title="Create user skill" class="fas fa-plus-circle"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">Skillname
+                <button class="btn btn-secondary w-100" (click)="byUsMode1()">Skillname
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byUsMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode1, 'fa-caret-up' : usmode1}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode1, 'fa-caret-up' : usmode1}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">StartDate
+                <button class="btn btn-secondary w-100" (click)="byUsMode2()">StartDate
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byUsMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode2, 'fa-caret-up' : usmode2}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode2, 'fa-caret-up' : usmode2}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">EndDate
+                <button class="btn btn-secondary w-100" (click)="byUsMode3()">EndDate
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byUsMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode3, 'fa-caret-up' : usmode3}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode3, 'fa-caret-up' : usmode3}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">SkillLevel
+                <button class="btn btn-secondary w-100" (click)="byUsMode4()">SkillLevel
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byUsMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode4, 'fa-caret-up' : usmode4}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode4, 'fa-caret-up' : usmode4}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">CategoryTitle
+                <button class="btn btn-secondary w-100" (click)="byUsMode5()">CategoryTitle
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byUsMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode5, 'fa-caret-up' : usmode5}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode5, 'fa-caret-up' : usmode5}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">Employee
+                <button class="btn btn-secondary w-100" (click)="byUsMode6()">Employee
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byUsMode6()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode6, 'fa-caret-up' : usmode6}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !usmode6, 'fa-caret-up' : usmode6}"></i>
                     </span>
                 </button>
             </div>
@@ -176,51 +176,51 @@
 
         <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-warning w-100">Back to user skills
+                <button class="btn btn-warning w-100" (click)="selectUsTable()">Back to user skills
                     <span style="float: right; cursor: pointer;">
-                        <i title="Back to user skills" (click)="selectUsTable()" class="fas fa-caret-square-left"></i>
+                        <i title="Back to user skills" class="fas fa-caret-square-left"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-warning w-100">Create skill unit
+                <button class="btn btn-warning w-100" (click)="openCreateSuModal()">Create skill unit
                     <span style="float: right; cursor: pointer;">
-                      <i title="Create skill unit" (click)="openCreateSuModal()" class="fas fa-plus-circle"></i>
+                      <i title="Create skill unit" class="fas fa-plus-circle"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">Unitname
+                <button class="btn btn-secondary w-100" (click)="bySuMode1()">Unitname
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="bySuMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode1, 'fa-caret-up' : sumode1}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode1, 'fa-caret-up' : sumode1}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">StartDate
+                <button class="btn btn-secondary w-100" (click)="bySuMode2()">StartDate
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="bySuMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode2, 'fa-caret-up' : sumode2}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode2, 'fa-caret-up' : sumode2}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">EndDate
+                <button class="btn btn-secondary w-100" (click)="bySuMode3()">EndDate
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="bySuMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode3, 'fa-caret-up' : sumode3}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode3, 'fa-caret-up' : sumode3}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">UnitLevel
+                <button class="btn btn-secondary w-100" (click)="bySuMode4()">UnitLevel
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="bySuMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode4, 'fa-caret-up' : sumode4}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode4, 'fa-caret-up' : sumode4}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">SkillName
+                <button class="btn btn-secondary w-100" (click)="bySuMode5()">SkillName
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="bySuMode5()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode5, 'fa-caret-up' : sumode5}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !sumode5, 'fa-caret-up' : sumode5}"></i>
                     </span>
                 </button>
             </div>
@@ -266,44 +266,44 @@
 
         <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-warning w-100">Back to user skills
+                <button class="btn btn-warning w-100" (click)="selectUsTable()">Back to user skills
                     <span style="float: right; cursor: pointer;">
-                        <i title="Back to user skills" (click)="selectUsTable()" class="fas fa-caret-square-left"></i>
+                        <i title="Back to user skills" class="fas fa-caret-square-left"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-warning w-100">Create skill metric
+                <button class="btn btn-warning w-100" (click)="openCreateSmModal()">Create skill metric
                     <span style="float: right; cursor: pointer;">
-                      <i title="Create skill metric" (click)="openCreateSmModal()" class="fas fa-plus-circle"></i>
+                      <i title="Create skill metric" class="fas fa-plus-circle"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">MetricName
+                <button class="btn btn-secondary w-100" (click)="bySmMode1()">MetricName
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="bySmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode1, 'fa-caret-up' : smmode1}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode1, 'fa-caret-up' : smmode1}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">MetricValue
+                <button class="btn btn-secondary w-100" (click)="bySmMode2()">MetricValue
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="bySmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode2, 'fa-caret-up' : smmode2}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode2, 'fa-caret-up' : smmode2}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">MetricInfluence
+                <button class="btn btn-secondary w-100" (click)="bySmMode3()">MetricInfluence
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="bySmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode3, 'fa-caret-up' : smmode3}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode3, 'fa-caret-up' : smmode3}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">SkillName
+                <button class="btn btn-secondary w-100" (click)="bySmMode4()">SkillName
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="bySmMode4()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode4, 'fa-caret-up' : smmode4}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !smmode4, 'fa-caret-up' : smmode4}"></i>
                     </span>
                 </button>
             </div>
@@ -346,37 +346,37 @@
 
         <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-warning w-100">Back to user skills
+                <button class="btn btn-warning w-100" (click)="selectUsTable()">Back to user skills
                     <span style="float: right; cursor: pointer;">
-                        <i title="Back to user skills" (click)="selectUsTable()" class="fas fa-caret-square-left"></i>
+                        <i title="Back to user skills" class="fas fa-caret-square-left"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-warning w-100">Create comment
+                <button class="btn btn-warning w-100" (click)="openCreateCmModal()">Create comment
                     <span style="float: right; cursor: pointer;">
-                      <i title="Create comment" (click)="openCreateCmModal()" class="fas fa-plus-circle"></i>
+                      <i title="Create comment" class="fas fa-plus-circle"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">CommentText
+                <button class="btn btn-secondary w-100" (click)="byCmMode1()">CommentText
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byCmMode1()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode1, 'fa-caret-up' : cmmode1}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode1, 'fa-caret-up' : cmmode1}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">Employer
+                <button class="btn btn-secondary w-100" (click)="byCmMode2()">Employer
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byCmMode2()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode2, 'fa-caret-up' : cmmode2}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode2, 'fa-caret-up' : cmmode2}"></i>
                     </span>
                 </button>
             </div>
             <div style="width: 25%; padding: 1rem;">
-                <button class="btn btn-secondary w-100">SkillName
+                <button class="btn btn-secondary w-100" (click)="byCmMode3()">SkillName
                     <span style="float: right; cursor: pointer;">
-                        <i (click)="byCmMode3()" [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode3, 'fa-caret-up' : cmmode3}"></i>
+                        <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !cmmode3, 'fa-caret-up' : cmmode3}"></i>
                     </span>
                 </button>
             </div>
@@ -424,11 +424,22 @@
       <form>
         <div class="form-group">
             <label for="SkillName">SkillName</label>
-            <input type="text" class="form-control" id="SkillName" placeholder="Enter here certificate text" name="SkillName" [(ngModel)]="newuserSkillDTO.skillname">
+            <input required maxlength="100" type="text" class="form-control" id="SkillName" placeholder="Enter here certificate text" name="SkillName" [(ngModel)]="newuserSkillDTO.skillname">
         </div>
         <div class="form-group">
             <label for="SkillLevel">SkillLevel</label>
-            <input type="number" min="1" max="5" class="form-control" id="SkillLevel" placeholder="Enter here certificate text" name="SkillLevel" [(ngModel)]="newuserSkillDTO.skillLevel">
+            <div class="input-group">
+                <div class="w-100">
+                  <select class="form-control custom-select" id="SkillLevel" name="SkillLevel" [(ngModel)]="selectedUsLevel">
+                    <option [value]="1" selected>Beginner</option>
+                    <option [value]="2">Elementary</option>
+                    <option [value]="3">Intermediate</option>
+                    <option [value]="4">Advanced</option>
+                    <option [value]="5">Proficiency</option>
+                  </select>
+                </div>
+            </div>
+            <!--<input type="number" min="1" max="5" class="form-control" id="SkillLevel" placeholder="Enter here certificate text" name="SkillLevel" [(ngModel)]="newuserSkillDTO.skillLevel">-->
         </div>
         <div class="form-row">
             <div class="form-group col">
@@ -469,11 +480,22 @@
       <form>
         <div class="form-group">
             <label for="UnitName">UnitName</label>
-            <input type="text" class="form-control" id="UnitName" placeholder="Enter here certificate text" name="UnitName" [(ngModel)]="newskillUnitDTO.unitname">
+            <input required maxlength="50" type="text" class="form-control" id="UnitName" placeholder="Enter here certificate text" name="UnitName" [(ngModel)]="newskillUnitDTO.unitname">
         </div>
         <div class="form-group">
             <label for="UnitLevel">UnitLevel</label>
-            <input type="number" min="1" max="5" class="form-control" id="UnitLevel" placeholder="Enter here certificate text" name="UnitLevel" [(ngModel)]="newskillUnitDTO.unitLevel">
+            <div class="input-group">
+                <div class="w-100">
+                  <select class="form-control custom-select" id="UnitLevel" name="UnitLevel" [(ngModel)]="selectedSuLevel">
+                    <option [value]="1" selected>Beginner</option>
+                    <option [value]="2">Elementary</option>
+                    <option [value]="3">Intermediate</option>
+                    <option [value]="4">Advanced</option>
+                    <option [value]="5">Proficiency</option>
+                  </select>
+                </div>
+            </div>
+            <!--<input type="number" min="1" max="5" class="form-control" id="UnitLevel" placeholder="Enter here certificate text" name="UnitLevel" [(ngModel)]="newskillUnitDTO.unitLevel">-->
         </div>
 
         <div class="form-group">
@@ -516,11 +538,22 @@
       <form>
         <div class="form-group">
             <label for="MetricName">Metric Name</label>
-            <input type="text" class="form-control" id="MetricName" placeholder="Enter here certificate text" name="MetricName" [(ngModel)]="newskillMetricDTO.metricName">
+            <input required maxlength="100" type="text" class="form-control" id="MetricName" placeholder="Enter here certificate text" name="MetricName" [(ngModel)]="newskillMetricDTO.metricName">
         </div>
         <div class="form-group">
             <label for="MetricValue">MetricValue</label>
-            <input type="number" min="1" max="5" class="form-control" id="MetricValue" placeholder="Enter here certificate text" name="MetricValue" [(ngModel)]="newskillMetricDTO.metricValue">
+            <div class="input-group">
+                <div class="w-100">
+                  <select class="form-control custom-select" id="MetricValue" name="MetricValue" [(ngModel)]="selectedSmLevel">
+                    <option [value]="1" selected>Beginner</option>
+                    <option [value]="2">Elementary</option>
+                    <option [value]="3">Intermediate</option>
+                    <option [value]="4">Advanced</option>
+                    <option [value]="5">Proficiency</option>
+                  </select>
+                </div>
+            </div>
+            <!--<input type="number" min="1" max="5" class="form-control" id="MetricValue" placeholder="Enter here certificate text" name="MetricValue" [(ngModel)]="newskillMetricDTO.metricValue">-->
         </div>
 
         <div class="form-group">
@@ -557,7 +590,7 @@
       <form>
         <div class="form-group">
           <label for="CommentText">Comment Text</label>
-          <input type="text" class="form-control" id="CommentText" placeholder="Enter here comment text" name="CommentText" [(ngModel)]="newcommentDTO.commentText">
+          <input required maxlength="100" type="text" class="form-control" id="CommentText" placeholder="Enter here comment text" name="CommentText" [(ngModel)]="newcommentDTO.commentText">
         </div>
 
         <div class="form-group">

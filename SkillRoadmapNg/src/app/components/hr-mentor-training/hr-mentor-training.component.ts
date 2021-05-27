@@ -47,6 +47,7 @@ export class HrMentorTrainingComponent implements OnInit {
   trmode5: boolean = false;
   trmode6: boolean = false;
   trmode7: boolean = false;
+  trmode8: boolean = false;
 
   trainingMode: boolean[] = [];
 
@@ -66,6 +67,9 @@ export class HrMentorTrainingComponent implements OnInit {
   employeeDTOs: EmployeeDTO[] = [];
 
   trLevels: string[] = [];
+
+  selectedTrLevel: string = "1";
+  selectedTrainingDTO: TrainingDTO = new TrainingDTO();
 
   constructor(private trainingService: TrainingService, 
     private recommendationService: RecommendationService, 
@@ -174,7 +178,6 @@ export class HrMentorTrainingComponent implements OnInit {
   }
 
   openCreateModal(){
-    console.log(this.trRef);
     this.modalService.open(this.trRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -183,7 +186,6 @@ export class HrMentorTrainingComponent implements OnInit {
   }
 
   openCreateRecModal(){
-    console.log(this.trRef);
     this.modalService.open(this.recRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -202,11 +204,13 @@ export class HrMentorTrainingComponent implements OnInit {
   }
 
   createTraining(){
+    this.newtrainingDTO.trainingLevel = parseInt(this.selectedTrLevel);
     this.newtrainingDTO.idCategory = parseInt(this.newtrainingDTO.idCategory.toString(), 10);
     this.newtrainingDTO.idCoach = parseInt(localStorage.getItem("currentuserid"), 10);
     console.log(this.newtrainingDTO);
     this.trainingService.pull(this.newtrainingDTO)
     .subscribe((data: any) => {
+      this.loadData()
       var notifText: string = `User ${localStorage.getItem("currentUserNSN")} add new training ${this.newtrainingDTO.trainingTitle}`;
       this.employeeDTOs.forEach(emp => {
         var notif: NotificationDTO = new NotificationDTO(0, notifText, new Date(), false, emp.id, parseInt(localStorage.getItem("currentuserid"), 10), "", "", "", "");
@@ -217,10 +221,36 @@ export class HrMentorTrainingComponent implements OnInit {
   }
 
   createRecommendation(){
-    console.log(this.newrecommendationDTO);
     this.newrecommendationDTO.idTraining = parseInt(this.newrecommendationDTO.idTraining.toString(), 10);
+    console.log(this.newrecommendationDTO);
     this.recommendationService.pull(this.newrecommendationDTO)
-    .subscribe((data: any) => {});
+    .subscribe((data: any) => {
+      this.recommendationService.getTrainingsById(this.selectedTrainingDTO.id)
+        .subscribe((data: RecommendationDTO[] | any) => {
+          var currentRecommendations: RecommendationDTO[] = data;
+          var recInvitations: string[] = [];
+          if(currentRecommendations != undefined && currentRecommendations != null && currentRecommendations.length > 1){
+            recInvitations.push(currentRecommendations[0].invitation);
+            this.recommendationDTOs.push(currentRecommendations[0]);
+            currentRecommendations.forEach(cur => {
+              var isRepeat=false;
+              recInvitations.forEach(inv => {
+                if(inv == cur.invitation){
+                  isRepeat=true;
+                }
+              });
+              if(isRepeat == false){
+                this.recommendationDTOs.push(cur);
+              }
+            });
+          }
+          this.showRecommendationDTOs = [];
+          this.recommendationDTOs.forEach(tr => {
+            this.showRecommendationDTOs.push(tr);
+          });
+          this.showRecommendationDTOs = this.showRecommendationDTOs.filter(tr => tr.idTraining == this.selectedTrainingDTO.id);
+        });
+    });
     this.modalService.dismissAll();
   }
 
@@ -260,8 +290,8 @@ export class HrMentorTrainingComponent implements OnInit {
       this.showRecommendationDTOs.push(tr);
     });
     this.showRecommendationDTOs = this.showRecommendationDTOs.filter(tr => tr.idTraining == d.id);
-    this.newrecommendationDTO.idTraining = d.id;
-    this.newrecommendationDTO.trainingTitle = d.trainingTitle;
+    this.selectedTrainingDTO.id = this.newrecommendationDTO.idTraining = d.id;
+    this.selectedTrainingDTO.trainingTitle = this.newrecommendationDTO.trainingTitle = d.trainingTitle;
     this.selectRecTable();
   }
 
@@ -348,6 +378,18 @@ export class HrMentorTrainingComponent implements OnInit {
     }
     this.updateTrLevels();
     this.trmode7=!this.trmode7;
+  }
+  byTrMode8(){
+    if(this.trmode8){
+      this.trainingDTOs.sort((a,b) => (a.description==undefined || b.description==undefined) ? 
+      0 : (a.description > b.description) ? 1 : (b.description > a.description) ? -1 : 0);
+    }
+    else{
+      this.trainingDTOs.sort((a,b) => (a.description==undefined || b.description==undefined) ? 
+      0 : (a.description < b.description) ? 1 : (b.description < a.description) ? -1 : 0);
+    }
+    this.updateTrLevels();
+    this.trmode8=!this.trmode8;
   }
 
   byRecMode1(){

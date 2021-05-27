@@ -27,7 +27,7 @@ export class CertificateService {
   }
 
   update(certificateDTO: CertificateDTO){
-    return this.http.put(this.url, certificateDTO);
+    return this.http.put(this.url + '/update', certificateDTO);
   }
 
   delete(id: number){

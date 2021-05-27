@@ -347,11 +347,11 @@
       <form>
         <div class="form-group">
             <label for="CompanyName">Company Name</label>
-            <input type="text" class="form-control" id="CompanyName" placeholder="Enter here company name" name="CompanyName" [(ngModel)]="newCompanyDTO.name">
+            <input required maxlength="50" type="text" class="form-control" id="CompanyName" placeholder="Enter here company name" name="CompanyName" [(ngModel)]="newCompanyDTO.name">
         </div>
         <div class="form-group">
             <label for="Description">Description</label>
-            <input type="text" class="form-control" id="Description" placeholder="Enter here description" name="Description" [(ngModel)]="newCompanyDTO.description">
+            <input required maxlength="500" type="text" class="form-control" id="Description" placeholder="Enter here description" name="Description" [(ngModel)]="newCompanyDTO.description">
         </div>
         <div class="form-group">
             <label for="EmployeesCount">Employees Count</label>
@@ -359,15 +359,15 @@
         </div>
         <div class="form-group">
             <label for="Specialization">Specialization</label>
-            <input type="text" class="form-control" id="Specialization" placeholder="Enter here specialization" name="Specialization" [(ngModel)]="newCompanyDTO.specialization">
+            <input required maxlength="100" type="text" class="form-control" id="Specialization" placeholder="Enter here specialization" name="Specialization" [(ngModel)]="newCompanyDTO.specialization">
         </div>
         <div class="form-group">
             <label for="Address">Address</label>
-            <input type="text" class="form-control" id="Address" placeholder="Enter here address" name="Address" [(ngModel)]="newCompanyDTO.address">
+            <input required maxlength="100" type="text" class="form-control" id="Address" placeholder="Enter here address" name="Address" [(ngModel)]="newCompanyDTO.address">
         </div>
         <div class="form-group">
             <label for="ContactPhone">Contact Phone</label>
-            <input type="text" class="form-control" id="ContactPhone" placeholder="Enter here contact phone" name="ContactPhone" [(ngModel)]="newCompanyDTO.contactPhone">
+            <input required maxlength="20" type="text" class="form-control" id="ContactPhone" placeholder="Enter here contact phone" name="ContactPhone" [(ngModel)]="newCompanyDTO.contactPhone">
         </div>
       </form>
     </div>
@@ -387,11 +387,11 @@
       <form>
         <div class="form-group">
             <label for="Categorytitle">Category title</label>
-            <input type="text" class="form-control" id="Categorytitle" placeholder="Enter here company name" name="Categorytitle" [(ngModel)]="newCategoryDTO.title">
+            <input required="50" type="text" class="form-control" id="Categorytitle" placeholder="Enter here company name" name="Categorytitle" [(ngModel)]="newCategoryDTO.title">
         </div>
         <div class="form-group">
             <label for="CategoryDescription">Description</label>
-            <input type="text" class="form-control" id="CategoryDescription" placeholder="Enter here description" name="CategoryDescription" [(ngModel)]="newCategoryDTO.description">
+            <input required="500" type="text" class="form-control" id="CategoryDescription" placeholder="Enter here description" name="CategoryDescription" [(ngModel)]="newCategoryDTO.description">
         </div>
       </form>
     </div>
