@@ -63,6 +63,9 @@ export class HrMentorManagementComponent implements OnInit {
 
   closeResult = '';
 
+  interfaceMode: boolean = true;
+  interfaceTitle: string = "Grid";
+
   constructor(private employeeService: EmployeeService,
     private employerService: EmployerService,
     private companyService: CompanyService,
@@ -71,6 +74,7 @@ export class HrMentorManagementComponent implements OnInit {
     private notificationService: NotificationService) { }
 
   ngOnInit(): void {
+    document.getElementById("PageNavigation").innerHTML = "Management";
     this.loadData();
   }
 
@@ -94,6 +98,16 @@ export class HrMentorManagementComponent implements OnInit {
     .subscribe((data : CategoryDTO[] | any) => {
       this.categoryDTOs = data;
     });
+  }
+
+  changeUIMode(){
+    this.interfaceMode = !this.interfaceMode;
+    if(this.interfaceMode){
+      this.interfaceTitle = "Grid"
+    }
+    else{
+      this.interfaceTitle = "Table";
+    }
   }
 
   openCreateComModal(){
@@ -416,7 +430,7 @@ export class HrMentorManagementComponent implements OnInit {
   }
 
   byCtMode1(){
-    if(this.eemode1){
+    if(this.ctmode1){
       this.categoryDTOs.sort((a,b) => (a.title==undefined || b.title==undefined) ? 
       0 : (a.title > b.title) ? 1 : (b.title > a.title) ? -1 : 0);
     }
@@ -424,11 +438,11 @@ export class HrMentorManagementComponent implements OnInit {
       this.categoryDTOs.sort((a,b) => (a.title==undefined || b.title==undefined) ? 
       0 : (a.title < b.title) ? 1 : (b.title < a.title) ? -1 : 0);
     }
-    this.eemode1=!this.eemode1;
+    this.ctmode1=!this.ctmode1;
   }
 
   byCtMode2(){
-    if(this.eemode2){
+    if(this.ctmode2){
       this.categoryDTOs.sort((a,b) => (a.description==undefined || b.description==undefined) ? 
       0 : (a.description > b.description) ? 1 : (b.description > a.description) ? -1 : 0);
     }
@@ -436,6 +450,6 @@ export class HrMentorManagementComponent implements OnInit {
       this.categoryDTOs.sort((a,b) => (a.description==undefined || b.description==undefined) ? 
       0 : (a.description < b.description) ? 1 : (b.description < a.description) ? -1 : 0);
     }
-    this.eemode2=!this.eemode2;
+    this.ctmode2=!this.ctmode2;
   }
 }

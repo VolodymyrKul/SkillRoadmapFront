@@ -33,12 +33,26 @@ export class WorkerSkillTemplateComponent implements OnInit {
   reqmode2: boolean = false;
   reqmode3: boolean = false;
 
+  interfaceMode: boolean = true;
+  interfaceTitle: string = "Grid";
+
   constructor(private skillTemplateService: SkillTemplateService,
     private requirementService: RequirementService,
     private comparationService: ComparationService) { }
 
   ngOnInit(): void {
+    document.getElementById("PageNavigation").innerHTML = "Template";
     this.loadData();
+  }
+
+  changeUIMode(){
+    this.interfaceMode = !this.interfaceMode;
+    if(this.interfaceMode){
+      this.interfaceTitle = "Grid"
+    }
+    else{
+      this.interfaceTitle = "Table";
+    }
   }
 
   loadData(){

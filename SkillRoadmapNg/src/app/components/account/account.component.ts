@@ -38,6 +38,7 @@ export class AccountComponent implements OnInit {
     private statisticsService: StatisticsService, private recommendationService: RecommendationService) { }
 
   ngOnInit(): void {
+    document.getElementById("PageNavigation").innerHTML = "Account";
     this.loadUserInfo();
   }
 
@@ -58,6 +59,7 @@ export class AccountComponent implements OnInit {
         localStorage.setItem("currentcompanyid", this.employerDTO.idCompany.toString());
         localStorage.setItem("currentUserNSN", this.employerDTO.firstname + " " + this.employerDTO.lastname);
         console.log(this.employerDTO);
+        document.getElementById("SignInRef").innerHTML = "<span><i [ngClass] = '{'fas' : true, 'fa-sign-in-alt' : !isSigned, 'fa-sign-out-alt' : isSigned}' class='fas fa-sign-in-alt'></i></span> " + this.employerDTO.firstname + " " + this.employerDTO.lastname;
 
           this.employeeService.getAll()
           .subscribe((data: EmployeeDTO[] | any) => {
@@ -83,6 +85,7 @@ export class AccountComponent implements OnInit {
         localStorage.setItem("currentcompanyid", this.employeeDTO.idCompany.toString());
         localStorage.setItem("currentUserNSN", this.employeeDTO.firstname + " " + this.employeeDTO.lastname);
         console.log(this.employeeDTO);
+        document.getElementById("SignInRef").innerHTML = "<span><i [ngClass] = '{'fas' : true, 'fa-sign-in-alt' : !isSigned, 'fa-sign-out-alt' : isSigned}' class='fas fa-sign-in-alt'></i></span> " + this.employeeDTO.firstname + " " + this.employeeDTO.lastname;
         this.statisticsService.getAll()
         .subscribe((data: StatisticsDTO[] | any) => {
           this.statisticsDTOs = data;

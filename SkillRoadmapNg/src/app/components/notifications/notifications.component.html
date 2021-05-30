@@ -1,26 +1,69 @@
 <div class="w-75 mx-auto mt-1">
-  <button class="btn btn-primary w-100" (click)="openNotifModal()" >Create notification</button>
+  <!--<button class="btn btn-primary w-100" (click)="openNotifModal()" >Create notification</button>-->
 
-  <div style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
+  <div style="display: flex; width: 100%; flex-wrap: wrap; border: limegreen 1px solid; border-radius: 5px;">
+    <div style="width: 25%; padding: 1rem;">
+        <button class="btn btn-primary w-100" (click)="openNotifModal()">Create notification
+            <span style="float: right; cursor: pointer;">
+                <i title="Create notification" class="fas fa-plus-circle"></i>
+            </span>
+        </button>
+    </div>
+    <div style="width: 25%; padding: 1rem;">
+        <button class="btn btn-secondary w-100" (click)="byNotifMode1()">Notification text
+            <span style="float: right; cursor: pointer;">
+                <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !notifMode1, 'fa-caret-up' : notifMode1}"></i>
+            </span>
+        </button>
+    </div>
+    <div *ngIf="userMode" style="width: 25%; padding: 1rem;">
+        <button class="btn btn-secondary w-100" (click)="byNotifMode2()">Employee
+            <span style="float: right; cursor: pointer;">
+                <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !notifMode2, 'fa-caret-up' : notifMode2}"></i>
+            </span>
+        </button>
+    </div>
+    <div *ngIf="!userMode" style="width: 25%; padding: 1rem;">
+        <button class="btn btn-secondary w-100" (click)="byNotifMode3()">Employer
+            <span style="float: right; cursor: pointer;">
+                <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !notifMode3, 'fa-caret-up' : notifMode3}"></i>
+            </span>
+        </button>
+    </div>
+    <div style="width: 25%; padding: 1rem;">
+        <button class="btn btn-secondary w-100" (click)="byNotifMode4()">Sending date
+            <span style="float: right; cursor: pointer;">
+                <i [ngClass] = "{'fas' : true, 'fa-caret-down' : !notifMode4, 'fa-caret-up' : notifMode4}"></i>
+            </span>
+        </button>
+    </div>
+    <div style="width: 25%; padding: 1rem;">
+        <button class="btn btn-secondary w-100" (click)="changeUIMode()">{{interfaceTitle}}
+            <span style="float: right; cursor: pointer;">
+                <i [ngClass] = "{'fas' : true, 'fa-table' : !interfaceMode, 'fa-th' : interfaceMode}"></i>
+            </span>
+        </button>
+    </div>
+  </div>
+
+  <div *ngIf="interfaceMode" style="display: flex; width: 100%; justify-content: left; flex-wrap: wrap;">
     <div style="width: 25%;" *ngFor="let notif of mynotifications let in=index">
         <div style="margin: .5rem; padding: .5rem; border: gray 1px solid; border-radius: 5px;">
             <div><strong>Notification text: </strong>{{notif?.notificationText}}</div>
             <div><strong>Employee: </strong>{{notif?.employeeNSN}}</div>
             <div><strong>Employer: </strong>{{notif?.employerNSN}}</div>
-            <div><strong>Skill name: </strong>{{notif?.skillname}}</div>
             <div><strong>Sending date: </strong>{{notif?.sendingDate.toISOString().slice(0, 10)}}</div>
         </div>
     </div>
   </div>
 
-  <!--<table class="table table-striped w-100">
+  <table *ngIf="!interfaceMode" class="table table-striped w-100">
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Notification text</th>
         <th scope="col">Employee</th>
         <th scope="col">Employer</th>
-        <th scope="col">Skill name</th>
         <th scope="col">Sending date</th>
       </tr>
     </thead>
@@ -31,12 +74,11 @@
                 <td>{{notif?.notificationText}}</td>
                 <td>{{notif?.employeeNSN}}</td>
                 <td>{{notif?.employerNSN}}</td>
-                <td>{{notif?.skillname}}</td>
                 <td>{{notif?.sendingDate.toISOString().slice(0, 10)}}</td>
             </tr>
         </ng-container>
     </tbody>
-  </table>-->
+  </table>
 </div>
 
 <ng-template #notificationModal let-modal class="w-50">
@@ -68,16 +110,6 @@
             <div class="w-100">
               <select class="form-control custom-select mt-2" id="addEmployeeSelect" name="addEmployee" [(ngModel)]="selEmployee">
                   <option *ngFor="let employee of employeesNSN let in=index" [value]="employee">{{employee}}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="addSkillSelect">User Skill</label>
-          <div class="input-group">
-            <div class="w-100">
-              <select class="form-control custom-select mt-2" id="addSkillSelect" name="addSkill" [(ngModel)]="userSkill.skillname">
-                  <option *ngFor="let uskill of userSkills let in=index" [value]="uskill.skillname">{{uskill.skillname}}</option>
               </select>
             </div>
           </div>

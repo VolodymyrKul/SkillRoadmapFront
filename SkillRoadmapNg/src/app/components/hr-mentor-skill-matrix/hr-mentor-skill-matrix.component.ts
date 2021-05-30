@@ -94,6 +94,9 @@ export class HrMentorSkillMatrixComponent implements OnInit {
   cmmode2: boolean = false;
   cmmode3: boolean = false;
 
+  interfaceMode: boolean = true;
+  interfaceTitle: string = "Grid";
+
   constructor(private userSkillService: UserSkillService, 
     private skillUnitService: SkillUnitService, 
     private skillMetricService: SkillMetricService,
@@ -103,11 +106,22 @@ export class HrMentorSkillMatrixComponent implements OnInit {
     private notificationService: NotificationService) { }
 
   ngOnInit(): void {
+    document.getElementById("PageNavigation").innerHTML = "Matrix";
     this.loadData();
     this.categoryService.getAll()
     .subscribe((data : CategoryDTO[] | any) => {
       this.categoryDTOs = data;
     });
+  }
+
+  changeUIMode(){
+    this.interfaceMode = !this.interfaceMode;
+    if(this.interfaceMode){
+      this.interfaceTitle = "Grid"
+    }
+    else{
+      this.interfaceTitle = "Table";
+    }
   }
 
   openCreateUsModal(){

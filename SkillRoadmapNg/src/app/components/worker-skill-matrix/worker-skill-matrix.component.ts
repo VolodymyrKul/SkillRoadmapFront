@@ -26,6 +26,9 @@ export class WorkerSkillMatrixComponent implements OnInit {
   commentDTOs: CommentDTO[] = [];
   categoryDTOs: CategoryDTO[] = [];
 
+  interfaceMode: boolean = true;
+  interfaceTitle: string = "Grid";
+
   filterSkillLevels: string[] = ["Beginner", "Elementary", "Intermediate", "Advanced", "Proficiency"];
   filterLevel: string = "Beginner";
   
@@ -68,11 +71,22 @@ export class WorkerSkillMatrixComponent implements OnInit {
     private commentService: CommentService, private categoryService: CategoryService) { }
 
   ngOnInit(): void {
+    document.getElementById("PageNavigation").innerHTML = "Matrix";
     this.loadData();
     this.categoryService.getAll()
     .subscribe((data : CategoryDTO[] | any) => {
       this.categoryDTOs = data;
     });
+  }
+
+  changeUIMode(){
+    this.interfaceMode = !this.interfaceMode;
+    if(this.interfaceMode){
+      this.interfaceTitle = "Grid"
+    }
+    else{
+      this.interfaceTitle = "Table";
+    }
   }
 
   updateUserSkillLevels(){
@@ -557,11 +571,11 @@ export class WorkerSkillMatrixComponent implements OnInit {
 
   byCmMode1(){
     if(this.cmmode1){
-      this.commentDTOs.sort((a,b) => (a.commentText==undefined || b.commentText==undefined) ? 
+      this.showCommentDTOs.sort((a,b) => (a.commentText==undefined || b.commentText==undefined) ? 
       0 : (a.commentText > b.commentText) ? 1 : (b.commentText > a.commentText) ? -1 : 0);
     }
     else{
-      this.commentDTOs.sort((a,b) => (a.commentText==undefined || b.commentText==undefined) ? 
+      this.showCommentDTOs.sort((a,b) => (a.commentText==undefined || b.commentText==undefined) ? 
       0 : (a.commentText < b.commentText) ? 1 : (b.commentText < a.commentText) ? -1 : 0);
     }
     this.cmmode1=!this.cmmode1;
@@ -569,11 +583,11 @@ export class WorkerSkillMatrixComponent implements OnInit {
 
   byCmMode2(){
     if(this.cmmode2){
-      this.commentDTOs.sort((a,b) => (a.employerNSN==undefined || b.employerNSN==undefined) ? 
+      this.showCommentDTOs.sort((a,b) => (a.employerNSN==undefined || b.employerNSN==undefined) ? 
       0 : (a.employerNSN > b.employerNSN) ? 1 : (b.employerNSN > a.employerNSN) ? -1 : 0);
     }
     else{
-      this.commentDTOs.sort((a,b) => (a.employerNSN==undefined || b.employerNSN==undefined) ? 
+      this.showCommentDTOs.sort((a,b) => (a.employerNSN==undefined || b.employerNSN==undefined) ? 
       0 : (a.employerNSN < b.employerNSN) ? 1 : (b.employerNSN < a.employerNSN) ? -1 : 0);
     }
     this.cmmode2=!this.cmmode2;
@@ -581,11 +595,11 @@ export class WorkerSkillMatrixComponent implements OnInit {
 
   byCmMode3(){
     if(this.cmmode3){
-      this.commentDTOs.sort((a,b) => (a.skillName==undefined || b.skillName==undefined) ? 
+      this.showCommentDTOs.sort((a,b) => (a.skillName==undefined || b.skillName==undefined) ? 
       0 : (a.skillName > b.skillName) ? 1 : (b.skillName > a.skillName) ? -1 : 0);
     }
     else{
-      this.commentDTOs.sort((a,b) => (a.skillName==undefined || b.skillName==undefined) ? 
+      this.showCommentDTOs.sort((a,b) => (a.skillName==undefined || b.skillName==undefined) ? 
       0 : (a.skillName < b.skillName) ? 1 : (b.skillName < a.skillName) ? -1 : 0);
     }
     this.cmmode3=!this.cmmode3;

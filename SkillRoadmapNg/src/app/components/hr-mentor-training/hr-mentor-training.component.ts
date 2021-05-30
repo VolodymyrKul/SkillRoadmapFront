@@ -71,6 +71,9 @@ export class HrMentorTrainingComponent implements OnInit {
   selectedTrLevel: string = "1";
   selectedTrainingDTO: TrainingDTO = new TrainingDTO();
 
+  interfaceMode: boolean = true;
+  interfaceTitle: string = "Grid";
+
   constructor(private trainingService: TrainingService, 
     private recommendationService: RecommendationService, 
     private trainingMemberService: TrainingMemberService,
@@ -81,7 +84,18 @@ export class HrMentorTrainingComponent implements OnInit {
     private notificationService: NotificationService) { }
 
   ngOnInit(): void {
+    document.getElementById("PageNavigation").innerHTML = "Training";
     this.loadData();
+  }
+
+  changeUIMode(){
+    this.interfaceMode = !this.interfaceMode;
+    if(this.interfaceMode){
+      this.interfaceTitle = "Grid"
+    }
+    else{
+      this.interfaceTitle = "Table";
+    }
   }
 
   updateTrLevels(){

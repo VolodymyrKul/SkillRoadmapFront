@@ -227,7 +227,25 @@ export class RoadmapComponent implements OnInit, AfterViewChecked {
         if(smetrics != undefined){
           smetrics = smetrics.slice(0, 3);
           smetrics.forEach(sm => {
-            tmpmetrics += sm.metricName + " : " + sm.metricValue.toString() + " : " + sm.metricInfluence.toString() + '\n';
+            var mvalue: string = "" 
+            switch (sm.metricValue) {
+              case 1:
+                mvalue = "Beginner";
+                  break;
+              case 2:
+                mvalue = "Elementary";
+                  break;
+              case 3:
+                mvalue = "Intermediate";
+                  break;
+              case 4:
+                mvalue = "Advanced";
+                  break;
+              case 5:
+                mvalue = "Proficiency";
+                  break;
+            }
+            tmpmetrics += sm.metricName + " : " + mvalue + " : " + sm.metricInfluence.toString() + '\n';
           });
         }
         rect.innerHTML = "<title>" + tmpcomments + tmpmetrics + "</title>";

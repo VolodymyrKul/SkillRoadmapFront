@@ -31,8 +31,16 @@ export class NotificationsComponent implements OnInit {
   notifDesc: string = "";
   closeResult = '';
   currentUser: string;
-  userMode: false;
+  userMode: boolean = false;
   addedNotif: NotificationDTO = new NotificationDTO(0,"",new Date(),false,0,0,"","","","");
+
+  notifMode1: boolean = false;
+  notifMode2: boolean = false;
+  notifMode3: boolean = false;
+  notifMode4: boolean = false;
+
+  interfaceMode: boolean = true;
+  interfaceTitle: string = "Grid";
 
   constructor(private notificationService: NotificationService, 
     private employeeService: EmployeeService, 
@@ -43,6 +51,7 @@ export class NotificationsComponent implements OnInit {
   ngOnInit(): void {
     var userRole = localStorage.getItem('currentrole');
     if(userRole == 'HR' || userRole == 'Mentor'){
+      this.userMode = true;
       this.notificationService.getByEmpployer(localStorage.getItem('currentuser'))
       .subscribe((data: Notification[] | any) => {
         this.mynotifications = data;
@@ -52,6 +61,7 @@ export class NotificationsComponent implements OnInit {
       });
     }
     else{
+      this.userMode = false;
       this.notificationService.getByEmpployee(localStorage.getItem('currentuser'))
       .subscribe((data: Notification[] | any) => {
         this.mynotifications = data;
@@ -82,6 +92,16 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
+  changeUIMode(){
+    this.interfaceMode = !this.interfaceMode;
+    if(this.interfaceMode){
+      this.interfaceTitle = "Grid"
+    }
+    else{
+      this.interfaceTitle = "Table";
+    }
+  }
+
   openNotifModal(){
     this.modalService.open(this.notifRef, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -109,5 +129,53 @@ export class NotificationsComponent implements OnInit {
     this.addedNotif.sendingDate = new Date();
 
     this.notificationService.pull(this.addedNotif);
+  }
+
+  byNotifMode1(){
+    if(this.notifMode1){
+      this.mynotifications.sort((a,b) => (a.notificationText==undefined || b.notificationText==undefined) ? 
+      0 : (a.notificationText > b.notificationText) ? 1 : (b.notificationText > a.notificationText) ? -1 : 0);
+    }
+    else{
+      this.mynotifications.sort((a,b) => (a.notificationText==undefined || b.notificationText==undefined) ? 
+      0 : (a.notificationText < b.notificationText) ? 1 : (b.notificationText < a.notificationText) ? -1 : 0);
+    }
+    this.notifMode1=!this.notifMode1;
+  }
+
+  byNotifMode2(){
+    if(this.notifMode2){
+      this.mynotifications.sort((a,b) => (a.employeeNSN==undefined || b.employeeNSN==undefined) ? 
+      0 : (a.employeeNSN > b.employeeNSN) ? 1 : (b.employeeNSN > a.employeeNSN) ? -1 : 0);
+    }
+    else{
+      this.mynotifications.sort((a,b) => (a.employeeNSN==undefined || b.employeeNSN==undefined) ? 
+      0 : (a.employeeNSN < b.employeeNSN) ? 1 : (b.employeeNSN < a.employeeNSN) ? -1 : 0);
+    }
+    this.notifMode2=!this.notifMode2;
+  }
+
+  byNotifMode3(){
+    if(this.notifMode3){
+      this.mynotifications.sort((a,b) => (a.employerNSN==undefined || b.employerNSN==undefined) ? 
+      0 : (a.employerNSN > b.employerNSN) ? 1 : (b.employerNSN > a.employerNSN) ? -1 : 0);
+    }
+    else{
+      this.mynotifications.sort((a,b) => (a.employerNSN==undefined || b.employerNSN==undefined) ? 
+      0 : (a.employerNSN < b.employerNSN) ? 1 : (b.employerNSN < a.employerNSN) ? -1 : 0);
+    }
+    this.notifMode3=!this.notifMode3;
+  }
+
+  byNotifMode4(){
+    if(this.notifMode4){
+      this.mynotifications.sort((a,b) => (a.sendingDate==undefined || b.sendingDate==undefined) ? 
+      0 : (a.sendingDate > b.sendingDate) ? 1 : (b.sendingDate > a.sendingDate) ? -1 : 0);
+    }
+    else{
+      this.mynotifications.sort((a,b) => (a.sendingDate==undefined || b.sendingDate==undefined) ? 
+      0 : (a.sendingDate < b.sendingDate) ? 1 : (b.sendingDate < a.sendingDate) ? -1 : 0);
+    }
+    this.notifMode4=!this.notifMode4;
   }
 }

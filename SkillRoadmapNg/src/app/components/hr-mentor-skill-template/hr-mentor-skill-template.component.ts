@@ -55,6 +55,9 @@ export class HrMentorSkillTemplateComponent implements OnInit {
 
   closeResult = '';
 
+  interfaceMode: boolean = true;
+  interfaceTitle: string = "Grid";
+
   constructor(private skillTemplateService: SkillTemplateService,
     private requirementService: RequirementService,
     private comparationService: ComparationService,
@@ -63,6 +66,7 @@ export class HrMentorSkillTemplateComponent implements OnInit {
     private employeeService: EmployeeService) { }
 
   ngOnInit(): void {
+    document.getElementById("PageNavigation").innerHTML = "Template";
     this.loadData();
   }
 
@@ -85,6 +89,16 @@ export class HrMentorSkillTemplateComponent implements OnInit {
     .subscribe((data: EmployeeDTO[]) => {
       this.employeeDTOs = data;
     });
+  }
+
+  changeUIMode(){
+    this.interfaceMode = !this.interfaceMode;
+    if(this.interfaceMode){
+      this.interfaceTitle = "Grid"
+    }
+    else{
+      this.interfaceTitle = "Table";
+    }
   }
 
   openCreateTemplModal(){

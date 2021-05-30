@@ -36,6 +36,9 @@ export class WorkerTrainingComponent implements OnInit {
   trmode7: boolean = false;
   trmode8: boolean = false;
 
+  interfaceMode: boolean = true;
+  interfaceTitle: string = "Grid";
+
   mytrmode1: boolean = false;
   mytrmode2: boolean = false;
   mytrmode3: boolean = false;
@@ -70,6 +73,7 @@ export class WorkerTrainingComponent implements OnInit {
     private certificateService: CertificateService) { }
 
   ngOnInit(): void {
+    document.getElementById("PageNavigation").innerHTML = "Training";
     this.loadData();
     this.categoryService.getAll()
     .subscribe((data: CategoryDTO[] | any) => {
@@ -79,6 +83,16 @@ export class WorkerTrainingComponent implements OnInit {
     .subscribe((data: EmployerDTO[] | any) => {
       this.employerDTOs = data;
     })
+  }
+
+  changeUIMode(){
+    this.interfaceMode = !this.interfaceMode;
+    if(this.interfaceMode){
+      this.interfaceTitle = "Grid"
+    }
+    else{
+      this.interfaceTitle = "Table";
+    }
   }
 
   filterByCategory(id: number){
@@ -492,6 +506,10 @@ export class WorkerTrainingComponent implements OnInit {
 
   changemodearr(d: TrainingDTO){
     this.trainingMode[this.trainingDTOs.indexOf(d)] = !this.trainingMode[this.trainingDTOs.indexOf(d)];
+  }
+
+  mychangemodearr(d: TrainingDTO){
+    this.mytrainingMode[this.myTrainingDTOs.indexOf(d)] = !this.mytrainingMode[this.myTrainingDTOs.indexOf(d)];
   }
 
   byTrMode1(){

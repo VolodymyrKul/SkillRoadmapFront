@@ -19,6 +19,9 @@ export class WorkerManagementComponent implements OnInit {
   companyDTOs: CompanyDTO[] = [];
   categoryDTOs: CategoryDTO[] = [];
 
+  interfaceMode: boolean = true;
+  interfaceTitle: string = "Grid";
+
   eeTable: boolean = true;
   erTable: boolean = false;
   cmTable: boolean = false;
@@ -54,6 +57,7 @@ export class WorkerManagementComponent implements OnInit {
     private categoryService: CategoryService) { }
 
   ngOnInit(): void {
+    document.getElementById("PageNavigation").innerHTML = "Management";
     this.employeeService.getAll()
     .subscribe((data : EmployeeDTO[] | any) => {
       this.employeeDTOs = data;
@@ -73,6 +77,16 @@ export class WorkerManagementComponent implements OnInit {
     .subscribe((data : CategoryDTO[] | any) => {
       this.categoryDTOs = data;
     });
+  }
+
+  changeUIMode(){
+    this.interfaceMode = !this.interfaceMode;
+    if(this.interfaceMode){
+      this.interfaceTitle = "Grid"
+    }
+    else{
+      this.interfaceTitle = "Table";
+    }
   }
 
   selectEeTable(){

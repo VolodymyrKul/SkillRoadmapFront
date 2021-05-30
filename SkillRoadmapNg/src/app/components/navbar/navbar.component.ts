@@ -18,14 +18,16 @@ export class NavbarComponent implements OnInit {
       mes => {
         console.log(mes);
         if(mes == "User is signed"){
-          this.navOptionTitle = "Sign Out";
+          document.getElementById("SignInRef").innerHTML = "<span><i [ngClass] = '{'fas' : true, 'fa-sign-in-alt' : !isSigned, 'fa-sign-out-alt' : isSigned}' class='fas fa-sign-in-alt'></i></span> Sign Out";
+          //this.navOptionTitle = "Sign Out";
           this.isSigned = true;
         }
     });
   }
 
   goToSignIn(){
-    this.navOptionTitle = "Sign In";
+    document.getElementById("SignInRef").innerHTML = "<span><i [ngClass] = '{'fas' : true, 'fa-sign-in-alt' : !isSigned, 'fa-sign-out-alt' : isSigned}' class='fas fa-sign-in-alt'></i></span> Sign In";
+    //this.navOptionTitle = "Sign In";
     this.isSigned = false;
     this.router.navigate(['']); 
   }
